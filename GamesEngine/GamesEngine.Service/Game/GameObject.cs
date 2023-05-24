@@ -1,11 +1,13 @@
 using System.Numerics;
+using Math;
+
 namespace GamesEngine.Service
 {
     public interface IGameObject
     {
         int Id { get; set; }
-        Matrix4x4 WorldMatrix { get; set; }
-        Matrix4x4 LocalMatrix { get; set; }
+        IMatrix WorldMatrix { get; set; }
+        IMatrix LocalMatrix { get; set; }
         IGameObject Parent { get; set; }
         List<IGameObject> Children { get; set; }
         public (float x, float y, float z) GetPosition();
@@ -17,8 +19,8 @@ namespace GamesEngine.Service
     public abstract class GameObject : IGameObject
     {
         public int Id { get; set; }
-        public Matrix4x4 WorldMatrix { get; set; }
-        public Matrix4x4 LocalMatrix { get; set; }
+        public IMatrix WorldMatrix { get; set; }
+        public IMatrix LocalMatrix { get; set; }
         public IGameObject Parent { get; set; }
         public List<IGameObject> Children { get; set; }
 
@@ -34,11 +36,11 @@ namespace GamesEngine.Service
 
         public void SetPosition(float x, float y, float z)
         {
-            Matrix4x4 Tempmatrix4X4 = this.WorldMatrix;
-            Tempmatrix4X4.M41 = x;
-            Tempmatrix4X4.M42 = y;
-            Tempmatrix4X4.M43 = z;
-            this.WorldMatrix = Tempmatrix4X4;
+            IMatrix Tempmatrix = this.WorldMatrix;
+            Tempmatrix.M41 = x;
+            Tempmatrix.M42 = y;
+            Tempmatrix.M43 = z;
+            this.WorldMatrix = Tempmatrix;
 
         }
     }

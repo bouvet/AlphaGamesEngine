@@ -1,7 +1,15 @@
 ﻿namespace Math
 {
-    public class Class1
+    public interface IVector
     {
+        float GetAbsolute();
+    }
+
+    public interface IMatrix
+    {
+        IVector GetPosition();
+        IVector GetRotation();
+        IVector GetScale();
 
     }
 }

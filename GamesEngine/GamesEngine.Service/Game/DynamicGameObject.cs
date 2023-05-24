@@ -15,4 +15,8 @@ namespace GamesEngine.Service.Game
 
     }
 
+    public interface IStateMachine
+    {
+
+    }
 }

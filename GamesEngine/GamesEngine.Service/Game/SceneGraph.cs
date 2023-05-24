@@ -17,4 +17,31 @@ namespace GamesEngine.Service.Game
         public SortedDictionary<int, IStaticGameObject> StaticGameObject { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IQuadTree QuadTree { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
+
+    public interface IIterator
+    {
+        IWalkerStyle Walker { get; }
+    }
+
+    public interface IWalkerStyle
+    {
+        IWalkerHandler Handler { get; }
+    }
+
+    public interface IWalkerHandler
+    {
+
+    }
+
+    public interface WalkerStyleA : IWalkerStyle
+    {
+
+    }
+
+    public interface WalkerStyleB : IWalkerStyle
+    {
+
+    }
+
+
 }

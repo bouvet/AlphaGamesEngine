@@ -1,5 +1,5 @@
 using GamesEngine.Service.Game;
-using Math;
+using GamesEngine.Math;
 
 namespace GamesEngine.Service.Camera;
 

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Math\Math.csproj" />
+    <ProjectReference Include="..\GamesEngine.Math\GamesEngine.Math.csproj" />
   </ItemGroup>
 
 </Project>

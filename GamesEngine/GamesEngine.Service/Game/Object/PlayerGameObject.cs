@@ -13,7 +13,7 @@ namespace GamesEngine.Service.Game
     }
     public class PlayerGameObject : DynamicGameObject, IPlayerGameObject
     {
-        public override void Collision()
+        public override void Collision(IGameObject gameObject)
         {
             throw new NotImplementedException();
         }

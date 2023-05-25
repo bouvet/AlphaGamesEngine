@@ -1,4 +1,6 @@
-﻿namespace GamesEngine.Service.Camera
+﻿using GamesEngine.Service.Game;
+
+namespace GamesEngine.Service.Camera
 {
     public interface IOctoTree
     {

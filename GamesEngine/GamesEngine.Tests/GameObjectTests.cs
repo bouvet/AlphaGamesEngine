@@ -1,12 +1,11 @@
 using FluentAssertions;
-using GamesEngine.Service;
+using GamesEngine.Service.Game;
 
 namespace GamesEngine.Tests;
 
-
+[TestFixture]
 public class GameObjectTests
 {
-
     // Arrange
     private IGameObject gameObject;
 
@@ -18,6 +17,7 @@ public class GameObjectTests
     [Test]
     public void ShouldBeAbleToCreateGameObject()
     {
-        gameObject.Should().NotBeNull();
+        GameObject gameObjectNotNull = new GameObject();
+        gameObjectNotNull.Should().NotBeNull();
     }
 }

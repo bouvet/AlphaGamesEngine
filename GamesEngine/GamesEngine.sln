@@ -3,19 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesEngine.Service", "GamesEngine.Service\GamesEngine.Service.csproj", "{96D1683B-5916-408E-9BDB-24FB83335011}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Service", "GamesEngine.Service\GamesEngine.Service.csproj", "{96D1683B-5916-408E-9BDB-24FB83335011}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesEngine.Tests", "GamesEngine.Tests\GamesEngine.Tests.csproj", "{6CA8B809-E33C-48CE-A9FD-2E26914B699A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Tests", "GamesEngine.Tests\GamesEngine.Tests.csproj", "{6CA8B809-E33C-48CE-A9FD-2E26914B699A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{F02AED7A-2769-4F96-A749-809440E6C4E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Math", "GamesEngine.Math\GamesEngine.Math.csproj", "{037B8E06-AAAE-4E77-BD5A-141F7E761F35}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Communication", "GamesEngine.Math - Copy\GamesEngine.Communication.csproj", "{71BDE354-EC56-45B1-AE4F-B4AA26D1726E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Patterns", "GamesEngine.Math - Copy (2)\GamesEngine.Patterns.csproj", "{64B241D5-B20A-4442-957A-09E0F3E513A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{96D1683B-5916-408E-9BDB-24FB83335011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -26,9 +27,23 @@ Global
 		{6CA8B809-E33C-48CE-A9FD-2E26914B699A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CA8B809-E33C-48CE-A9FD-2E26914B699A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CA8B809-E33C-48CE-A9FD-2E26914B699A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F02AED7A-2769-4F96-A749-809440E6C4E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F02AED7A-2769-4F96-A749-809440E6C4E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F02AED7A-2769-4F96-A749-809440E6C4E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F02AED7A-2769-4F96-A749-809440E6C4E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{037B8E06-AAAE-4E77-BD5A-141F7E761F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{037B8E06-AAAE-4E77-BD5A-141F7E761F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{037B8E06-AAAE-4E77-BD5A-141F7E761F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{037B8E06-AAAE-4E77-BD5A-141F7E761F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71BDE354-EC56-45B1-AE4F-B4AA26D1726E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71BDE354-EC56-45B1-AE4F-B4AA26D1726E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71BDE354-EC56-45B1-AE4F-B4AA26D1726E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71BDE354-EC56-45B1-AE4F-B4AA26D1726E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B241D5-B20A-4442-957A-09E0F3E513A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B241D5-B20A-4442-957A-09E0F3E513A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B241D5-B20A-4442-957A-09E0F3E513A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B241D5-B20A-4442-957A-09E0F3E513A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {705AB77C-5BC9-4A0A-B55F-01AF05E75DF4}
 	EndGlobalSection
 EndGlobal

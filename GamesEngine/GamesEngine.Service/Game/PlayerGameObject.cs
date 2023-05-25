@@ -23,12 +23,12 @@ namespace GamesEngine.Service.Game
             throw new NotImplementedException();
         }
 
-        public override void Update(ITime deltaTime)
+        public override void Update(IInterval deltaTime, ITime time)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateMovement(ITime deltaTime)
+        public override void UpdateMovement(IInterval deltaTime, ITime time)
         {
             throw new NotImplementedException();
         }

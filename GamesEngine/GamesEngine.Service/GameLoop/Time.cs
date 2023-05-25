@@ -10,7 +10,7 @@ namespace GamesEngine.Service.GameLoop
     {
         long GetTime();
     }
-    internal class Time : ITime
+    public class Time : ITime
     {
         public long GetTime()
         {

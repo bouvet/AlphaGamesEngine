@@ -1,10 +1,5 @@
 namespace GamesEngine.Service.Server;
 
-public class Communication
-{
-
-}
-
 public interface ICommunication
 {
     ICommunicationStrategy CommunicationStrategy { get; }
@@ -23,6 +18,11 @@ public interface ICommandDispatcher
 public interface ICommandHandler
 {
     void Handle(ICommand command);
+}
+
+public interface IQueryHandler
+{
+    void Handle(IQuery command);
 }
 
 public interface ICommand

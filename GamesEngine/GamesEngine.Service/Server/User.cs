@@ -8,9 +8,5 @@
         public string Password { get; set; }
         public string UserName { get; set; }
         public List<int> Friends { get; set; }
-
-    }
-    public class User
-    {
     }
 }

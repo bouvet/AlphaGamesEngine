@@ -13,6 +13,5 @@
         IVector GetPosition();
         IVector GetRotation();
         IVector GetScale();
-
     }
 }

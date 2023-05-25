@@ -2,9 +2,10 @@ using GamesEngine.Service;
 
 namespace GamesEngine.Tests;
 
-public class UnitTest1
+[TestFixture]
+public class GaneLoopTests
 {
-    [Fact]
+    [Test]
     public void Test1()
     {
 

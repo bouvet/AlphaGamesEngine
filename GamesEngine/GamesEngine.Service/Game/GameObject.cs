@@ -28,20 +28,21 @@ namespace GamesEngine.Service
 
         public (float x, float y, float z) GetPosition()
         {
-            return (WorldMatrix.M41, WorldMatrix.M42, WorldMatrix.M43);
+            return (WorldMatrix.GetPosition().GetX(), WorldMatrix.GetPosition().GetY(), WorldMatrix.GetPosition().GetZ());
         }
 
         public abstract void Render();
-        
+
 
         public void SetPosition(float x, float y, float z)
         {
+            /*
             IMatrix Tempmatrix = this.WorldMatrix;
             Tempmatrix.M41 = x;
             Tempmatrix.M42 = y;
             Tempmatrix.M43 = z;
             this.WorldMatrix = Tempmatrix;
-
+            */
         }
     }
 }

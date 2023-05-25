@@ -15,5 +15,6 @@ namespace GamesEngine.Service.Server
     internal class Server : IServer
     {
         public List<IGame> Games { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<IUser> Users { get; set; }
     }
 }

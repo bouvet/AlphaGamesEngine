@@ -21,6 +21,4 @@ namespace GamesEngine.Service.Game
         public IGameLoop GameLoop { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public ISceneGraph SceneGraph { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
-
-
 }

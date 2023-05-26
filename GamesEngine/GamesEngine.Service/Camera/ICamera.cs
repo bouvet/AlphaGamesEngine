@@ -1,9 +1,11 @@
-using GamesEngine.Service.Game;
 using GamesEngine.Math;
+using GamesEngine.Service.Game.Object;
 
-namespace GamesEngine.Service.Camera;
-
-public interface ICamera : IDynamicGameObject
+namespace GamesEngine.Service.Camera
 {
-    IVector LookAt { get; }
+
+    public interface ICamera : IDynamicGameObject
+    {
+        IVector LookAt { get; }
+    }
 }

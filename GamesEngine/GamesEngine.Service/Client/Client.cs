@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamesEngine.Service.Game.Object;
 
 namespace GamesEngine.Service.Client
 {

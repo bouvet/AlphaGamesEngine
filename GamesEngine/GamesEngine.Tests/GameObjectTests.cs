@@ -1,5 +1,6 @@
 using FluentAssertions;
 using GamesEngine.Service.Game;
+using GamesEngine.Service.Game.Object;
 
 namespace GamesEngine.Tests;
 

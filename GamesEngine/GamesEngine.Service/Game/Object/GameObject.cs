@@ -1,5 +1,6 @@
 using System.Numerics;
 using GamesEngine.Math;
+using GamesEngine.Service.Game.Bounds;
 
 namespace GamesEngine.Service.Game.Object
 {

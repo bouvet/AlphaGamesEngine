@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GamesEngine.Service.Camera;
 
-namespace GamesEngine.Service.Game
+namespace GamesEngine.Service.Game.Graph
 {
     public interface ISceneGraph
     {

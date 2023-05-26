@@ -1,7 +1,7 @@
 using System.Numerics;
 using GamesEngine.Math;
 
-namespace GamesEngine.Service.Game
+namespace GamesEngine.Service.Game.Object
 {
     public interface IGameObject
     {

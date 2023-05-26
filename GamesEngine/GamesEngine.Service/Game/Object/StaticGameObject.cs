@@ -1,4 +1,4 @@
-﻿namespace GamesEngine.Service.Game
+﻿namespace GamesEngine.Service.Game.Object
 {
     public abstract class StaticGameObject : GameObject, IStaticGameObject
     {

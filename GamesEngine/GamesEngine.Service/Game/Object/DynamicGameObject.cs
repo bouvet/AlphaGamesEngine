@@ -1,6 +1,6 @@
 using GamesEngine.Service.GameLoop;
 
-namespace GamesEngine.Service.Game
+namespace GamesEngine.Service.Game.Object
 {
     public abstract class DynamicGameObject : GameObject, IDynamicGameObject
     {

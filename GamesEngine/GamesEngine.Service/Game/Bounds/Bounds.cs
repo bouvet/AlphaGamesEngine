@@ -1,7 +1,8 @@
 using GamesEngine.Math;
 
-namespace GamesEngine.Service.Game
+namespace GamesEngine.Service.Game.Bounds
 {
+
     public interface IBounds
     {
         IMatrix Position { get; }

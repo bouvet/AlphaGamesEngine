@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GamesEngine.Service.Game
+namespace GamesEngine.Service.Game.Object
 {
     public interface IPlayerGameObject : IDynamicGameObject
     {

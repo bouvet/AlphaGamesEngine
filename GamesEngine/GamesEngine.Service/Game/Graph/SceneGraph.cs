@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GamesEngine.Service.Camera;
+﻿using GamesEngine.Service.Camera;
+using GamesEngine.Service.Game.Object;
 
 namespace GamesEngine.Service.Game.Graph
 {

@@ -28,25 +28,13 @@ namespace GamesEngine.Service.Game.Object
             throw new NotImplementedException();
         }
         public virtual void Collision(IGameObject otherGameObject)
-        {
-            // Assumption: Both GameObject and other have some form of bounds property.
-            // This bounds property could be a simple rectangle for AABB (Axis-Aligned Bounding Box) collision
-            // detection, or it could be something more complex for other forms of collision detection.
-            // The details of this would depend on how your game is structured.
+        { 
 
-            var thisBounds = this.GetBounds(); // You would need to implement this method.
-            var otherBounds = otherGameObject.GetBounds(); // You would need to implement this method.
-
-            // Check for collision using AABB (Axis-Aligned Bounding Box) collision detection.
-            // This is a simple form of collision detection suitable for many 2D games.
+            var thisBounds = this.GetBounds();
+            var otherBounds = otherGameObject.GetBounds();
             if (thisBounds.Intersects(otherBounds))
             {
-                // Collision has occurred. Respond appropriately.
-                // The exact details of this would depend on your game. Some possible responses might include:
-                // - Destroying one or both of the objects
-                // - Changing the direction of one or both of the objects
-                // - Triggering some game event
-                // - etc.
+                throw new NotImplementedException();
             }
         }
         public virtual void Render()

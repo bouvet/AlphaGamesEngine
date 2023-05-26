@@ -1,4 +1,6 @@
+using GamesEngine.Patterns;
 using GamesEngine.Patterns.Command;
+using GamesEngine.Patterns.Query;
 
 namespace GamesEngine.Service.Communication
 {
@@ -6,29 +8,30 @@ namespace GamesEngine.Service.Communication
     public interface ICommunication
     {
         ICommunicationStrategy CommunicationStrategy { get; }
-        ICommandDispatcher CommandDispatcher { get; }
+        ICommunicationDispatcher CommunicationDispatcher { get; }
 
-        void SendMessage(ICommand command);
-        void OnMessage(IQuery query);
+        void SendMessage(IMessage message);
+        void OnMessage(IMessage message);
     }
 
     public class Communication : ICommunication
     {
-        public ICommunicationStrategy CommunicationStrategy { get; }
-        public ICommandDispatcher CommandDispatcher { get; }
+        public ICommunicationStrategy CommunicationStrategy { get; private set; }
+        public ICommunicationDispatcher CommunicationDispatcher { get; private set; }
 
-        public Communication(ICommunicationStrategy communicationStrategy, ICommandDispatcher commandDispatcher)
+        public Communication(ICommunicationStrategy communicationStrategy,
+                             ICommunicationDispatcher communicationDispatcher)
         {
             CommunicationStrategy = communicationStrategy;
-            CommandDispatcher = commandDispatcher;
+            CommunicationDispatcher = communicationDispatcher;
         }
 
-        public void OnMessage(IQuery query)
+        public void OnMessage(IMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public void SendMessage(ICommand command)
+        public void SendMessage(IMessage message)
         {
             throw new NotImplementedException();
         }
@@ -36,11 +39,21 @@ namespace GamesEngine.Service.Communication
 
     public interface ICommunicationStrategy
     {
+        void OnSend(IMessage message);
+        void OnReceive(IMessage message);
     }
 
     public class CommunicationStrategy : ICommunicationStrategy
     {
+        public void OnReceive(IMessage message)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void OnSend(IMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

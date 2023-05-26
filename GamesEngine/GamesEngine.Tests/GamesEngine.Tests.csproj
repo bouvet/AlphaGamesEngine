@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GamesEngine.Communication\GamesEngine.Communication.csproj" />
     <ProjectReference Include="..\GamesEngine.Service\GamesEngine.Service.csproj" />
   </ItemGroup>
 

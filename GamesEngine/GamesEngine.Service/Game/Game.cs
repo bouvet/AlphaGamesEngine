@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Service.Game.Graph;
+using GamesEngine.Communication.Queries;
+using GamesEngine.Service.Game.Object;
 
 namespace GamesEngine.Service.Game
 {
@@ -14,6 +16,7 @@ namespace GamesEngine.Service.Game
         public List<IClient> Clients { get; set; }
         public IGameLoop GameLoop { get; set; }
         public ISceneGraph SceneGraph { get; set; }
+        public GameObject FindGameObject(int id);
     }
 
     internal class Game : IGame
@@ -21,5 +24,10 @@ namespace GamesEngine.Service.Game
         public List<IClient> Clients { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IGameLoop GameLoop { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public ISceneGraph SceneGraph { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public GameObject FindGameObject(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

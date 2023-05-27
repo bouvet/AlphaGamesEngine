@@ -1,4 +1,5 @@
-﻿using GamesEngine.Patterns.Command;
+﻿using GamesEngine.Patterns;
+using GamesEngine.Patterns.Command;
 
 namespace GamesEngine.Service.Communication
 {
@@ -6,16 +7,14 @@ namespace GamesEngine.Service.Communication
     {
         public ICommunicationStrategy CommunicationStrategy => throw new NotImplementedException();
 
-        public ICommandDispatcher CommandDispatcher => throw new NotImplementedException();
+        public ICommunicationDispatcher CommunicationDispatcher => throw new NotImplementedException();
 
-        ICommandDispatcher ICommunication.CommandDispatcher => throw new NotImplementedException();
-
-        public void OnMessage(IQuery query)
+        public void OnMessage(IMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public void SendMessage(ICommand command)
+        public void SendMessage(IMessage message)
         {
             throw new NotImplementedException();
         }

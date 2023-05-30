@@ -5,7 +5,7 @@ using GamesEngine.Service.Game.Object;
 namespace GamesEngine.Communication.Queries.Handlers
 {
 
-    public class FindGameObjectQueryHandler : IQueryHandler<>
+    public class FindGameObjectQueryHandler : IQueryHandler<FindGameObjectQuery, IQueryCallback<string>>
     {
         private readonly IGame _game;
 
@@ -14,7 +14,7 @@ namespace GamesEngine.Communication.Queries.Handlers
             _game = game;
         }
 
-        public void Handle(FindGameObjectQuery query)
+        public void Handle(FindGameObjectQuery query, IQueryCallback<string> callback)
         {
             GameObject gameObject = _game.FindGameObject(query.GameObjectId);
 

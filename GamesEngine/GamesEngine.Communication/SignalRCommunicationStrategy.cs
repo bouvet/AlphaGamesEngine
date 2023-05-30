@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesEngine.Communication
 {
+
     public class SignalRCommunicationStartegy : Hub, ICommunicationStrategy
     {
         public SignalRCommunicationStartegy()
@@ -14,12 +15,12 @@ namespace GamesEngine.Communication
         }
         public void OnMessage(IMessage message)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public void SendMessage(IMessage message)
+        public void OnSend(IMessage message)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

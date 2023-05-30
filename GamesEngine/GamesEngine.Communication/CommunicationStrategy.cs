@@ -1,19 +1,18 @@
 using GamesEngine.Patterns;
 
+public delegate void MessageCallback(IMessage message);
+
 public interface ICommunicationStrategy
 {
-    void OnSend(IMessage message);
-    void OnReceive(IMessage message);
+    MessageCallback OnMessage { get; }
+    void SendMessage(IMessage message);
 }
 
 public class CommunicationStrategy : ICommunicationStrategy
 {
-    public void OnReceive(IMessage message)
-    {
-        throw new NotImplementedException();
-    }
+    public MessageCallback OnMessage { get; }
 
-    public void OnSend(IMessage message)
+    public void SendMessage(IMessage message)
     {
         throw new NotImplementedException();
     }

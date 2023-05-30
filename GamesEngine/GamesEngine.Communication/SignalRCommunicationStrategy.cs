@@ -1,11 +1,19 @@
 ﻿using GamesEngine.Patterns;
 using GamesEngine.Patterns.Command;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace GamesEngine.Service.Communication
+namespace GamesEngine.Communication
 {
-    public class SignalRCommunicationStartegy : ICommunicationStrategy
+
+    public class SignalRCommunicationStartegy : Hub, ICommunicationStrategy
     {
-        public void OnReceive(IMessage message)
+        public SignalRCommunicationStartegy()
+        {
+            
+        }
+        public void OnMessage(IMessage message)
         {
             throw new System.NotImplementedException();
         }

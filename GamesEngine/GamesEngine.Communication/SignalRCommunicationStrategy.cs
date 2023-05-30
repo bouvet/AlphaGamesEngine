@@ -3,20 +3,16 @@ using GamesEngine.Patterns.Command;
 
 namespace GamesEngine.Service.Communication
 {
-    public class SignalRCommunicationStartegy : ICommunication
+    public class SignalRCommunicationStartegy : ICommunicationStrategy
     {
-        public ICommunicationStrategy CommunicationStrategy => throw new NotImplementedException();
-
-        public ICommunicationDispatcher CommunicationDispatcher => throw new NotImplementedException();
-
-        public void OnMessage(IMessage message)
+        public void OnReceive(IMessage message)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public void SendMessage(IMessage message)
+        public void OnSend(IMessage message)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

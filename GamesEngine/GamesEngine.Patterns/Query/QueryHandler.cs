@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace GamesEngine.Patterns.Query
 {
-    public interface IQueryHandler<TQuery, TCallBack> where TQuery : IQuery where TCallBack : IQueryCallback<object>
+    public interface IQueryHandler<TQuery, TCallBack>
+        where TQuery : IQuery
+        where TCallBack : IQueryCallback<string>
     {
         void Handle(TQuery query, TCallBack callBack);
     }

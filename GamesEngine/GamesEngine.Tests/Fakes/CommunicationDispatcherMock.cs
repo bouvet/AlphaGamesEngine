@@ -4,21 +4,44 @@ using GamesEngine.Patterns.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GamesEngine.Tests.Fakes
 {
-    internal class CommunicationDispatcherMock : ICommunicationDispatcher
+    internal class CommunicationDispatcherMock : CommunicationDispatcher
     {
-        public void ResolveCommand(ICommand command)
+        private List<Type> QueryHandlers { get; }
+        private List<Type> CommandHandlers { get; }
+
+        public CommunicationDispatcherMock(List<Type> queryHandlers, List<Type> commandHandlers)
         {
-            throw new NotImplementedException();
+            QueryHandlers = queryHandlers;
+            CommandHandlers = commandHandlers;
+            DispatcherTypes = new MockDispatcherTypes(QueryHandlers, CommandHandlers);
+        }
+    }
+
+    internal class MockDispatcherTypes : IDispatcherTypes
+    {
+        private List<Type> QueryHandlersList { get; }
+        private List<Type> CommandHandlersList { get; }
+
+        public MockDispatcherTypes(List<Type> queryHandlers, List<Type> commandHandlers)
+        {
+            QueryHandlersList = queryHandlers;
+            CommandHandlersList = commandHandlers;
         }
 
-        public void ResolveQuery(IQuery query)
+        public List<Type> QueryHandlers()
         {
-            throw new NotImplementedException();
+            return QueryHandlersList;
+        }
+
+        public List<Type> CommandHandlers()
+        {
+            return CommandHandlersList;
         }
     }
 }

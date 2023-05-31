@@ -9,7 +9,5 @@ namespace GamesEngine.Patterns.Query
 {
     public interface IQuery : IMessage
     {
-        Guid Id { get; }
-        string Type { get; }
     }
 }

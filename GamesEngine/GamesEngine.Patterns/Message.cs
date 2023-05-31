@@ -8,5 +8,6 @@ namespace GamesEngine.Patterns
 {
     public interface IMessage
     {
+        string Type { get; }
     }
 }

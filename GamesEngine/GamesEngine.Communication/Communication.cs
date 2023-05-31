@@ -28,12 +28,37 @@ namespace GamesEngine.Service.Communication
 
         public void OnMessage(IMessage message)
         {
-            throw new NotImplementedException();
+            switch (message)
+            {
+                case IQuery query:
+                    CommunicationDispatcher.ResolveQuery(query,
+                    (response) =>
+                    {
+                        //TODO Success
+                    },
+                    () =>
+                    {
+                        //TODO Failure
+                    });
+                    break;
+
+                case ICommand command:
+                    CommunicationDispatcher.ResolveCommand(command,
+                    (response) =>
+                    {
+                        //TODO Success
+                    },
+                    () =>
+                    {
+                        //TODO Failure
+                    });
+                    break;
+            }
         }
 
         public void SendMessage(IMessage message)
         {
-            throw new NotImplementedException();
+            CommunicationStrategy.SendMessage(message);
         }
     }
 }

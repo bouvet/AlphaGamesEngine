@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 namespace GamesEngine.Tests.Fakes
 {
     public class CommunicationStrategyMock : ICommunicationStrategy
-    { 
-        public void OnReceive(IMessage message)
+    {
+        public MessageCallback OnMessage { get; }
+
+        public CommunicationStrategyMock(MessageCallback onMessage)
         {
-            throw new NotImplementedException();
+            OnMessage = onMessage;
         }
 
-        public void OnSend(IMessage message)
+        public void SendMessage(IMessage message)
         {
-            throw new NotImplementedException();
+            OnMessage(message);
         }
     }
 }

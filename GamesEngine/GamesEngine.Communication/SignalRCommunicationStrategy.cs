@@ -13,14 +13,10 @@ namespace GamesEngine.Communication
         {
             
         }
-        public void OnMessage(IMessage message)
+        public MessageCallback OnMessage { get; }
+        public void SendMessage(IMessage message)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnSend(IMessage message)
-        {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

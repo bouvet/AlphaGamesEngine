@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GamesEngine.Communication\GamesEngine.Communication.csproj" />
     <ProjectReference Include="..\GamesEngine.Patterns\GamesEngine.Patterns.csproj" />
     <ProjectReference Include="..\GamesEngine.Math\GamesEngine.Math.csproj" />
   </ItemGroup>

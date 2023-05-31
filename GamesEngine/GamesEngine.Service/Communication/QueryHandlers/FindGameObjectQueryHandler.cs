@@ -17,7 +17,7 @@ namespace GamesEngine.Communication.Queries.Handlers
 
         public void Handle(FindGameObjectQuery query, IQueryCallback<string> callback)
         {
-            GameObject gameObject = _game.FindGameObject(query.GameObjectId);
+            IGameObject gameObject = _game.FindGameObject(query.GameObjectId);
 
             if (gameObject != null)
             {

@@ -6,13 +6,13 @@ namespace GamesEngine.Service.Game.Graph
     {
         public IGraphBinTree<int, IDynamicGameObject> DynamicGameObject { get; set; }
         public IGraphBinTree<int, IStaticGameObject> StaticGameObject { get; set; }
-        public IOctoTree OctoTree { get; set; }
+        public IOctoTree<IGameObject> OctoTree { get; set; }
     }
 
     public class SceneGraph : ISceneGraph
     {
         public IGraphBinTree<int, IDynamicGameObject> DynamicGameObject { get; set; } = new GraphBinTree<int, IDynamicGameObject>();
         public IGraphBinTree<int, IStaticGameObject> StaticGameObject { get; set; } = new GraphBinTree<int, IStaticGameObject>();
-        public IOctoTree OctoTree { get; set; }
+        public IOctoTree<IGameObject> OctoTree { get; set; } = new OctoTree<IGameObject>();
     }
 }

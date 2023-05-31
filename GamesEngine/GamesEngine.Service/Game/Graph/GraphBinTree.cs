@@ -3,6 +3,7 @@ namespace GamesEngine.Service.Game.Graph;
 public interface IGraphBinTree<T1, T2>
 {
     T2 Get(T1 key);
+    bool ContainsKey(T1 key);
     void Add(T1 key, T2 value);
     void Remove(T1 key);
     void Update(T1 key, T2 value);
@@ -17,6 +18,11 @@ public class GraphBinTree<T1, T2> : IGraphBinTree<T1, T2>
     public T2 Get(T1 key)
     {
         return tree[key];
+    }
+
+    public bool ContainsKey(T1 key)
+    {
+        return tree.ContainsKey(key);
     }
 
     public void Add(T1 key, T2 value)

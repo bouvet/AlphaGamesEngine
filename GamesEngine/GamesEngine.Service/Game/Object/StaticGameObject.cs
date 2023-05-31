@@ -5,10 +5,8 @@
        
     }
 
-    public interface IStaticGameObject
+    public interface IStaticGameObject : IGameObject
     {
 
     }
-
-
 }

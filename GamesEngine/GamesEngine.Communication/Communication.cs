@@ -4,7 +4,6 @@ using GamesEngine.Patterns.Query;
 
 namespace GamesEngine.Service.Communication
 {
-
     public interface ICommunication
     {
         ICommunicationStrategy CommunicationStrategy { get; }

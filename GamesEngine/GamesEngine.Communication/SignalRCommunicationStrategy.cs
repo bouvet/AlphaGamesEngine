@@ -11,7 +11,7 @@ namespace GamesEngine.Communication
     {
         public SignalRCommunicationStartegy()
         {
-            
+
         }
         public void OnMessage(IMessage message)
         {

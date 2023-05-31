@@ -6,8 +6,16 @@ namespace GamesEngine.Tests;
 public class CommunicationTests
 {
     [Test]
-    public void Test1()
+    public void ShouldBeAbleToSendMessage()
     {
+        // Arrange
+        var communication = new Communication(new CommunicationStrategyMock(), new CommunicationDispatcherMock());
+        var message = new MessageMock();
 
+        // Act
+        communication.SendMessage(message);
+
+        // Assert
+        Assert.Pass();
     }
 }

@@ -12,7 +12,12 @@ namespace GamesEngine.Tests.Fakes
             OnMessage = onMessage;
         }
 
-        public void SendMessage(IMessage message)
+        public void SendToClient(string targetId, IMessage message)
+        {
+            OnMessage(message);
+        }
+
+        public void SendToAllClients(IMessage message)
         {
             OnMessage(message);
         }

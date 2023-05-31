@@ -1,4 +1,5 @@
-﻿using GamesEngine.Patterns.Query;
+﻿using System.Text.Json;
+using GamesEngine.Patterns.Query;
 using GamesEngine.Service.Game;
 using GamesEngine.Service.Game.Object;
 
@@ -20,11 +21,11 @@ namespace GamesEngine.Communication.Queries.Handlers
 
             if (gameObject != null)
             {
-                // do something with gameObject...
+                callback.OnSuccess(JsonSerializer.Serialize(gameObject));
             }
             else
             {
-                // handle the case where the game object was not found...
+                callback.OnFailure();
             }
         }
     }

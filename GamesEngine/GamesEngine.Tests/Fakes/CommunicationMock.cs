@@ -17,6 +17,16 @@ namespace GamesEngine.Tests.Fakes
         public ICommunicationStrategy CommunicationStrategy { get; private set; }
         public ICommunicationDispatcher CommunicationDispatcher { get; private set; }
 
+        public void SendToClient(string targetId, IMessage message)
+        {
+            CommunicationStrategy.SendToClient(targetId, message);
+        }
+
+        public void SendToAllClients(IMessage message)
+        {
+            CommunicationStrategy.SendToAllClients(message);
+        }
+
         public CommunicationMock(ICommunicationStrategy communicationStrategy,
             ICommunicationDispatcher communicationDispatcher)
         {
@@ -24,7 +34,7 @@ namespace GamesEngine.Tests.Fakes
             CommunicationDispatcher = communicationDispatcher;
         }
 
-        public void OnMessage(IMessage message)
+        public void OnMessage(string senderId, IMessage message)
         {
             switch (message)
             {
@@ -41,11 +51,6 @@ namespace GamesEngine.Tests.Fakes
                     }, () => {});
                     break;
             }
-        }
-
-        public void SendMessage(IMessage message)
-        {
-            CommunicationStrategy.SendMessage(message);
         }
     }
 }

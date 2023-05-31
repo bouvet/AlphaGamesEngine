@@ -22,7 +22,7 @@ public class CommunicationTests
         MockDispatcherTypes = new MockDispatcherTypes(
             new List<Type> { typeof(MockQueryHandler) },
             new List<Type> { typeof(MockCommandHandler), typeof(DynamicCommandHandler) });
-        CommunicationStrategy = new CommunicationStrategyMock((mes) => Communication.OnMessage(mes));
+        CommunicationStrategy = new CommunicationStrategyMock(mes => Communication.OnMessage(null, mes));
         CommunicationDispatcher = new CommunicationDispatcherMock(MockDispatcherTypes);
         Communication = new CommunicationMock(CommunicationStrategy, CommunicationDispatcher);
     }
@@ -64,7 +64,7 @@ public class CommunicationTests
         IMessage message = new QueryMock();
 
         // Act
-        Communication.SendMessage(message);
+        Communication.SendToAllClients(message);
 
         // Assert
         ((CommunicationMock)Communication).Result.Should().Be("Success");
@@ -77,7 +77,7 @@ public class CommunicationTests
         IMessage message = new CommandMock();
 
         // Act
-        Communication.SendMessage(message);
+        Communication.SendToAllClients(message);
 
         // Assert
         ((CommunicationMock)Communication).Result.Should().Be("Success");

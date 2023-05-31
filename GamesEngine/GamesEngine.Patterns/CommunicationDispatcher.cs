@@ -30,16 +30,13 @@ public class DispatcherTypes : IDispatcherTypes
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         foreach (var assembly in assemblies)
+        foreach (var type in assembly.GetTypes())
         {
-            foreach (var type in assembly.GetTypes())
-            {
-                if (type is not { IsAbstract: false, IsInterface: false }) continue;
+            if (type is not { IsAbstract: false, IsInterface: false }) continue;
 
-                if (type.GetInterfaces().Any(iface => iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>)))
-                {
-                    queryHandlers.Add(type);
-                }
-            }
+            if (type.GetInterfaces().Any(iface =>
+                    iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>)))
+                queryHandlers.Add(type);
         }
 
         return queryHandlers;
@@ -51,16 +48,13 @@ public class DispatcherTypes : IDispatcherTypes
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         foreach (var assembly in assemblies)
+        foreach (var type in assembly.GetTypes())
         {
-            foreach (var type in assembly.GetTypes())
-            {
-                if (type is not { IsAbstract: false, IsInterface: false }) continue;
+            if (type is not { IsAbstract: false, IsInterface: false }) continue;
 
-                if (type.GetInterfaces().Any(iface => iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>)))
-                {
-                    queryHandlers.Add(type);
-                }
-            }
+            if (type.GetInterfaces().Any(iface =>
+                    iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>)))
+                queryHandlers.Add(type);
         }
 
         return queryHandlers;
@@ -73,43 +67,47 @@ public class CommunicationDispatcher : ICommunicationDispatcher
 
     public void ResolveCommand(ICommand command, CommandCallback callback, FailureCallback failureCallback)
     {
-        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeCommandHandler), BindingFlags.NonPublic | BindingFlags.Instance);
+        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeCommandHandler),
+            BindingFlags.NonPublic | BindingFlags.Instance);
 
         foreach (var type in DispatcherTypes.CommandHandlers())
-        if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs => genericArgs[0] == command.GetType() && !type.IsAbstract))
-        {
-            var commandType = command.GetType();
-            var instance = Activator.CreateInstance(type);
-            var genericMethod = method.MakeGenericMethod(commandType, typeof(ICommandCallback<string>));
-            genericMethod.Invoke(this, new[]
+            if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs =>
+                    genericArgs[0] == command.GetType() && !type.IsAbstract))
             {
-                instance, command, new CommandCallback<string>(
-                    response => { callback(response); },
-                    () => { failureCallback(); }
-                )
-            });
-        }
+                var commandType = command.GetType();
+                var instance = Activator.CreateInstance(type);
+                var genericMethod = method.MakeGenericMethod(commandType, typeof(ICommandCallback<string>));
+                genericMethod.Invoke(this, new[]
+                {
+                    instance, command, new CommandCallback<string>(
+                        response => { callback(response); },
+                        () => { failureCallback(); }
+                    )
+                });
+            }
     }
 
     public void ResolveQuery(IQuery query, QueryCallback callback, FailureCallback failureCallback)
     {
-        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeQueryHandler), BindingFlags.NonPublic | BindingFlags.Instance);
+        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeQueryHandler),
+            BindingFlags.NonPublic | BindingFlags.Instance);
 
         foreach (var type in DispatcherTypes.QueryHandlers())
-        if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs => genericArgs[0] == query.GetType() &&
-                typeof(IQueryCallback<string>).IsAssignableFrom(genericArgs[1]) && !type.IsAbstract))
-        {
-            var queryType = query.GetType();
-            var instance = Activator.CreateInstance(type);
-            var genericMethod = method.MakeGenericMethod(queryType, typeof(IQueryCallback<string>));
-            genericMethod.Invoke(this, new[]
+            if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs =>
+                    genericArgs[0] == query.GetType() &&
+                    typeof(IQueryCallback<string>).IsAssignableFrom(genericArgs[1]) && !type.IsAbstract))
             {
-                instance, query, new QueryCallback<string>(
-                    response => { callback(response); },
-                    () => { failureCallback(); }
-                )
-            });
-        }
+                var queryType = query.GetType();
+                var instance = Activator.CreateInstance(type);
+                var genericMethod = method.MakeGenericMethod(queryType, typeof(IQueryCallback<string>));
+                genericMethod.Invoke(this, new[]
+                {
+                    instance, query, new QueryCallback<string>(
+                        response => { callback(response); },
+                        () => { failureCallback(); }
+                    )
+                });
+            }
     }
 
     private void InvokeCommandHandler<TCommand, TCallback>(ICommandHandler<TCommand, TCallback> handler,

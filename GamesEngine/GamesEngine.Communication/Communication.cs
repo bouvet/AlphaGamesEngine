@@ -10,8 +10,9 @@ namespace GamesEngine.Service.Communication
         ICommunicationStrategy CommunicationStrategy { get; }
         ICommunicationDispatcher CommunicationDispatcher { get; }
 
-        void SendMessage(IMessage message);
-        void OnMessage(IMessage message);
+        void SendToClient(string targetId, IMessage message);
+        void SendToAllClients(IMessage message);
+        void OnMessage(string senderId, IMessage message);
     }
 
     public class Communication : ICommunication
@@ -26,7 +27,7 @@ namespace GamesEngine.Service.Communication
             CommunicationDispatcher = communicationDispatcher;
         }
 
-        public void OnMessage(IMessage message)
+        public void OnMessage(string senderId, IMessage message)
         {
             switch (message)
             {
@@ -56,9 +57,14 @@ namespace GamesEngine.Service.Communication
             }
         }
 
-        public void SendMessage(IMessage message)
+        public void SendToClient(string targetId, IMessage message)
         {
-            CommunicationStrategy.SendMessage(message);
+            CommunicationStrategy.SendToClient(targetId, message);
+        }
+
+        public void SendToAllClients(IMessage message)
+        {
+            CommunicationStrategy.SendToAllClients(message);
         }
     }
 }

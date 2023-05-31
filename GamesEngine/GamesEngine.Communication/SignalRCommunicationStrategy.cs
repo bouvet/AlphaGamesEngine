@@ -8,8 +8,17 @@ namespace GamesEngine.Communication
 
     public class SignalRCommunicationStrategy : Hub, ICommunicationStrategy
     {
-    
-        MessageCallback ICommunicationStrategy.OnMessage => throw new NotImplementedException();
+        public MessageCallback OnMessage => throw new NotImplementedException();
+
+        public async void SendToClient(string targetId, IMessage message)
+        {
+            await Clients.Client(targetId).SendAsync("ClientFunctionName", message);
+        }
+
+        public async void SendToAllClients(IMessage message)
+        {
+            await Clients.All.SendAsync("ClientFunctionName", message);
+        }
 
         public async void SendMessage(IMessage message)
         {

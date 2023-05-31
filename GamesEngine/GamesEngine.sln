@@ -9,9 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Tests", "GamesE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Math", "GamesEngine.Math\GamesEngine.Math.csproj", "{037B8E06-AAAE-4E77-BD5A-141F7E761F35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesEngine.Patterns", "GamesEngine.Patterns\GamesEngine.Patterns.csproj", "{C73BEAF9-1F51-4286-BC67-5919D85E3147}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Patterns", "GamesEngine.Patterns\GamesEngine.Patterns.csproj", "{C73BEAF9-1F51-4286-BC67-5919D85E3147}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesEngine.Communication", "GamesEngine.Communication\GamesEngine.Communication.csproj", "{6859694A-D342-4742-B9E5-E65EDD49464D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesEngine.Communication", "GamesEngine.Communication\GamesEngine.Communication.csproj", "{6859694A-D342-4742-B9E5-E65EDD49464D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35EC88FF-451C-4557-9CDC-AB5CDB1C443D}"
+	ProjectSection(SolutionItems) = preProject
+		Backlog.md = Backlog.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

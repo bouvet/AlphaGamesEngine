@@ -14,13 +14,11 @@ namespace GamesEngine.Communication.Queries
 
     public class FindGameObjectQuery : IFindGameObjectQuery
     {
-        public Guid Id { get; private set; }
         public string Type { get; private set; }
         public int GameObjectId { get; private set; }
 
         public FindGameObjectQuery(int gameObjectId)
         {
-            Id = Guid.NewGuid();
             Type = "FindGameObject";
             GameObjectId = gameObjectId;
         }

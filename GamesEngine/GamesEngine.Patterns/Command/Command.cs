@@ -8,7 +8,5 @@ namespace GamesEngine.Patterns.Command
 {
     public interface ICommand : IMessage
     {
-        Guid Id { get; }
-        string Type { get; }
     }
 }

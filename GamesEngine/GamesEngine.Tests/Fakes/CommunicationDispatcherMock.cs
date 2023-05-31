@@ -4,12 +4,13 @@ using GamesEngine.Patterns.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GamesEngine.Tests.Fakes
 {
-    internal class CommunicationDispatcherMock : ICommunicationDispatcher
+    internal class CommunicationDispatcherMock : CommunicationDispatcher
     {
         private List<Type> QueryHandlers { get; }
         private List<Type> CommandHandlers { get; }
@@ -18,52 +19,29 @@ namespace GamesEngine.Tests.Fakes
         {
             QueryHandlers = queryHandlers;
             CommandHandlers = commandHandlers;
+            DispatcherTypes = new MockDispatcherTypes(QueryHandlers, CommandHandlers);
+        }
+    }
+
+    internal class MockDispatcherTypes : IDispatcherTypes
+    {
+        private List<Type> QueryHandlersList { get; }
+        private List<Type> CommandHandlersList { get; }
+
+        public MockDispatcherTypes(List<Type> queryHandlers, List<Type> commandHandlers)
+        {
+            QueryHandlersList = queryHandlers;
+            CommandHandlersList = commandHandlers;
         }
 
-        public void ResolveCommand(ICommand command, CommandCallback callback, FailureCallback failureCallback)
+        public List<Type> QueryHandlers()
         {
-            foreach (var handler in CommandHandlers)
-            {
-                foreach (var type in handler.GetInterfaces())
-                {
-                    if (type.GetGenericArguments()[0] == command.GetType())
-                    {
-                        ICommandHandler<ICommand, ICommandCallback<string>> qr =
-                            (ICommandHandler<ICommand, ICommandCallback<string>>)Activator.CreateInstance(handler);
-                        qr.Handle(command, new CommandCallback<string>(
-                            (response) => { callback(response); },
-                            () => { failureCallback(); }
-                        ));
-                        return;
-                    }
-                }
-            }
+            return QueryHandlersList;
         }
 
-        public void ResolveQuery(IQuery query, QueryCallback callback, FailureCallback failureCallback)
+        public List<Type> CommandHandlers()
         {
-            foreach (var handler in QueryHandlers)
-            {
-                foreach (var type in handler.GetInterfaces())
-                {
-                    if (type.GetGenericArguments()[0] == query.GetType())
-                    {
-                        IQueryHandler<IQuery, IQueryCallback<string>> qr = (IQueryHandler<IQuery, IQueryCallback<string>>)Activator.CreateInstance(handler);
-
-                        qr.Handle(query, new QueryCallback<string>(
-                            (response) =>
-                            {
-                                callback(response);
-                            },
-                            () =>
-                            {
-                                failureCallback();
-                            }
-                        ));
-                        return;
-                    }
-                }
-            }
+            return CommandHandlersList;
         }
     }
 }

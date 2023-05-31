@@ -20,13 +20,13 @@ public class CommunicationTests
     {
         CommunicationStrategy = new CommunicationStrategyMock((mes) => Communication.OnMessage(mes));
         CommunicationDispatcher = new CommunicationDispatcherMock(
-            new List<Type>{typeof(MockQueryHandler)},
-         new List<Type>{});
+            new List<Type> { typeof(MockQueryHandler) },
+         new List<Type> { });
         Communication = new CommunicationMock(CommunicationStrategy, CommunicationDispatcher);
     }
 
     [Test]
-    public void Test1()
+    public void ShouldBeAbleToSendMessage()
     {
         // Arrange
         IMessage message = new QueryMock();

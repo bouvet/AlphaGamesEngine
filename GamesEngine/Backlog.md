@@ -5,7 +5,12 @@ SignalR-server (Rebecca)
 
 SignalR-frontend (Håvard)
 - threeJS
+- octo tree
 
 Trestruktur (Håvard)
+- Octo tree
+	- Add/Get interface (sync instead of get?)
+	- Compiler from C# to typescript?
+- Visitor pattern
 
 Tester (Roger)

@@ -55,7 +55,7 @@ public class CommunicationDispatcher : ICommunicationDispatcher
 
     public void ResolveCommand(ICommand command, CommandCallback callback, FailureCallback failureCallback)
     {
-        var method = GetType().GetMethod(nameof(InvokeCommandHandler), BindingFlags.NonPublic | BindingFlags.Instance);
+        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeCommandHandler), BindingFlags.NonPublic | BindingFlags.Instance);
 
         foreach (var type in DispatcherTypes.CommandHandlers())
         foreach (var iface in type.GetInterfaces())
@@ -80,11 +80,8 @@ public class CommunicationDispatcher : ICommunicationDispatcher
 
     public void ResolveQuery(IQuery query, QueryCallback callback, FailureCallback failureCallback)
     {
-        var method = this.GetType().GetMethod(nameof(InvokeQueryHandler), BindingFlags.NonPublic | BindingFlags.Instance);
-        if (method == null)
-        {
-            throw new Exception("Method not found, " + this.GetType().GetMethods().SelectMany(e => e.Name));
-        }
+        var method = typeof(CommunicationDispatcher).GetMethod(nameof(InvokeQueryHandler), BindingFlags.NonPublic | BindingFlags.Instance);
+
         foreach (var type in DispatcherTypes.QueryHandlers())
         foreach (var iface in type.GetInterfaces())
         {

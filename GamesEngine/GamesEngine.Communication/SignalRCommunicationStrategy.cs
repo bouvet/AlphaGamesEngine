@@ -1,37 +1,49 @@
 ﻿using GamesEngine.Patterns;
 using GamesEngine.Patterns.Command;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using GamesEngine.Patterns.Query;
 
 namespace GamesEngine.Communication
 {
 
-    public class SignalRCommunicationStartegy : Hub<IGameClient>, ICommunicationStrategy
+    public class SignalRCommunicationStrategy : Hub, ICommunicationStrategy
     {
-        // SendToServer(), SendToClient() (update interface?), must be able to communicate outside hub, and must be generic (not signalR specific)
-
+    
         MessageCallback ICommunicationStrategy.OnMessage => throw new NotImplementedException();
 
-        // Game loop calls this method? Sends game tree
-        public void SendMessage(IMessage message)
+        public async void SendMessage(IMessage message)
         {
-            throw new NotImplementedException();
+            await Clients.All.SendAsync("ClientFunctionName", message);
         }
 
-        public override async Task OnConnectedAsync()
+        public async void ReceiveMessageFromClient(IMessage message, MessageCallback OnMessage)
         {
+            //string Type = message.Type;
 
-        }
+            if (message is ICommand)
+            {
+                //CommunicationDispatcher.ResolveCommand(message);
+            }
+            else if (message is IQuery)
+            {
+                //CommunicationDispatcher.ResolveQuery(message);
+            }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-
+            //OnMessage(message);
+            await Clients.All.SendAsync("ClientFunctionName", message);
         }
 
     }
 
-    public interface IGameClient
-    {
-    }
+    //public class TestSignalR
+    //{
+    //    public IHubContext<SignalRCommunicationStrategy> HubContext;
+
+    //    public TestSignalR(IHubContext<SignalRCommunicationStrategy> hubContext) 
+    //    {
+    //        HubContext = hubContext;
+    //    }
+    //    HubContext.Clients.All.SendAsync("Clientfunctionname");
+    //}
+
 }

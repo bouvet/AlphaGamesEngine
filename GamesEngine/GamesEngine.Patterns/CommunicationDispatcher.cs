@@ -29,9 +29,16 @@ public class DispatcherTypes : IDispatcherTypes
         var queryHandlers = new List<Type>();
         var assembly = Assembly.GetExecutingAssembly();
 
+        top:
         foreach (var type in assembly.GetTypes())
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryHandler<,>))
+        foreach (var iface in type.GetInterfaces())
+        {
+            if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>))
+            {
                 queryHandlers.Add(type);
+                goto top;
+            }
+        }
 
         return queryHandlers;
     }
@@ -41,9 +48,17 @@ public class DispatcherTypes : IDispatcherTypes
         var queryHandlers = new List<Type>();
         var assembly = Assembly.GetExecutingAssembly();
 
+        top:
         foreach (var type in assembly.GetTypes())
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ICommandHandler<,>))
+        foreach (var iface in type.GetInterfaces())
+        {
+            if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>))
+            {
                 queryHandlers.Add(type);
+                goto top;
+            }
+        }
+
 
         return queryHandlers;
     }
@@ -65,7 +80,7 @@ public class CommunicationDispatcher : ICommunicationDispatcher
             {
                 var commandType = command.GetType();
                 var instance = Activator.CreateInstance(type);
-                var genericMethod = method.MakeGenericMethod(commandType, typeof(IQueryCallback<string>));
+                var genericMethod = method.MakeGenericMethod(commandType, typeof(ICommandCallback<string>));
                 genericMethod.Invoke(this, new[]
                 {
                     instance, command, new CommandCallback<string>(

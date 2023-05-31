@@ -35,7 +35,7 @@ namespace GamesEngine.Service.Communication
                     CommunicationDispatcher.ResolveQuery(query,
                     (response) =>
                     {
-                        //TODO Success
+                        SendToClient(senderId, new Response(query.Type, response));
                     },
                     () =>
                     {
@@ -47,7 +47,7 @@ namespace GamesEngine.Service.Communication
                     CommunicationDispatcher.ResolveCommand(command,
                     (response) =>
                     {
-                        //TODO Success
+                        SendToClient(senderId, new Response(command.Type, response));
                     },
                     () =>
                     {

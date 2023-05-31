@@ -1,6 +1,6 @@
 using GamesEngine.Patterns;
 
-public delegate void MessageCallback(IMessage message);
+public delegate void MessageCallback(string senderId, IMessage message);
 
 public interface ICommunicationStrategy
 {

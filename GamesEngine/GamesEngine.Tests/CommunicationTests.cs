@@ -22,7 +22,7 @@ public class CommunicationTests
         MockDispatcherTypes = new MockDispatcherTypes(
             new List<Type> { typeof(MockQueryHandler) },
             new List<Type> { typeof(MockCommandHandler), typeof(DynamicCommandHandler) });
-        CommunicationStrategy = new CommunicationStrategyMock(mes => Communication.OnMessage(null, mes));
+        CommunicationStrategy = new CommunicationStrategyMock((id, mes) => Communication.OnMessage(id, mes));
         CommunicationDispatcher = new CommunicationDispatcherMock(MockDispatcherTypes);
         Communication = new CommunicationMock(CommunicationStrategy, CommunicationDispatcher);
     }

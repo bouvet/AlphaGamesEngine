@@ -1,58 +1,45 @@
 ﻿using GamesEngine.Patterns;
-using GamesEngine.Patterns.Command;
 using Microsoft.AspNetCore.SignalR;
-using GamesEngine.Patterns.Query;
+using System.Text.Json;
 
 namespace GamesEngine.Communication
 {
 
     public class SignalRCommunicationStrategy : Hub, ICommunicationStrategy
     {
-        public MessageCallback OnMessage => throw new NotImplementedException();
+        public MessageCallback OnMessage { get; }
+
+        public SignalRCommunicationStrategy(MessageCallback onMessage)
+        {
+            OnMessage = onMessage;
+        }
 
         public async void SendToClient(string targetId, IMessage message)
         {
-            await Clients.Client(targetId).SendAsync("ClientFunctionName", message);
+            await Clients.Client(targetId).SendAsync("ClientDispatcherFunctionName", message);
         }
 
         public async void SendToAllClients(IMessage message)
         {
-            await Clients.All.SendAsync("ClientFunctionName", message);
+            await Clients.All.SendAsync("ClientDispatcherFunctionName", message);
         }
 
-        public async void SendMessage(IMessage message)
+        public void MessageFromClient(string JsonData)
         {
-            await Clients.All.SendAsync("ClientFunctionName", message);
+            DataFromClient? data = JsonSerializer.Deserialize<DataFromClient>(JsonData);
+
+            if (!(data is null))
+            {
+                string Type = data.Type;
+                IMessage message = data.Message; 
+                OnMessage(Context.ConnectionId, message);
+            }
         }
 
-        public async void ReceiveMessageFromClient(IMessage message, MessageCallback OnMessage)
+        public class DataFromClient
         {
-            //string Type = message.Type;
-
-            if (message is ICommand)
-            {
-                //CommunicationDispatcher.ResolveCommand(message);
-            }
-            else if (message is IQuery)
-            {
-                //CommunicationDispatcher.ResolveQuery(message);
-            }
-
-            //OnMessage(message);
-            await Clients.All.SendAsync("ClientFunctionName", message);
+            public required string Type { get; set; }
+            public required IMessage Message { get; set; }
         }
-
     }
-
-    //public class TestSignalR
-    //{
-    //    public IHubContext<SignalRCommunicationStrategy> HubContext;
-
-    //    public TestSignalR(IHubContext<SignalRCommunicationStrategy> hubContext) 
-    //    {
-    //        HubContext = hubContext;
-    //    }
-    //    HubContext.Clients.All.SendAsync("Clientfunctionname");
-    //}
-
 }

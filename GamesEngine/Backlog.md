@@ -1,11 +1,14 @@
 SignalR-server (Rebecca)
+- Deserialize data from client and pack into IMessage type
+- Make Commands/Handlers
+- Write tests
+- 
 - Multiplayer
 - Spiller kan flytte sin egen karakter og alle ser endring
 - Skyting/collision detection?
 
 SignalR-frontend (Håvard)
 - threeJS
-- octo tree
 
 Trestruktur (Håvard)
 - Octo tree
@@ -13,4 +16,4 @@ Trestruktur (Håvard)
 	- Compiler from C# to typescript?
 - Visitor pattern
 
-Tester (Roger)
+Tester og threeJS (Roger)

@@ -27,16 +27,23 @@ public class DispatcherTypes : IDispatcherTypes
     public List<Type> QueryHandlers()
     {
         var queryHandlers = new List<Type>();
-        var assembly = Assembly.GetExecutingAssembly();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        top:
-        foreach (var type in assembly.GetTypes())
-        foreach (var iface in type.GetInterfaces())
+        foreach (var assembly in assemblies)
         {
-            if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>))
+            foreach (var type in assembly.GetTypes())
             {
-                queryHandlers.Add(type);
-                goto top;
+                if (!type.IsAbstract && !type.IsInterface)
+                {
+                    foreach (var iface in type.GetInterfaces())
+                    {
+                        if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>))
+                        {
+                            queryHandlers.Add(type);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -46,22 +53,29 @@ public class DispatcherTypes : IDispatcherTypes
     public List<Type> CommandHandlers()
     {
         var queryHandlers = new List<Type>();
-        var assembly = Assembly.GetExecutingAssembly();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        top:
-        foreach (var type in assembly.GetTypes())
-        foreach (var iface in type.GetInterfaces())
+        foreach (var assembly in assemblies)
         {
-            if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>))
+            foreach (var type in assembly.GetTypes())
             {
-                queryHandlers.Add(type);
-                goto top;
+                if (!type.IsAbstract && !type.IsInterface)
+                {
+                    foreach (var iface in type.GetInterfaces())
+                    {
+                        if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>))
+                        {
+                            queryHandlers.Add(type);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
-
         return queryHandlers;
     }
+
 }
 
 public class CommunicationDispatcher : ICommunicationDispatcher

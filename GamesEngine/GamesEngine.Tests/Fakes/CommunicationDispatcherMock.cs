@@ -12,15 +12,11 @@ namespace GamesEngine.Tests.Fakes
 {
     internal class CommunicationDispatcherMock : CommunicationDispatcher
     {
-        private List<Type> QueryHandlers { get; }
-        private List<Type> CommandHandlers { get; }
-
-        public CommunicationDispatcherMock(List<Type> queryHandlers, List<Type> commandHandlers)
+        public CommunicationDispatcherMock(IDispatcherTypes dispatcherTypes)
         {
-            QueryHandlers = queryHandlers;
-            CommandHandlers = commandHandlers;
-            DispatcherTypes = new MockDispatcherTypes(QueryHandlers, CommandHandlers);
+            DispatcherTypes = dispatcherTypes;
         }
+
     }
 
     internal class MockDispatcherTypes : IDispatcherTypes

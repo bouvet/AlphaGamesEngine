@@ -15,14 +15,46 @@ public class CommunicationTests
     private ICommunication Communication;
     private ICommunicationStrategy CommunicationStrategy;
     private ICommunicationDispatcher CommunicationDispatcher;
+    private IDispatcherTypes MockDispatcherTypes;
 
     public CommunicationTests()
     {
-        CommunicationStrategy = new CommunicationStrategyMock((mes) => Communication.OnMessage(mes));
-        CommunicationDispatcher = new CommunicationDispatcherMock(
+        MockDispatcherTypes = new MockDispatcherTypes(
             new List<Type> { typeof(MockQueryHandler) },
-         new List<Type> { typeof(MockCommandHandler), typeof(DynamicCommandHandler) });
+            new List<Type> { typeof(MockCommandHandler), typeof(DynamicCommandHandler) });
+        CommunicationStrategy = new CommunicationStrategyMock((mes) => Communication.OnMessage(mes));
+        CommunicationDispatcher = new CommunicationDispatcherMock(MockDispatcherTypes);
         Communication = new CommunicationMock(CommunicationStrategy, CommunicationDispatcher);
+    }
+
+    [Test]
+    public void ShouldFindQueryHandler()
+    {
+        // Arrange
+        IDispatcherTypes dispatcherTypes = new DispatcherTypes();
+
+        // Act
+        var queryHandlers = dispatcherTypes.QueryHandlers();
+
+        // Assert
+        queryHandlers.Should().NotBeNull();
+        queryHandlers.Should().HaveCountGreaterThan(0);
+        queryHandlers.Should().Contain(typeof(MockQueryHandler));
+    }
+
+    [Test]
+    public void ShouldFindCommandHandler()
+    {
+        // Arrange
+        IDispatcherTypes dispatcherTypes = new DispatcherTypes();
+
+        // Act
+        var commandHandlers = dispatcherTypes.CommandHandlers();
+
+        // Assert
+        commandHandlers.Should().NotBeNull();
+        commandHandlers.Should().HaveCountGreaterThan(0);
+        commandHandlers.Should().Contain(typeof(MockCommandHandler));
     }
 
     [Test]

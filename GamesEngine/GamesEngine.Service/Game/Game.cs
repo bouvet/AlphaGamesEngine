@@ -29,8 +29,13 @@ namespace GamesEngine.Service.Game
     public class Game : IGame
     {
         public List<IClient> Clients { get; set; } = new List<IClient>();
-        public IGameLoop GameLoop { get; set; } = new GameLoop.GameLoop();
+        public IGameLoop GameLoop { get; set; }
         public ISceneGraph SceneGraph { get; set; } = new SceneGraph();
+
+        public Game()
+        {
+            GameLoop = new GameLoop.GameLoop(this);
+        }
 
         public IGameObject FindGameObject(int id)
         {

@@ -12,9 +12,15 @@ namespace GamesEngine.Service.GameLoop
     }
     public class Interval : IInterval
     {
+        private readonly long interval;
+        public Interval(ITime startTime, ITime endTime)
+        {
+            interval = endTime.GetTime() - startTime.GetTime();
+        }
+
         public long GetInterval()
         {
-            throw new NotImplementedException();
+            return interval;
         }
     }
 }

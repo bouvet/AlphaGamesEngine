@@ -8,6 +8,7 @@ namespace GamesEngine.Math
         float GetX();
         float GetY();
         float GetZ();
+        IVector MultiplyWithScalar(int scalar);
     }
     public class Vector : IVector
     {
@@ -31,6 +32,11 @@ namespace GamesEngine.Math
         public float GetZ()
         {
             return _vector.Z;
+        }
+
+        public IVector MultiplyWithScalar(int scalar)
+        {
+            return new Vector(GetX() * scalar, GetY() * scalar, GetZ() * scalar);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace GamesEngine.Math
         void SetRotation(IVector rotation);
         void SetScale(IVector scale);
         void SetPosition(IVector position);
+        void UpdatePosition(IVector position);
     }
     public class Matrix : IMatrix
     {
@@ -48,6 +49,15 @@ namespace GamesEngine.Math
             tempMatrix.M41 = position.GetX();
             tempMatrix.M42 = position.GetY();
             tempMatrix.M43 = position.GetZ();
+            _matrix = tempMatrix;
+        }
+
+        public void UpdatePosition(IVector position)
+        {
+            Matrix4x4 tempMatrix = _matrix;
+            tempMatrix.M41 += position.GetX();
+            tempMatrix.M42 += position.GetY();
+            tempMatrix.M43 += position.GetZ();
             _matrix = tempMatrix;
         }
     }

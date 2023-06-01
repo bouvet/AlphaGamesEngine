@@ -4,14 +4,14 @@ using GamesEngine.Patterns.Query;
 
 namespace GamesEngine.Service.Communication
 {
-
     public interface ICommunication
     {
         ICommunicationStrategy CommunicationStrategy { get; }
         ICommunicationDispatcher CommunicationDispatcher { get; }
 
-        void SendMessage(IMessage message);
-        void OnMessage(IMessage message);
+        void SendToClient(string targetId, IMessage message);
+        void SendToAllClients(IMessage message);
+        void OnMessage(string senderId, IMessage message);
     }
 
     public class Communication : ICommunication
@@ -26,7 +26,7 @@ namespace GamesEngine.Service.Communication
             CommunicationDispatcher = communicationDispatcher;
         }
 
-        public void OnMessage(IMessage message)
+        public void OnMessage(string senderId, IMessage message)
         {
             switch (message)
             {
@@ -34,7 +34,7 @@ namespace GamesEngine.Service.Communication
                     CommunicationDispatcher.ResolveQuery(query,
                     (response) =>
                     {
-                        //TODO Success
+                        SendToClient(senderId, new Response(query.Type, response));
                     },
                     () =>
                     {
@@ -46,7 +46,7 @@ namespace GamesEngine.Service.Communication
                     CommunicationDispatcher.ResolveCommand(command,
                     (response) =>
                     {
-                        //TODO Success
+                        SendToClient(senderId, new Response(command.Type, response));
                     },
                     () =>
                     {
@@ -56,9 +56,14 @@ namespace GamesEngine.Service.Communication
             }
         }
 
-        public void SendMessage(IMessage message)
+        public void SendToClient(string targetId, IMessage message)
         {
-            CommunicationStrategy.SendMessage(message);
+            CommunicationStrategy.SendToClient(targetId, message);
+        }
+
+        public void SendToAllClients(IMessage message)
+        {
+            CommunicationStrategy.SendToAllClients(message);
         }
     }
 }

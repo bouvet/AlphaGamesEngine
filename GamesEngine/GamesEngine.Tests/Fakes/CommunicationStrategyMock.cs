@@ -1,10 +1,5 @@
 ﻿using GamesEngine.Patterns;
-using GamesEngine.Service.Communication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GamesEngine.Tests.Fakes
 {
@@ -17,9 +12,14 @@ namespace GamesEngine.Tests.Fakes
             OnMessage = onMessage;
         }
 
-        public void SendMessage(IMessage message)
+        public void SendToClient(string targetId, IMessage message)
         {
-            OnMessage(message);
+            OnMessage(targetId, message);
+        }
+
+        public void SendToAllClients(IMessage message)
+        {
+            OnMessage(null, message);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace GamesEngine.Communication
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            // TODO: must remove signalR specific
             builder.Services.AddSignalR();
 
             builder.Services.AddCors(options =>
@@ -51,8 +52,8 @@ namespace GamesEngine.Communication
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.MapHub<SignalRCommunicationStartegy>("/gamehub");
+            // TODO: must remove signalR specific
+            app.MapHub<SignalRCommunicationStrategy>("/gamehub");
 
             app.Run();
         }

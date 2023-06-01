@@ -1,37 +1,45 @@
 ﻿using GamesEngine.Patterns;
-using GamesEngine.Patterns.Command;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace GamesEngine.Communication
 {
 
-    public class SignalRCommunicationStartegy : Hub<IGameClient>, ICommunicationStrategy
+    public class SignalRCommunicationStrategy : Hub, ICommunicationStrategy
     {
-        // SendToServer(), SendToClient() (update interface?), must be able to communicate outside hub, and must be generic (not signalR specific)
+        public MessageCallback OnMessage { get; }
 
-        MessageCallback ICommunicationStrategy.OnMessage => throw new NotImplementedException();
-
-        // Game loop calls this method? Sends game tree
-        public void SendMessage(IMessage message)
+        public SignalRCommunicationStrategy(MessageCallback onMessage)
         {
-            throw new NotImplementedException();
+            OnMessage = onMessage;
         }
 
-        public override async Task OnConnectedAsync()
+        public async void SendToClient(string targetId, IMessage message)
         {
-
+            await Clients.Client(targetId).SendAsync("ClientDispatcherFunctionName", message);
         }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
+        public async void SendToAllClients(IMessage message)
         {
-
+            await Clients.All.SendAsync("ClientDispatcherFunctionName", message);
         }
 
-    }
+        public void MessageFromClient(string JsonData)
+        {
+            DataFromClient? data = JsonSerializer.Deserialize<DataFromClient>(JsonData);
 
-    public interface IGameClient
-    {
+            if (!(data is null))
+            {
+                string Type = data.Type;
+                IMessage message = data.Message; 
+                OnMessage(Context.ConnectionId, message);
+            }
+        }
+
+        public class DataFromClient
+        {
+            public required string Type { get; set; }
+            public required IMessage Message { get; set; }
+        }
     }
 }

@@ -22,12 +22,5 @@ namespace GamesEngine.Service.Communication.Commands
         public RotateGameObjectCommand()
         {
         }
-
-        public RotateGameObjectCommand(int gameObjectId, int mousePositionX, int mousePositionY)
-        {
-            GameObjectId = gameObjectId;
-            MousePositionX = mousePositionX;
-            MousePositionY = mousePositionY;
-        }
     }
 }

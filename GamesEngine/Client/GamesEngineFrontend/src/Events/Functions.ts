@@ -36,64 +36,64 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 export function sendKeyboardEvent(keyboardevent: string) {
-    let message = {Type: "MovePlayer", Data: keyboardevent}
+    let message = {Type: "MovePlayer", KeyboardEvent: keyboardevent}
     connection.send("SendMessage", message);
 }
 
 export function sendMouseEvent(MousePositionX: number, MousePositionY: number ) {
-    let message = {Type: "MovePlayer", MousePositionX: MousePositionX, MousePositionY:MousePositionY}
+    let message = {Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY:MousePositionY}
     connection.send("SendMessage", message);
 }
 
-export function onDocumentKeyDown(event: { which: any }) {
+export function onDocumentKeyDown(event: { which: any, key: string }) {
   var keyCode = event.which;
-  cone.lookAt(intersectPoint);
-  marker.position.copy(intersectPoint);
+//   cone.lookAt(intersectPoint);
+//   marker.position.copy(intersectPoint);
   let movement = '';
 
   if (keyCode == 87) {
       // w
-      moveForward = true;
+    //   moveForward = true;
       movement = 'forward';
   } else if (keyCode == 83) {
       // s
-      moveBackward = true;
+    //   moveBackward = true;
       movement = 'backward';
   } else if (keyCode == 65) {
       // a
-      moveLeft = true;
+    //   moveLeft = true;
       movement = 'left';
   } else if (keyCode == 68) {
       // d
-      moveRight = true;
+    //   moveRight = true;
       movement = 'right';
   }
 
   // Send the movement to SignalR
-  connection.send("Move", movement);
+  sendKeyboardEvent(event.key);
 }
 
 export function onDocumentKeyUp(event: { which: any }) {
   var keyCode = event.which;
-  cone.lookAt(intersectPoint);
-  marker.position.copy(intersectPoint);
+//   cone.lookAt(intersectPoint);
+//   marker.position.copy(intersectPoint);
   let movement = '';
 
   if (keyCode == 87) {
       // w
-      moveForward = false;
+    //   moveForward = false;
       movement = 'forward';
   } else if (keyCode == 83) {
       // s
-      moveBackward = false;
+    //   moveBackward = false;
       movement = 'backward';
   } else if (keyCode == 65) {
       // a
-      moveLeft = false;
+    //   moveLeft = false;
       movement = 'left';
   } else if (keyCode == 68) {
       // d
-      moveRight = false;
+    //   moveRight = false;
       movement = 'right';
   }
 

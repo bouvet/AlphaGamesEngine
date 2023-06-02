@@ -4,7 +4,9 @@ import { startSignalR } from './SignalR/Functions';
 
 
 window.addEventListener("mousemove", (event) => {
-  sendMouseEvent(event.clientX, event.clientY)});
+  sendMouseEvent(event.clientX, event.clientY);
+  console.log("move");
+});
 document.addEventListener("keydown", (event) => {
   sendKeyboardEvent(event.key)});
 document.addEventListener("keydown", onDocumentKeyDown, false);

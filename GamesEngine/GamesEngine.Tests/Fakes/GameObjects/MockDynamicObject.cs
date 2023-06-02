@@ -7,11 +7,11 @@ namespace GamesEngine.Tests.Fakes.GameObjects;
 
 public class MockDynamicObject : IDynamicGameObject
 {
-    public int Id { get; set; }
-    public IMatrix WorldMatrix { get; set; }
-    public IMatrix LocalMatrix { get; set; }
-    public IGameObject Parent { get; set; }
-    public List<IGameObject> Children { get; set; }
+    public int Id { get; set; } = 1;
+    public IMatrix WorldMatrix { get; set; } = new Matrix();
+    public IMatrix LocalMatrix { get; set; } = new Matrix();
+    public IGameObject Parent { get; set; } = null;
+    public List<IGameObject> Children { get; set; } = new List<IGameObject>();
     public void Render()
     {
         throw new NotImplementedException();

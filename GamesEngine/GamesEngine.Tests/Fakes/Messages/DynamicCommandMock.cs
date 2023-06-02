@@ -8,6 +8,11 @@ public class DynamicCommandMock : ICommand
     public string Type { get; }
     public string? ConnectionId { get; set; }
 
+    public DynamicCommandMock()
+    {
+        Success = true;
+    }
+
     public DynamicCommandMock(bool success)
     {
         Success = success;

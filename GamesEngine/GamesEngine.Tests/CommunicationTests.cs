@@ -1,10 +1,16 @@
+using Newtonsoft.Json;
 using FluentAssertions;
+using GamesEngine.Communication.Queries;
+using GamesEngine.Communication.Queries.Handlers;
+using GamesEngine.Math;
 using GamesEngine.Patterns;
 using GamesEngine.Patterns.Command;
 using GamesEngine.Patterns.Query;
 using GamesEngine.Service;
 using GamesEngine.Service.Communication;
+using GamesEngine.Service.Game.Object;
 using GamesEngine.Tests.Fakes;
+using GamesEngine.Tests.Fakes.GameObjects;
 using static GamesEngine.Service.Communication.Communication;
 
 namespace GamesEngine.Tests;
@@ -20,7 +26,7 @@ public class CommunicationTests
     public CommunicationTests()
     {
         MockDispatcherTypes = new MockDispatcherTypes(
-            new List<Type> { typeof(MockQueryHandler) },
+            new List<Type> { typeof(MockQueryHandler), typeof(FetchDynamicObjectsHandler) },
             new List<Type> { typeof(MockCommandHandler), typeof(DynamicCommandHandler) });
         CommunicationStrategy = new CommunicationStrategyMock((id, mes) => Communication.OnMessage(id, mes));
         CommunicationDispatcher = new CommunicationDispatcherMock(MockDispatcherTypes);
@@ -169,5 +175,30 @@ public class CommunicationTests
 
         // Assert
         result.Should().Be("success");
+    }
+
+    [Test]
+    public void ShouldBeAbleToGetObjects()
+    {
+        //Arrange
+        GameHandler.Game.AddGameObject(new MockMovingObject(new Vector(1,1,1)));
+        var result = "";
+        IDynamicGameObject gameObject = new MockMovingObject(new Vector(1, 1, 1));
+        gameObject.Id = 1;
+        List<IDynamicGameObject> list = new List<IDynamicGameObject>();
+        list.Add(gameObject);
+
+        //Act
+        CommunicationDispatcher.ResolveQuery(new FetchDynamicObjectsQuery(),
+            (response) => { result = response;},
+            () => { Assert.Fail(); });
+
+        string jsonString = JsonConvert.SerializeObject(list, Formatting.Indented, new JsonSerializerSettings
+        {
+            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()
+        });
+
+        //Assert
+        result.Should().Be(jsonString);
     }
 }

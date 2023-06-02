@@ -45,16 +45,37 @@ namespace GamesEngine.Communication
             SignalRHub.OnMessageReceived += HandleMessage;
             SignalRHub.OnConnect += OnConnect;
             SignalRHub.OnDisconnect += OnDisconnect;
+
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.IsAbstract || !typeof(IMessage).IsAssignableFrom(type))
+                        continue;
+
+                    var instance = (IMessage)Activator.CreateInstance(type);
+
+                    if (instance != null && instance.Type != null)
+                    {
+                        messageTypeMap[instance.Type] = type;
+                    }
+                }
+            }
         }
 
-        private void HandleMessage( string user, string JsonData)
-        {
-            DataFromClient? data = JsonSerializer.Deserialize<DataFromClient>(JsonData);
+        private static readonly Dictionary<string, Type> messageTypeMap = new Dictionary<string, Type>();
 
-            if (!(data is null))
+        public void HandleMessage( string user, string JsonData)
+        {
+            IMessage data;
+            Dictionary<string, string> json = JsonSerializer.Deserialize<Dictionary<string, string>>(JsonData);
+            var type = json.GetValueOrDefault("Type", null);
+
+            if (type != null && messageTypeMap.TryGetValue(type, out var messageType))
             {
-                IMessage message = new MyMessage(data);
-                OnMessage(user, message);
+                data = (IMessage)JsonSerializer.Deserialize(JsonData, messageType);
+                OnMessage(user, data);
             }
         }
 
@@ -76,28 +97,6 @@ namespace GamesEngine.Communication
         public async void SendToAllClients(IMessage message)
         {
             await HubContext.Clients.All.SendAsync(CLIENT_DISPATCHER_FUNCTION_NAME, message);
-        }
-
-        public class DataFromClient
-        {
-            public string Type { get; set; }
-            public MessageData Message { get; set; }
-        }
-
-        public class MessageData
-        {
-            public int gameObjectId { get; set; }
-        }
-
-        public class MyMessage : IMessage
-        {
-            public string Type { get; }
-            public string? ConnectionId { get; set; }
-
-            public MyMessage(DataFromClient data)
-            {
-                Type = data.Type;
-            }
         }
     }
 

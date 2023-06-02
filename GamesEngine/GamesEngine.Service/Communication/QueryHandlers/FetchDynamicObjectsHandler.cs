@@ -1,7 +1,7 @@
 using GamesEngine.Patterns.Query;
 using GamesEngine.Service;
 using GamesEngine.Service.Game.Object;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace GamesEngine.Communication.Queries.Handlers;
 
@@ -10,6 +10,10 @@ public class FetchDynamicObjectsHandler : IQueryHandler<FetchDynamicObjectsQuery
     public void Handle(FetchDynamicObjectsQuery query, IQueryCallback<string> callBack)
     {
         List<IDynamicGameObject> objects = GameHandler.GetGame(query.ConnectionId).SceneGraph.DynamicGameObject.GetValues();
-        callBack.OnSuccess(JsonSerializer.Serialize(objects));
+        string jsonString = JsonConvert.SerializeObject(objects, Formatting.Indented, new JsonSerializerSettings
+        {
+            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()
+        });
+        callBack.OnSuccess(jsonString);
     }
 }

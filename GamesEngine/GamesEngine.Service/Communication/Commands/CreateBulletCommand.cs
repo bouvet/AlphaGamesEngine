@@ -15,13 +15,16 @@ namespace GamesEngine.Service.Communication.Commands
 
     public class CreateBulletCommand : IShootCommand
     {
-        public string Type { get; private set; }
+        public string Type { get; private set; } = "Shoot";
         public string? ConnectionId { get; set; }
         public int GameObjectId { get; private set; }
 
+        public CreateBulletCommand()
+        {
+        }
+
         public CreateBulletCommand(int gameObjectId)
-        { 
-            Type = "Shoot";
+        {
             GameObjectId = gameObjectId;
         }
     }

@@ -14,22 +14,14 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
     public class CreateBulletCommandHandler : ICommandHandler<CreateBulletCommand, ICommandCallback<string>>
     {
-
-        private readonly IGame _game;
-
-        public CreateBulletCommandHandler(IGame game)
-        {
-            _game = game;
-        }
-
         public void Handle(CreateBulletCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = _game.FindGameObject(command.GameObjectId);
+            IGameObject gameObject = GameHandler.Game.FindGameObject(command.GameObjectId);
 
             IGameObject bulletGameObject = new BulletGameObject();
             bulletGameObject.WorldMatrix = gameObject.WorldMatrix;
             bulletGameObject.Parent = gameObject;
-            _game.AddGameObject(bulletGameObject);
+            GameHandler.Game.AddGameObject(bulletGameObject);
 
             if (bulletGameObject != null)
             {

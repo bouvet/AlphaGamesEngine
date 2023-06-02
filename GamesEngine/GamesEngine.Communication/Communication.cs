@@ -28,6 +28,7 @@ namespace GamesEngine.Service.Communication
 
         public void OnMessage(string senderId, IMessage message)
         {
+            message.ConnectionId = senderId;
             switch (message)
             {
                 case IQuery query:

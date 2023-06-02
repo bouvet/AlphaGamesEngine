@@ -4,9 +4,9 @@ namespace GamesEngine.Service.Communication.Commands;
 
 public class PlayerStatusCommand : ICommand
 {
-    public string Type { get; } = "PlayerStatus";
+    public string Type => "PlayerStatus";
     public bool IsJoin { get; }
-    public string ConnectionId { get; }
+    public string ConnectionId { get; set; }
 
     public PlayerStatusCommand(bool isJoin, string connectionId)
     {

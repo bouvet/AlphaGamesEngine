@@ -16,6 +16,7 @@ namespace GamesEngine.Service.Communication.Commands
     public class RotateGameObjectCommand : IRotateGameObjectCommand
     {
         public string Type {get;set;}
+        public string ConnectionId { get; set; }
         public int GameObjectId { get; set; }
         public int MousePositionX { get; set; }
         public int MousePositionY { get; set; }

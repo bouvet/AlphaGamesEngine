@@ -14,7 +14,7 @@ public class PlayerStatusHandler : ICommandHandler<PlayerStatusCommand, ICommand
         }
         else
         {
-            GameHandler.Game.OnDisconnect(GameHandler.Game.Clients.Find(e => e.ConnectionId == command.ConnectionId));
+            GameHandler.Game.OnDisconnect(GameHandler.GetClient(command.ConnectionId));
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Newtonsoft.Json;
 
 namespace GamesEngine.Math
 {
@@ -13,7 +14,8 @@ namespace GamesEngine.Math
     }
     public class Matrix : IMatrix
     {
-        Matrix4x4 _matrix = new Matrix4x4();
+        [JsonProperty]
+        Matrix4x4 _matrix = Matrix4x4.Identity;
         public IVector GetRotation()
         {
             return new Vector(_matrix.M11, _matrix.M12, _matrix.M13);

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Newtonsoft.Json;
 
 namespace GamesEngine.Math
 {
@@ -25,6 +26,7 @@ namespace GamesEngine.Math
             return rotatedVector;
         }
 
+        [JsonProperty]
         private Vector3 _vector;
         public Vector(float x, float y, float z)
         {

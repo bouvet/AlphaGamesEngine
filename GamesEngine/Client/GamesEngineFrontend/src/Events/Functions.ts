@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { Cone } from '../Figures/Cone';
-
-
+var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+camera.position.set(0, 0, 5);
+var scene = new THREE.Scene();
 var plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -12,7 +13,29 @@ let moveLeft = false;
 let moveRight = false;
 var beams: THREE.Mesh[] = [];
 var cone = Cone();
-var cone = Cone();
+scene.add(cone);
+var marker = new THREE.Mesh(new THREE.SphereGeometry(0.062, 4, 2), new THREE.MeshBasicMaterial({
+  color: "red"
+}));
+var grid = new THREE.GridHelper(12, 12, "white", "white");
+grid.rotation.x = Math.PI / 2;
+scene.add(grid);
+var axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
+
+var marker = new THREE.Mesh(new THREE.SphereGeometry(0.062, 4, 2), new THREE.MeshBasicMaterial({
+  color: "red"
+}));
+var renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
+
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+scene.add(marker);
+scene.add(marker);
 
 export function onDocumentKeyDown(event: { which: any; }) {
     var keyCode = event.which;

@@ -26,23 +26,15 @@ public class DispatcherTypes : IDispatcherTypes
 {
     public List<Type> QueryHandlers()
     {
-        var queryHandlers = new List<Type>();
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-        foreach (var assembly in assemblies)
-        foreach (var type in assembly.GetTypes())
-        {
-            if (type is not { IsAbstract: false, IsInterface: false }) continue;
-
-            if (type.GetInterfaces().Any(iface =>
-                    iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IQueryHandler<,>)))
-                queryHandlers.Add(type);
-        }
-
-        return queryHandlers;
+        return Types(typeof(IQueryHandler<,>));
     }
 
     public List<Type> CommandHandlers()
+    {
+        return Types(typeof(ICommandHandler<,>));
+    }
+
+    private static List<Type> Types(Type checkType)
     {
         var queryHandlers = new List<Type>();
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -53,7 +45,7 @@ public class DispatcherTypes : IDispatcherTypes
             if (type is not { IsAbstract: false, IsInterface: false }) continue;
 
             if (type.GetInterfaces().Any(iface =>
-                    iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>)))
+                    iface.IsGenericType && iface.GetGenericTypeDefinition() == checkType))
                 queryHandlers.Add(type);
         }
 

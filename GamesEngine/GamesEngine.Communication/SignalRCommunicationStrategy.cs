@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Xml.Linq;
 using GamesEngine.Service;
+using GamesEngine.Service.Communication.Commands;
 
 namespace GamesEngine.Communication
 {
     public class SignalRHub : Hub
     {
         public static event Action<string, string> OnMessageReceived = delegate { };
+        public static event Action<string> OnConnect = delegate { };
+        public static event Action<string> OnDisconnect = delegate { };
 
         public async Task SendMessage(string message)
         {
@@ -18,13 +21,13 @@ namespace GamesEngine.Communication
 
         public override Task OnConnectedAsync()
         {
-            GameHandler.Game.OnConnect(Context.ConnectionId);
+            OnConnect?.Invoke(Context.ConnectionId);
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            GameHandler.Game.OnDisconnect(GameHandler.Game.Clients.Find(e => e.ConnectionId == Context.ConnectionId));
+            OnDisconnect?.Invoke(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
     }
@@ -40,11 +43,12 @@ namespace GamesEngine.Communication
         {
             OnMessage = onMessage;
             SignalRHub.OnMessageReceived += HandleMessage;
+            SignalRHub.OnConnect += OnConnect;
+            SignalRHub.OnDisconnect += OnDisconnect;
         }
 
         private void HandleMessage( string user, string JsonData)
         {
-            Console.WriteLine(JsonData);
             DataFromClient? data = JsonSerializer.Deserialize<DataFromClient>(JsonData);
 
             if (!(data is null))
@@ -52,6 +56,16 @@ namespace GamesEngine.Communication
                 IMessage message = new MyMessage(data);
                 OnMessage(user, message);
             }
+        }
+
+        private void OnConnect(string user)
+        {
+            OnMessage(user, new PlayerStatusCommand(true, user));
+        }
+
+        private void OnDisconnect(string user)
+        {
+            OnMessage(user, new PlayerStatusCommand(false, user));
         }
 
         public async void SendToClient(string targetId, IMessage message)

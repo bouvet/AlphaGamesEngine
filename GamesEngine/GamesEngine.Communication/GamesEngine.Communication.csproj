@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GamesEngine.Patterns\GamesEngine.Patterns.csproj" />
-    <ProjectReference Include="..\GamesEngine.Service\GamesEngine.Service.csproj" />
   </ItemGroup>
 
 </Project>

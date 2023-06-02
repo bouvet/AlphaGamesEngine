@@ -8,6 +8,11 @@ namespace GamesEngine.Math
         float GetX();
         float GetY();
         float GetZ();
+
+        IVector Add(IVector vector);
+        IVector Subtract(IVector vector);
+        IVector Multiply(IVector vector);
+        IVector MultiplyWithScalar(int scalar);
     }
     public class Vector : IVector
     {
@@ -31,6 +36,35 @@ namespace GamesEngine.Math
         public float GetZ()
         {
             return _vector.Z;
+        }
+
+        public IVector Add(IVector vector)
+        {
+            _vector.X += vector.GetX();
+            _vector.Y += vector.GetY();
+            _vector.Z += vector.GetZ();
+            return this;
+        }
+
+        public IVector Subtract(IVector vector)
+        {
+            _vector.X -= vector.GetX();
+            _vector.Y -= vector.GetY();
+            _vector.Z -= vector.GetZ();
+            return this;
+        }
+
+        public IVector Multiply(IVector vector)
+        {
+            _vector.X *= vector.GetX();
+            _vector.Y *= vector.GetY();
+            _vector.Z *= vector.GetZ();
+            return this;
+        }
+
+        public IVector MultiplyWithScalar(int scalar)
+        {
+            return new Vector(GetX() * scalar, GetY() * scalar, GetZ() * scalar);
         }
     }
 }

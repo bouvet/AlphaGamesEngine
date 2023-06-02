@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamesEngine.Math;
 using GamesEngine.Service.Client;
 
 namespace GamesEngine.Service.Game.Object
@@ -11,10 +12,12 @@ namespace GamesEngine.Service.Game.Object
     public interface IPlayerGameObject : IDynamicGameObject
     {
         public IClient Client { get; }
+        public Vector Motion { get; set; }
     }
     public class PlayerGameObject : DynamicGameObject, IPlayerGameObject
     {
         public IClient Client { get; }
+        public Vector Motion { get; set; }
 
         public PlayerGameObject(IClient client)
         {

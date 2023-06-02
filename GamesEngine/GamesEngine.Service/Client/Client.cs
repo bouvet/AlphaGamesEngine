@@ -10,13 +10,12 @@ namespace GamesEngine.Service.Client
 {
     public interface IClient
     {
-        public ref PlayerGameObject PlayerGameObject { get; }
+        public PlayerGameObject PlayerGameObject { get; set;  }
         public string ConnectionId { get; set; }
     }
     public class Client : IClient
     {
-        //TODO: Implement - Håvard
-        public ref PlayerGameObject PlayerGameObject => throw new NotImplementedException();
+        public PlayerGameObject PlayerGameObject { get; set; }
         public string ConnectionId { get; set; }
     }
 }

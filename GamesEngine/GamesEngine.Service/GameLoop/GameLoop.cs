@@ -1,32 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GamesEngine.Service.Game;
 
-namespace GamesEngine.Service.GameLoop
+namespace GamesEngine.Service.GameLoop;
+
+public interface IGameLoop
 {
-    public interface IGameLoop
+    public void ProcessInput();
+    public void Update();
+    public void Render();
+}
+
+public class GameLoop : IGameLoop
+{
+    private ITime lastUpdate = new Time();
+
+    public GameLoop(IGame game)
     {
-        public void ProcessInput();
-        public void Update();
-        public void Render();
+        Game = game;
     }
-    public class GameLoop : IGameLoop
+
+    private IGame Game { get; }
+
+    public void ProcessInput()
     {
-        public void ProcessInput()
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
 
-        public void Render()
-        {
-            throw new NotImplementedException();
-        }
+    public void Render()
+    {
+        throw new NotImplementedException();
+    }
 
-        public void Update()
+    public void Update()
+    {
+        ITime currentTime = new Time();
+        IInterval deltaTime = new Interval(currentTime, lastUpdate);
+        Game.SceneGraph.DynamicGameObject.GetValues().ForEach(gameObject =>
         {
-            throw new NotImplementedException();
-        }
+            gameObject.Update(deltaTime, currentTime);
+
+            if (gameObject.Motion.GetAbsolute() > 0)
+            {
+                gameObject.UpdateMovement(deltaTime, currentTime);
+            }
+        });
+        lastUpdate = new Time();
     }
 }

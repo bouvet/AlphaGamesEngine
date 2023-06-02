@@ -5,8 +5,13 @@ using GamesEngine.Service.GameLoop;
 
 namespace GamesEngine.Tests.Fakes.GameObjects;
 
-public class MockDynamicObject : IDynamicGameObject
+public class MockMovingObject : IDynamicGameObject
 {
+    public MockMovingObject(Vector motion)
+    {
+        Motion = motion;
+    }
+
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; }
     public IMatrix LocalMatrix { get; set; }
@@ -29,13 +34,14 @@ public class MockDynamicObject : IDynamicGameObject
 
     public Vector Motion { get; set; }
 
-    public void Update(IInterval deltaTime, ITime time)
-    {
-        throw new NotImplementedException();
-    }
+    public void Update(IInterval deltaTime, ITime time) { }
 
     public void UpdateMovement(IInterval deltaTime, ITime time)
     {
-        throw new NotImplementedException();
+        float multiplier = deltaTime.GetInterval() / 1000f; //TODO Replace 1000f with update frequency (1000 = 1s)
+        IVector curPos = WorldMatrix.GetPosition();
+        curPos.Add(Motion.Multiply(new Vector(multiplier, multiplier, multiplier)));
+        WorldMatrix.SetPosition(curPos);
+        Motion = new Vector(0, 0, 0);
     }
 }

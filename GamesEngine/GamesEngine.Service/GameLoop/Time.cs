@@ -12,9 +12,15 @@ namespace GamesEngine.Service.GameLoop
     }
     public class Time : ITime
     {
+        private readonly long time;
+        public Time()
+        {
+            time = DateTime.Now.Ticks;
+        }
+
         public long GetTime()
         {
-            return DateTime.Now.Ticks;
+            return time;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GamesEngine.Patterns;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace GamesEngine.Communication
 {
@@ -26,20 +27,36 @@ namespace GamesEngine.Communication
 
         public void MessageFromClient(string JsonData)
         {
+            Console.WriteLine(JsonData);
             DataFromClient? data = JsonSerializer.Deserialize<DataFromClient>(JsonData);
 
             if (!(data is null))
             {
-                string Type = data.Type;
-                IMessage message = data.Message; 
+                IMessage message = new MyMessage(data);
                 OnMessage(Context.ConnectionId, message);
             }
         }
 
         public class DataFromClient
         {
-            public required string Type { get; set; }
-            public required IMessage Message { get; set; }
+            public string Type { get; set; }
+            public MessageData Message { get; set; }
+        }
+
+        public class MessageData
+        {
+            public int gameObjectId { get; set; }
+        }
+
+        public class MyMessage : IMessage
+        {
+            public string Type { get; }
+
+            public MyMessage(DataFromClient data)
+            {
+                Type = data.Type;
+            }
         }
     }
+
 }

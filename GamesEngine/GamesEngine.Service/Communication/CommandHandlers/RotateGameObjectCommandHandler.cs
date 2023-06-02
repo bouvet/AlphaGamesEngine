@@ -34,10 +34,11 @@ namespace GamesEngine.Service.Communication.CommandHandlers
             double offsetAngle = System.Math.PI / 2;
             double angle = System.Math.Atan2(targetY, targetX) + offsetAngle;
             Quaternion rotation = Quaternion.CreateFromYawPitchRoll(0, (float) angle, 0);
-            IVector rotatedVector = Vector3.Transform(gameObject.WorldMatrix.GetRotation(), rotation);
-            gameObject.WorldMatrix.SetRotation();
+            IVector rotationVector = new Math.Vector(gameObject.WorldMatrix.GetRotation().GetX(), gameObject.WorldMatrix.GetRotation().GetY(), gameObject.WorldMatrix.GetRotation().GetZ());
+            IVector rotatedVector = rotationVector.Transform(rotation);
+            gameObject.WorldMatrix.SetRotation(rotatedVector);
 
-            if ()
+            if (gameObject != null)
             {
                 callback.OnSuccess("success");
             }

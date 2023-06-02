@@ -13,9 +13,18 @@ namespace GamesEngine.Math
         IVector Subtract(IVector vector);
         IVector Multiply(IVector vector);
         IVector MultiplyWithScalar(int scalar);
+        IVector Transform(Quaternion rotation);
     }
     public class Vector : IVector
     {
+        public IVector Transform(Quaternion rotation)
+        {
+            Vector3 vector3 = new Vector3(GetX(), GetY(), GetZ());
+            Vector3 transformedVector = Vector3.Transform(vector3, rotation);
+            IVector rotatedVector = new Vector(transformedVector.X, transformedVector.Y, transformedVector.Z);
+            return rotatedVector;
+        }
+
         private Vector3 _vector;
         public Vector(float x, float y, float z)
         {

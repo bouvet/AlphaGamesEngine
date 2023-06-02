@@ -96,6 +96,14 @@ export function onDocumentKeyUp(event: { which: any }) {
   connection.send("StopMove", movement);
 }
 
+function ClientDispatcher(message: any){
+    let content = JSON.parse(message.Content);
+    RemoveAllCharacters();
+    AddAllCharacters(content);
+}
+
+connection.on("ClientDispatcherFunctionName", (message) => ClientDispatcher(message));
+
 export function createCone(scene: THREE.Scene, coneArray: THREE.Mesh[]) {
   var coneGeom = new THREE.ConeGeometry(0.2, 1, 10);
   coneGeom.translate(0, .5, 0);
@@ -108,28 +116,32 @@ export function createCone(scene: THREE.Scene, coneArray: THREE.Mesh[]) {
   return cone;
 }
 
-connection.on("RemoveAllCharacters", () => {
-  cones.forEach(cone => {
+connection.on("RemoveAllCharacters", () => RemoveAllCharacters());
+
+function RemoveAllCharacters(){
+    cones.forEach(cone => {
       scene.remove(cone);
 });
 cones= [];
-});
+}
 
-connection.on("AddAllCharacters", (characters: any[]) => {
-  characters.forEach(character => {
+function AddAllCharacters(characters: any[]){
+    characters.forEach(character => {
       var cone = createCone(scene, cones);
-      cone.position.x = character.position.x;
-      cone.position.y = character.position.y;
-      cone.position.z = character.position.z;
-      cone.rotation.x = character.rotation.x;
-      cone.rotation.y = character.rotation.y;
-      cone.rotation.z = character.rotation.z;
-      cone.userData.id = character.id;
+      cone.position.x = character.WorldMatrix._matrix.M41;
+      cone.position.y = character.WorldMatrix._matrix.M42;
+      cone.position.z = character.WorldMatrix._matrix.M43;
+
+      cone.rotation.x = character.WorldMatrix._matrix.M11;
+      cone.rotation.y = character.WorldMatrix._matrix.M12;
+      cone.rotation.z = character.WorldMatrix._matrix.M13;
+      cone.userData.id = character.Id;
       scene.add(cone);
       cones.push(cone);
-  });
-});
+})
+}
 
+// connection.on("AddAllCharacters", (characters: any[]) => AddAllCharacters(characters));
 
 export function shootBeam() {
     var direction = new THREE.Vector3();
@@ -200,3 +212,5 @@ export function render() {
 
     renderer.render(scene, camera);
 }
+
+

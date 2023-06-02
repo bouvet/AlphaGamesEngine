@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 
-const connection = new signalR.HubConnectionBuilder().withUrl('https://localhost:7247/gamehub', {
+export const connection = new signalR.HubConnectionBuilder().withUrl('https://localhost:7247/gamehub', {
             skipNegotiation: true,
             transport: signalR.HttpTransportType.WebSockets
             }).build();

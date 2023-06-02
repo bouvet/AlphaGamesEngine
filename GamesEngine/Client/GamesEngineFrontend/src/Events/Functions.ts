@@ -40,6 +40,11 @@ export function sendKeyboardEvent(keyboardevent: string) {
     connection.send("SendMessage", message);
 }
 
+export function sendMouseEvent(MousePositionX: number, MousePositionY: number ) {
+    let message = {Type: "MovePlayer", MousePositionX: MousePositionX, MousePositionY:MousePositionY}
+    connection.send("SendMessage", message);
+}
+
 export function onDocumentKeyDown(event: { which: any }) {
   var keyCode = event.which;
   cone.lookAt(intersectPoint);
@@ -108,12 +113,7 @@ export function createCone(scene: THREE.Scene, coneArray: THREE.Mesh[]) {
   return cone;
 }
 
-connection.on("RemoveAllCharacters", () => {
-  cones.forEach(cone => {
-      scene.remove(cone);
-});
-cones= [];
-});
+
 
 connection.on("AddAllCharacters", (characters: any[]) => {
   characters.forEach(character => {

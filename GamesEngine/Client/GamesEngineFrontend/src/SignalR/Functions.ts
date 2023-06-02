@@ -7,11 +7,8 @@ export const connection = new signalR.HubConnectionBuilder().withUrl('https://lo
 
 
 export async function startSignalR() {
-    try {
-      connection.start();
-      console.log("SignalR connected");
-    } catch (error) {
-      console.log(error);
-      // setTimeout(start, 5000);
-    }
-  }
+  connection.start()
+            .then(() => {
+              console.log("SignalR connected");
+            }).catch((error) => console.log(error));
+}

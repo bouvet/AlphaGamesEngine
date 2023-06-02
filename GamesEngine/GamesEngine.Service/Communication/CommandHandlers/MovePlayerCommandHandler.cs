@@ -54,7 +54,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
                         break;
                 }
 
-                gameObject.WorldMatrix.UpdatePosition(updatePosition);
+                gameObject.WorldMatrix.SetPosition(updatePosition);
                 
                 if (updatePosition.GetX() > 0 || updatePosition.GetY() > 0 || updatePosition.GetZ() > 0)
                 {

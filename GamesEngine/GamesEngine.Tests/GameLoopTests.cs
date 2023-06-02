@@ -24,7 +24,7 @@ public class GameLoopTests
     }
 
     [Test]
-    public void ShouldMovePlayer()
+    public void ShouldMoveObject()
     {
         // Arrange
         IGame game = new Game();

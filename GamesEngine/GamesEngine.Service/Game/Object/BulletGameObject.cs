@@ -15,8 +15,8 @@ namespace GamesEngine.Service.Game.Object
 
         public override void Update(IInterval deltaTime, ITime time)
         {
-            IVector updatePosition = WorldMatrix.GetRotation().MultiplyWithScalar(deltaTime * Speed);
-            WorldMatrix.UpdatePosition(updatePosition);
+            IVector updatePosition = WorldMatrix.GetRotation().MultiplyWithScalar((int)deltaTime.GetInterval() * Speed);
+            WorldMatrix.SetPosition(updatePosition);
         }
 
         public override void UpdateMovement(IInterval deltaTime, ITime time)

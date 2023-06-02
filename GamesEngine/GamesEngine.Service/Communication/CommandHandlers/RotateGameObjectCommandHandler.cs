@@ -13,8 +13,8 @@ using GamesEngine.Math;
 
 namespace GamesEngine.Service.Communication.CommandHandlers
 {
-    public interface IRotateGameObjectCommandHandler : ICommandHandler<IRotateGameObjectCommand, ICommandCallback<string>> 
-    { 
+    public interface IRotateGameObjectCommandHandler : ICommandHandler<IRotateGameObjectCommand, ICommandCallback<string>>
+    {
     }
     public class RotateGameObjectCommandHandler : IRotateGameObjectCommandHandler
     {
@@ -38,7 +38,6 @@ namespace GamesEngine.Service.Communication.CommandHandlers
             {
                 callback.OnFailure();
             }
-
         }
     }
 }

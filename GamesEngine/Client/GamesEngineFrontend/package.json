@@ -1,0 +1,21 @@
+{
+  "name": "gamesenginefrontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/three": "^0.152.1",
+    "css-loader": "^6.8.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^7.0.5",
+    "three": "^0.152.2"
+  }
+}

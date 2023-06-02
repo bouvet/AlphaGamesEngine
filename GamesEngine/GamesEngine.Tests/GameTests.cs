@@ -20,7 +20,7 @@ public class GameTests
     }
 
     [Test]
-    public void ShouldBeAbleToCreateGameWithPlayers()
+    public void ShouldBeAbleToCreateGameWithObject()
     {
         // Arrange
         Game game = new Game();

@@ -16,7 +16,7 @@ namespace GamesEngine.Service.Communication.Commands
     public class CreateBulletCommand : IShootCommand
     {
         public string Type { get; private set; }
-        public string ConnectionId { get; set; }
+        public string? ConnectionId { get; set; }
         public int GameObjectId { get; private set; }
 
         public CreateBulletCommand(int gameObjectId)

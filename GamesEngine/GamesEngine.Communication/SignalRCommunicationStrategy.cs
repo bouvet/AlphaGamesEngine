@@ -92,7 +92,7 @@ namespace GamesEngine.Communication
         public class MyMessage : IMessage
         {
             public string Type { get; }
-            public string ConnectionId { get; set; }
+            public string? ConnectionId { get; set; }
 
             public MyMessage(DataFromClient data)
             {

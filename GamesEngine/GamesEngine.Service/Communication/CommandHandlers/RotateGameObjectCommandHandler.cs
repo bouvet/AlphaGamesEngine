@@ -20,7 +20,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
     {
         public void Handle(IRotateGameObjectCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(command.GameObjectId);
+            IGameObject gameObject = GameHandler.GetClient(command.ConnectionId).PlayerGameObject;
             var targetX = command.MousePositionX - gameObject.WorldMatrix.GetPosition().GetX();
             var targetY = command.MousePositionY - gameObject.WorldMatrix.GetPosition().GetY();
             double offsetAngle = System.Math.PI / 2;

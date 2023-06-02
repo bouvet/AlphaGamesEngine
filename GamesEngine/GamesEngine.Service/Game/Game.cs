@@ -99,7 +99,7 @@ namespace GamesEngine.Service.Game
 
         public void OnDisconnect(IClient client)
         {
-            Clients.RemoveAll(e => e.ConnectionId == client.ConnectionId);
+            Clients.Remove(client);
             SceneGraph.DynamicGameObject.Remove(client.PlayerGameObject.Id);
         }
     }

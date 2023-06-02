@@ -9,5 +9,6 @@ namespace GamesEngine.Patterns
     public interface IMessage
     {
         string Type { get; }
+        string? ConnectionId { get; set;  }
     }
 }

@@ -18,34 +18,26 @@ namespace GamesEngine.Service.Communication.CommandHandlers
     }
     public class RotateGameObjectCommandHandler : IRotateGameObjectCommandHandler
     {
-
-        private readonly IGame _game;
-
-        public RotateGameObjectCommandHandler(IGame game)
-        {
-            _game = game;
-        }
-
         public void Handle(IRotateGameObjectCommand command, ICommandCallback<string> callback)
         {
-            // IGameObject gameObject = _game.FindGameObject(command.GameObjectId);
-            // var targetX = command.MousePositionX - gameObject.WorldMatrix.GetPosition().GetX();
-            // var targetY = command.MousePositionY - gameObject.WorldMatrix.GetPosition().GetY();
-            // double offsetAngle = System.Math.PI / 2;
-            // double angle = System.Math.Atan2(targetY, targetX) + offsetAngle;
-            // Quaternion rotation = Quaternion.CreateFromYawPitchRoll(0, (float) angle, 0);
-            // IVector rotatedVector = Vector3.Transform(gameObject.WorldMatrix.GetRotation(), rotation);
-            // gameObject.WorldMatrix.SetRotation();
+            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(command.GameObjectId);
+            var targetX = command.MousePositionX - gameObject.WorldMatrix.GetPosition().GetX();
+            var targetY = command.MousePositionY - gameObject.WorldMatrix.GetPosition().GetY();
+            double offsetAngle = System.Math.PI / 2;
+            double angle = System.Math.Atan2(targetY, targetX) + offsetAngle;
+            Quaternion rotation = Quaternion.CreateFromYawPitchRoll(0, (float) angle, 0);
+            IVector rotationVector = new Math.Vector(gameObject.WorldMatrix.GetRotation().GetX(), gameObject.WorldMatrix.GetRotation().GetY(), gameObject.WorldMatrix.GetRotation().GetZ());
+            IVector rotatedVector = rotationVector.Transform(rotation);
+            gameObject.WorldMatrix.SetRotation(rotatedVector);
 
-            // if ()
-            // {
-            //     callback.OnSuccess("success");
-            // }
-            // else
-            // {
-            //     callback.OnFailure();
-            // }
-
+            if (gameObject != null)
+            {
+                callback.OnSuccess("success");
+            }
+            else
+            {
+                callback.OnFailure();
+            }
         }
     }
 }

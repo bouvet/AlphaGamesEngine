@@ -16,11 +16,7 @@ namespace GamesEngine.Service.Communication.Commands
 
     public class AddPlayerGameObjectCommand : IAddGameObjectCommand
     {
-        public string Type { get; private set; }
-
-        public AddPlayerGameObjectCommand()
-        {
-            Type = "AddGameObject";
-        }
+        public string Type { get; private set; } = "AddGameObject";
+        public string? ConnectionId { get; set; }
     }
 }

@@ -13,22 +13,17 @@ using GamesEngine.Patterns;
 using System.Collections;
 using System.Numerics;
 using GamesEngine.Math;
+using GamesEngine.Service.Client;
 
 namespace GamesEngine.Service.Communication.CommandHandlers
 {
     public class MovePlayerCommandHandler : ICommandHandler<MovePlayerCommand, ICommandCallback<string>>
     {
 
-        private readonly IGame _game;
-
-        public MovePlayerCommandHandler(IGame game)
-        {
-            _game = game;
-        }
-
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = _game.FindGameObject(command.GameObjectId);
+            IClient client = GameHandler.GetClient(command.ConnectionId);
+            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
 
             if (gameObject != null)
             {

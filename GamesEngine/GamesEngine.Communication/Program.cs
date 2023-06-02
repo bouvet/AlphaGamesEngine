@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Communication;
-
+using Microsoft.AspNetCore.SignalR;
 
 
 namespace GamesEngine.Communication
@@ -53,7 +53,9 @@ namespace GamesEngine.Communication
 
             app.MapControllers();
             // TODO: must remove signalR specific
-            app.MapHub<SignalRCommunicationStrategy>("/gamehub");
+            app.MapHub<SignalRHub>("/gamehub");
+
+            SignalRCommunicationStrategy.HubContext = ((IApplicationBuilder)app).ApplicationServices.GetService<IHubContext<SignalRHub>>();
 
             app.Run();
         }

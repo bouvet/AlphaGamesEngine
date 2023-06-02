@@ -8,6 +8,10 @@ public class PlayerStatusCommand : ICommand
     public bool IsJoin { get; }
     public string? ConnectionId { get; set; }
 
+    public PlayerStatusCommand()
+    {
+    }
+
     public PlayerStatusCommand(bool isJoin, string connectionId)
     {
         IsJoin = isJoin;

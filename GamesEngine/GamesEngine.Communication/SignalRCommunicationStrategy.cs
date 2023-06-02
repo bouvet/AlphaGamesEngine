@@ -3,6 +3,7 @@ using GamesEngine.Patterns;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Xml.Linq;
+using GamesEngine.Service;
 
 namespace GamesEngine.Communication
 {
@@ -13,6 +14,18 @@ namespace GamesEngine.Communication
         public async Task SendMessage(string message)
         {
             OnMessageReceived?.Invoke(Context.ConnectionId, message);
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            GameHandler.Game.OnConnect(Context.ConnectionId);
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            GameHandler.Game.OnDisconnect(GameHandler.Game.Clients.Find(e => e.ConnectionId == Context.ConnectionId));
+            return base.OnDisconnectedAsync(exception);
         }
     }
 

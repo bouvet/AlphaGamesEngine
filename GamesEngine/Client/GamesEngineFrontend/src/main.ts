@@ -1,9 +1,10 @@
 import './style.css';
-import { onDocumentKeyDown, onDocumentKeyUp, onMouseMove, shootBeam, render, sendKeyboardEvent } from './Events/Functions';
+import { onDocumentKeyDown, onDocumentKeyUp, onMouseMove, shootBeam, render, sendKeyboardEvent, sendMouseEvent } from './Events/Functions';
 import { startSignalR } from './SignalR/Functions';
 
 
-window.addEventListener("mousemove", onMouseMove, false);
+window.addEventListener("mousemove", (event) => {
+  sendMouseEvent(event.clientX, event.clientY)});
 document.addEventListener("keydown", (event) => {
   sendKeyboardEvent(event.key)});
 document.addEventListener("keydown", onDocumentKeyDown, false);

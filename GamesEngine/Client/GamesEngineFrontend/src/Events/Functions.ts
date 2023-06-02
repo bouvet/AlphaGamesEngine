@@ -40,6 +40,11 @@ export function sendKeyboardEvent(keyboardevent: string) {
     connection.send("SendMessage", message);
 }
 
+export function sendMouseEvent(MousePositionX: number, MousePositionY: number ) {
+    let message = {Type: "MovePlayer", MousePositionX: MousePositionX, MousePositionY:MousePositionY}
+    connection.send("SendMessage", message);
+}
+
 export function onDocumentKeyDown(event: { which: any }) {
   var keyCode = event.which;
   cone.lookAt(intersectPoint);

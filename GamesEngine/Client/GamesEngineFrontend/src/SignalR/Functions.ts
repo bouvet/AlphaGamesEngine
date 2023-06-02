@@ -10,5 +10,7 @@ export async function startSignalR() {
   connection.start()
             .then(() => {
               console.log("SignalR connected");
+              let message = {Type: "FetchDynamicObjects"}
+              connection.send("SendMessage", JSON.stringify(message));
             }).catch((error) => console.log(error));
 }

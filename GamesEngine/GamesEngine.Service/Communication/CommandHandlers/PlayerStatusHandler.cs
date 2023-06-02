@@ -10,11 +10,11 @@ public class PlayerStatusHandler : ICommandHandler<PlayerStatusCommand, ICommand
     {
         if (command.IsJoin)
         {
-            GameHandler.Game.OnConnect(command.ConnectionId);
+            GameHandler.GetGame(command.ConnectionId).OnConnect(command.ConnectionId);
         }
         else
         {
-            GameHandler.Game.OnDisconnect(GameHandler.GetClient(command.ConnectionId));
+            GameHandler.GetGame(command.ConnectionId).OnDisconnect(GameHandler.GetClient(command.ConnectionId));
         }
     }
 }

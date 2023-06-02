@@ -16,12 +16,12 @@ namespace GamesEngine.Service.Communication.CommandHandlers
     {
         public void Handle(CreateBulletCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = GameHandler.Game.FindGameObject(command.GameObjectId);
+            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(command.GameObjectId);
 
             IGameObject bulletGameObject = new BulletGameObject();
             bulletGameObject.WorldMatrix = gameObject.WorldMatrix;
             bulletGameObject.Parent = gameObject;
-            GameHandler.Game.AddGameObject(bulletGameObject);
+            GameHandler.GetGame(command.ConnectionId).AddGameObject(bulletGameObject);
 
             if (bulletGameObject != null)
             {

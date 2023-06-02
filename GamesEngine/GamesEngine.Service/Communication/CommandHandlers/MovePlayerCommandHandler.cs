@@ -23,7 +23,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
             IClient client = GameHandler.GetClient(command.ConnectionId);
-            IGameObject gameObject = GameHandler.Game.FindGameObject(client.PlayerGameObject.Id);
+            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
 
             if (gameObject != null)
             {

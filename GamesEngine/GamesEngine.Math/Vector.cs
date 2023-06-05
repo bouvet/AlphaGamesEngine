@@ -15,6 +15,7 @@ namespace GamesEngine.Math
         IVector Multiply(IVector vector);
         IVector MultiplyWithScalar(int scalar);
         IVector Transform(Quaternion rotation);
+        IVector copy();
     }
     public class Vector : IVector
     {
@@ -24,6 +25,11 @@ namespace GamesEngine.Math
             Vector3 transformedVector = Vector3.Transform(vector3, rotation);
             IVector rotatedVector = new Vector(transformedVector.X, transformedVector.Y, transformedVector.Z);
             return rotatedVector;
+        }
+
+        public IVector copy()
+        {
+            return new Vector(GetX(), GetY(), GetZ());
         }
 
         [JsonProperty]

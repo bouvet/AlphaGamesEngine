@@ -45,32 +45,25 @@ export function sendMouseEvent(MousePositionX: number, MousePositionY: number ) 
     connection.send("SendMessage", message);
 }
 
+const movementKeyMap : { [key: string]: number } = {
+    forward: 87, //w
+    backward: 83, //s
+    left: 65, //a
+    right: 68, //d
+}
 export function onDocumentKeyDown(event: { which: any, key: string }) {
   var keyCode = event.which;
 //   cone.lookAt(intersectPoint);
 //   marker.position.copy(intersectPoint);
-  let movement = '';
+  let movement: string = '';
 
-  if (keyCode == 87) {
-      // w
-    //   moveForward = true;
-      movement = 'forward';
-  } else if (keyCode == 83) {
-      // s
-    //   moveBackward = true;
-      movement = 'backward';
-  } else if (keyCode == 65) {
-      // a
-    //   moveLeft = true;
-      movement = 'left';
-  } else if (keyCode == 68) {
-      // d
-    //   moveRight = true;
-      movement = 'right';
+  for(let key in movementKeyMap){
+    if(keyCode == movementKeyMap[key]){
+      movement = key;
+    }
   }
-
   // Send the movement to SignalR
-  sendKeyboardEvent(event.key);
+  sendKeyboardEvent(movement);
 }
 
 export function onDocumentKeyUp(event: { which: any }) {
@@ -107,7 +100,7 @@ function ClientDispatcher(message: any){
     AddAllCharacters(content);
 }
 
-connection.on("ClientDispatcherFunctionName", (message) => ClientDispatcher(message));
+connection.on("ClientDispatcherFunctionName", (message: any) => ClientDispatcher(message));
 
 export function createCone(scene: THREE.Scene, coneArray: THREE.Mesh[]) {
   var coneGeom = new THREE.ConeGeometry(0.2, 1, 10);

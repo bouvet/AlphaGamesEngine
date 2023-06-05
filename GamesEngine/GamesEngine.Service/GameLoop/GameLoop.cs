@@ -36,11 +36,6 @@ public class GameLoop : IGameLoop
         IInterval deltaTime = new Interval(lastUpdate, currentTime);
         Game.SceneGraph.DynamicGameObject.GetValues().ForEach(gameObject =>
         {
-            if (deltaTime.GetInterval() < 0)
-            {
-                Console.WriteLine("Negative delta time");
-                return;
-            }
             gameObject.Update(deltaTime, currentTime);
 
             if (gameObject.Motion.GetAbsolute() > 0)

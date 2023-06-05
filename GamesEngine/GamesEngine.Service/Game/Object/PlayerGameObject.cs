@@ -49,7 +49,7 @@ namespace GamesEngine.Service.Game.Object
         public override void UpdateMovement(IInterval deltaTime, ITime time)
         {
             Console.WriteLine(deltaTime.GetInterval());
-            float multiplier = deltaTime.GetInterval() / 300f;
+            float multiplier = deltaTime.GetInterval() / 100f;
             IVector curPos = WorldMatrix.GetPosition();
             IVector moved = Motion.Copy().Multiply(new Vector(multiplier, multiplier, multiplier));
             curPos.Add(moved);

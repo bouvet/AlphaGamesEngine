@@ -26,7 +26,7 @@ public class GameHandler
     private static Timer timer;
     public static void Start()
     {
-        timer = new Timer(Update, null, 0, 100);
+        timer = new Timer(Update, null, 0, 50);
     }
 
     private static void Update(Object o)

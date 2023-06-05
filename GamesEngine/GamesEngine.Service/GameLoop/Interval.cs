@@ -15,7 +15,7 @@ namespace GamesEngine.Service.GameLoop
         private readonly long interval;
         public Interval(ITime startTime, ITime endTime)
         {
-            interval = endTime.GetTime() - startTime.GetTime();
+            interval = System.Math.Max(0, endTime.GetTime() - startTime.GetTime());
         }
 
         public long GetInterval()

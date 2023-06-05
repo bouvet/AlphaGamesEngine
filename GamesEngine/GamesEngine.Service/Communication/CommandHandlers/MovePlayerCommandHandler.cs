@@ -23,32 +23,14 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
-            if (command.KeyboardEvent == null) return;
-
             IClient client = GameHandler.GetClient(command.ConnectionId);
             IPlayerGameObject gameObject = client.PlayerGameObject;
 
             if (gameObject != null)
             {
                 IVector updatePosition = new Math.Vector(0f, 0f, 0f);
-                IVector direction = null;
-                float speed = 0.5f;
-
-                switch (command.KeyboardEvent)
-                {
-                    case "right":
-                        direction = Direction.RIGHT;
-                        break;
-                    case "left":
-                        direction = Direction.LEFT;
-                        break;
-                    case "up":
-                        direction = Direction.UP;
-                        break;
-                    case "down":
-                        direction = Direction.DOWN;
-                        break;
-                }
+                IVector direction = new Vector(command.x, command.y, command.z);
+                float speed = 0.3f;
 
                 updatePosition = direction.Multiply(new Vector(speed, speed, speed));
 

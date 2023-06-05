@@ -27,6 +27,10 @@ AxesHelper(scene);
 
 setInterval(() => {
     connection.send("SendMessage", JSON.stringify({Type: "FetchDynamicObjects"}));
+
+    if(keys.down || keys.up || keys.left || keys.right){
+        sendKeyboardEvent();
+    }
 }, 100);
 
 var renderer = new THREE.WebGLRenderer({
@@ -36,8 +40,8 @@ var renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-export function sendKeyboardEvent(keyboardevent: string) {
-    let message = {Type: "MovePlayer", KeyboardEvent: keyboardevent}
+export function sendKeyboardEvent() {
+    let message = {Type: "MovePlayer", x: direction.x, y: direction.y, z: direction.z}
     connection.send("SendMessage", JSON.stringify(message));
     console.log(`move, ${JSON.stringify(message)}`);
 
@@ -49,45 +53,69 @@ export function sendMouseEvent(MousePositionX: number, MousePositionY: number) {
     onMouseMove({clientX: MousePositionX, clientY: MousePositionY});
 }
 
-const movementKeyMap: { [key: string]: number } = {
-    up: 87, //w
-    down: 83, //s
-    left: 65, //a
-    right: 68, //d
+var direction = new THREE.Vector3();
+
+// Create a map of keys to key codes
+let keyCodes: { [key: string]: number[] } = {
+    left: [37, 65], // left arrow, 'A'
+    right: [39, 68], // right arrow, 'D'
+    forward: [38, 87], // up arrow, 'W'
+    backward: [40, 83] // down arrow, 'S'
+};
+
+let keys: { [key: string]: boolean } = {
+    left: false,
+    right: false,
+    up: false,
+    down: false
+};
+
+// Function to check if a key code is mapped to a key
+function isKeyCodeMappedToKey(keyCode: number, key: string): boolean {
+    return keyCodes[key].includes(keyCode);
 }
 
-export function onDocumentKeyDown(event: { which: any, key: string }) {
-    const keyCode = event.which;
-    let movement: string = '';
-
-    for (let key in movementKeyMap) {
-        if (keyCode == movementKeyMap[key]) {
-            movement = key;
+// Listen for keydown events
+export function onDocumentKeyDown(event: { which: any, key: string, keyCode: number }) {
+    for (var key in keys) {
+        if (isKeyCodeMappedToKey(event.keyCode, key)) {
+            keys[key] = true;
         }
     }
-    // Send the movement to SignalR
-    sendKeyboardEvent(movement);
 }
 
-export function onDocumentKeyUp(event: { which: any }) {
-    const keyCode = event.which;
-    let movement: string = '';
-
-    for (let key in movementKeyMap) {
-        if (keyCode == movementKeyMap[key]) {
-            movement = key;
+// Listen for keyup events
+export function onDocumentKeyUp(event: { which: any, key: string, keyCode: number }) {
+    for (var key in keys) {
+        if (isKeyCodeMappedToKey(event.keyCode, key)) {
+            keys[key] = false;
         }
     }
-    // Send the movement to SignalR
-    connection.send("StopMove", movement);
 }
 
+// Update the direction vector based on the keys that are pressed
+function updateDirection() {
+    direction.set(0, 0, 0);
+    if (keys.left) direction.x -= 1;
+    if (keys.right) direction.x += 1;
+    if (keys.up) direction.y += 1;
+    if (keys.down) direction.y -= 1;
+
+    // Normalize the direction vector
+    if (direction.length() > 0) {
+        direction.normalize();
+    }
+}
+
+let playerId = -1;
 function ClientDispatcher(message: any) {
     let content = JSON.parse(message.content);
     let type = message.type;
     if(type === "FetchDynamicObjects"){
         RemoveAllCharacters();
         AddAllCharacters(content);
+    }else if(type ==="PlayerId"){
+        playerId = content.id;
     }
 }
 
@@ -116,7 +144,6 @@ function RemoveAllCharacters() {
 
 function AddAllCharacters(characters: any[]) {
     characters.forEach(character => {
-        console.log(character)
         var cone = createCone(scene, cones);
         cone.position.x = character.WorldMatrix._matrix.M41;
         cone.position.y = character.WorldMatrix._matrix.M42;
@@ -128,6 +155,10 @@ function AddAllCharacters(characters: any[]) {
         cone.userData.id = character.Id;
         scene.add(cone);
         cones.push(cone);
+
+        if(character.Id === playerId){
+            camera.position.set(cone.position.x, cone.position.y, 5);
+        }
     })
 }
 
@@ -176,6 +207,7 @@ export function onMouseMove(event: { clientX: number; clientY: number }) {
 }
 
 export function render() {
+    updateDirection();
     requestAnimationFrame(render);
 
     for (var i = 0; i < beams.length; i++) {

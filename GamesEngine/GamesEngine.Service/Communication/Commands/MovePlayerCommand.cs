@@ -10,22 +10,21 @@ namespace GamesEngine.Service.Communication.Commands
 {
     public interface IMovePlayerCommand : ICommand
     {
-        public string KeyboardEvent { get; }
-
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
     }
     public class MovePlayerCommand : IMovePlayerCommand
     {
         public string Type { get; private set; } = "MovePlayer";
         public string? ConnectionId { get; set; }
-        public string KeyboardEvent { get; set; }
 
         public MovePlayerCommand()
         {
         }
 
-        public MovePlayerCommand(string keyboardEvent)
-        {
-            KeyboardEvent = keyboardEvent;
-        }
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
     }
 }

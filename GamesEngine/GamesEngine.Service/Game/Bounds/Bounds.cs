@@ -31,17 +31,33 @@ namespace GamesEngine.Service.Game.Bounds
 
         public bool Intersects(IBounds bounds)
         {
-            return false;
+            return Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ())
+                   || Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                   || Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ())
+                   || Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                   || Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                   || Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ())
+                   || Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                   || Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ());
         }
 
         public bool Contains(IBounds bounds)
         {
-            return false;
+            return Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ())
+                && Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                && Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ())
+                && Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                && Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                && Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY() + bounds.Height, bounds.Position.GetPosition().GetZ())
+                && Contains(bounds.Position.GetPosition().GetX(), bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ() + bounds.Depth)
+                && Contains(bounds.Position.GetPosition().GetX() + bounds.Width, bounds.Position.GetPosition().GetY(), bounds.Position.GetPosition().GetZ());
         }
 
         public bool Contains(float x, float y, float z)
         {
-            return false;
+            return Position.GetPosition().GetX() >= x && Position.GetPosition().GetX() <= x + Width &&
+                   Position.GetPosition().GetY() >= y && Position.GetPosition().GetY() <= y + Height &&
+                   Position.GetPosition().GetZ() >= z && Position.GetPosition().GetZ() <= z + Depth;
         }
     }
 }

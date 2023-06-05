@@ -15,13 +15,19 @@ public class BoxGameObject : IStaticGameObject
         throw new NotImplementedException();
     }
 
-    public void Collision(IGameObject otherGameObject)
+    public bool Collision(IGameObject otherGameObject)
     {
-        throw new NotImplementedException();
+        var thisBounds = this.GetBounds();
+        var otherBounds = otherGameObject.GetBounds();
+        if (thisBounds.Intersects(otherBounds))
+        {
+            return true;
+        }
+        return false;
     }
 
     public IBounds GetBounds()
     {
-        throw new NotImplementedException();
+        return new Bounds.Bounds(WorldMatrix, 1, 1, 1);
     }
 }

@@ -122,15 +122,13 @@ function ClientDispatcher(message: any) {
             console.log(staticObject);
             var objectGeom = new THREE.BoxGeometry(1, 1, 1);
             var objectMat = new THREE.MeshNormalMaterial();
+
+            objectGeom.translate(0.5, 0.5, 0.5); // pivot point is shifted
             var object = new THREE.Mesh(objectGeom, objectMat);
 
             object.rotation.x = staticObject.WorldMatrix._matrix.M11;
             object.rotation.y = staticObject.WorldMatrix._matrix.M12;
             object.rotation.z = staticObject.WorldMatrix._matrix.M13;
-
-            object.scale.x = staticObject.WorldMatrix._matrix.M21;
-            object.scale.y = staticObject.WorldMatrix._matrix.M22;
-            object.scale.z = staticObject.WorldMatrix._matrix.M23;
 
             object.position.x = staticObject.WorldMatrix._matrix.M41;
             object.position.y = staticObject.WorldMatrix._matrix.M42;

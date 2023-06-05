@@ -17,7 +17,7 @@ public class MockDynamicObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public void Collision(IGameObject otherGameObject)
+    public bool Collision(IGameObject otherGameObject)
     {
         throw new NotImplementedException();
     }

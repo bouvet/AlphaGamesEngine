@@ -16,7 +16,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
             if (gameObject != null)
             {
                 var rot = CalculateRotation(gameObject.WorldMatrix.GetPosition(), command.MousePositionX, command.MousePositionY);
-                IVector rotationVector = new Math.Vector(0, rot, 0);
+                IVector rotationVector = new Math.Vector(1, rot, 0);
                 gameObject.WorldMatrix.SetRotation(rotationVector);
                 callback.OnSuccess("success");
                 return;
@@ -35,7 +35,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
             // Convert the rotation angle to degrees
             float rotationAngleDegrees = rotationAngleRadians * (180.0f / MathF.PI);
-            return 0;
+            return rotationAngleRadians;
         }
     }
 }

@@ -22,4 +22,15 @@ public class GameHandler
     {
         return Game.Clients.Find(e => e.ConnectionId == id);
     }
+
+    private static Timer timer;
+    public static void Start()
+    {
+        timer = new Timer(Update, null, 0, 100);
+    }
+
+    private static void Update(Object o)
+    {
+        Game.GameLoop.Update();
+    }
 }

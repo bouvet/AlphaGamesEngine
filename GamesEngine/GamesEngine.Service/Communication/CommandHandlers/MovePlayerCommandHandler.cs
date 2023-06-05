@@ -26,7 +26,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
             if (command.KeyboardEvent == null) return;
 
             IClient client = GameHandler.GetClient(command.ConnectionId);
-            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
+            IPlayerGameObject gameObject = client.PlayerGameObject;
 
             if (gameObject != null)
             {
@@ -52,8 +52,21 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
                 updatePosition = direction.Multiply(new Vector(speed, speed, speed));
 
-                gameObject.WorldMatrix.SetPosition(gameObject.WorldMatrix.GetPosition().Add(updatePosition));
-                
+                gameObject.Motion.Add(updatePosition);
+
+                float maxSpeed = 10f;
+
+                float xMotion = updatePosition.GetX();
+                float yMotion = updatePosition.GetY();
+                float zMotion = updatePosition.GetZ();
+
+                xMotion = MathF.Max(MathF.Min(xMotion, maxSpeed), -maxSpeed);
+                yMotion = MathF.Max(MathF.Min(yMotion, maxSpeed), -maxSpeed);
+                zMotion = MathF.Max(MathF.Min(zMotion, maxSpeed), -maxSpeed);
+
+                gameObject.Motion = new Vector(xMotion, yMotion, zMotion);
+
+
                 if (updatePosition.GetX() > 0 || updatePosition.GetY() > 0 || updatePosition.GetZ() > 0)
                 {
                     callback.OnSuccess("success");

@@ -23,6 +23,8 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
+            if (command.KeyboardEvent == null) return;
+
             IClient client = GameHandler.GetClient(command.ConnectionId);
             IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
 
@@ -30,7 +32,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
             {
                 IVector updatePosition = new Math.Vector(0f, 0f, 0f);
                 IVector direction = null;
-                float speed = 10f;
+                float speed = 0.5f;
 
                 switch (command.KeyboardEvent)
                 {

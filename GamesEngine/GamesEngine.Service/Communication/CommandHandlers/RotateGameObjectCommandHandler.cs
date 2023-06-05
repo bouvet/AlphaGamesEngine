@@ -2,42 +2,40 @@
 using GamesEngine.Patterns.Query;
 using GamesEngine.Service.Communication.Commands;
 using GamesEngine.Service.Game.Object;
-using GamesEngine.Service.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Numerics;
 using GamesEngine.Math;
 
 namespace GamesEngine.Service.Communication.CommandHandlers
 {
-    public interface IRotateGameObjectCommandHandler : ICommandHandler<IRotateGameObjectCommand, ICommandCallback<string>>
+    public class RotateGameObjectCommandHandler : ICommandHandler<RotateGameObjectCommand, ICommandCallback<string>>
     {
-    }
-    public class RotateGameObjectCommandHandler : IRotateGameObjectCommandHandler
-    {
-        public void Handle(IRotateGameObjectCommand command, ICommandCallback<string> callback)
+        public void Handle(RotateGameObjectCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = GameHandler.GetClient(command.ConnectionId).PlayerGameObject;
-            var targetX = command.MousePositionX - gameObject.WorldMatrix.GetPosition().GetX();
-            var targetY = command.MousePositionY - gameObject.WorldMatrix.GetPosition().GetY();
-            double offsetAngle = System.Math.PI / 2;
-            double angle = System.Math.Atan2(targetY, targetX) + offsetAngle;
-            Quaternion rotation = Quaternion.CreateFromYawPitchRoll(0, (float) angle, 0);
-            IVector rotationVector = new Math.Vector(gameObject.WorldMatrix.GetRotation().GetX(), gameObject.WorldMatrix.GetRotation().GetY(), gameObject.WorldMatrix.GetRotation().GetZ());
-            IVector rotatedVector = rotationVector.Transform(rotation);
-            gameObject.WorldMatrix.SetRotation(rotatedVector);
+            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(GameHandler.GetClient(command.ConnectionId).PlayerGameObject.Id);
 
             if (gameObject != null)
             {
+                var rot = CalculateRotation(gameObject.WorldMatrix.GetPosition(), command.MousePositionX, command.MousePositionY);
+                IVector rotationVector = new Math.Vector(0, rot, 0);
+                gameObject.WorldMatrix.SetRotation(rotationVector);
                 callback.OnSuccess("success");
+                return;
             }
-            else
-            {
-                callback.OnFailure();
-            }
+
+            callback.OnFailure();
+        }
+
+        private static float CalculateRotation(IVector vector, float targetX, float targetY)
+        {
+            Vector3 targetPosition = new Vector3(targetX, targetY, 0);
+            Vector3 currentPosition = new Vector3(vector.GetX(), vector.GetY(), 0);
+            Vector3 direction = Vector3.Normalize(targetPosition - currentPosition);
+            // Calculate the rotation angle in radians
+            float rotationAngleRadians = MathF.Atan2(direction.Y, direction.X);
+
+            // Convert the rotation angle to degrees
+            float rotationAngleDegrees = rotationAngleRadians * (180.0f / MathF.PI);
+            return 0;
         }
     }
 }

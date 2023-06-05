@@ -69,13 +69,28 @@ namespace GamesEngine.Communication
         public void HandleMessage( string user, string JsonData)
         {
             IMessage data;
-            Dictionary<string, string> json = JsonSerializer.Deserialize<Dictionary<string, string>>(JsonData);
+            Dictionary<string, object> json = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonData);
             var type = json.GetValueOrDefault("Type", null);
 
-            if (type != null && messageTypeMap.TryGetValue(type, out var messageType))
+            string sType = null;
+
+            if (type is string s)
+            {
+                sType = s;
+            }else if (type is JsonElement element)
+            {
+                sType = element.GetString();
+            }
+
+            var messageType = messageTypeMap.GetValueOrDefault(sType);
+            if (messageType != null)
             {
                 data = (IMessage)JsonSerializer.Deserialize(JsonData, messageType);
                 OnMessage(user, data);
+            }
+            else
+            {
+                Console.WriteLine("Unknown message type: " + sType);
             }
         }
 
@@ -99,5 +114,4 @@ namespace GamesEngine.Communication
             await HubContext.Clients.All.SendAsync(CLIENT_DISPATCHER_FUNCTION_NAME, message);
         }
     }
-
 }

@@ -15,7 +15,7 @@ namespace GamesEngine.Math
     public class Matrix : IMatrix
     {
         [JsonProperty]
-        Matrix4x4 _matrix = Matrix4x4.Identity;
+        Matrix4x4 _matrix = new Matrix4x4();
         public IVector GetRotation()
         {
             return new Vector(_matrix.M11, _matrix.M12, _matrix.M13);

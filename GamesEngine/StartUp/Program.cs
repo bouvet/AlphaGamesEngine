@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Communication;
+using GamesEngine.Patterns;
+using GamesEngine.Service;
 using Microsoft.AspNetCore.SignalR;
 
 
@@ -17,6 +19,10 @@ namespace GamesEngine.Communication
     {
         public static void Main(string[] args)
         {
+
+            GameHandler.CommunicationDispatcher = new CommunicationDispatcher();
+            GameHandler.CommunicationStrategy = new SignalRCommunicationStrategy(((id, message) => GameHandler.Communication.OnMessage(id, message)));
+            GameHandler.Communication = new Service.Communication.Communication(GameHandler.CommunicationStrategy, GameHandler.CommunicationDispatcher);
 
             var builder = WebApplication.CreateBuilder(args);
 

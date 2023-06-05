@@ -1,4 +1,4 @@
-﻿using GamesEngine.Service.Communication;
+using GamesEngine.Service.Communication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +17,7 @@ namespace GamesEngine.Communication
     {
         public static void Main(string[] args)
         {
-            
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();

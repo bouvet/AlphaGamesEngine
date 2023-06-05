@@ -21,6 +21,7 @@ var mouse = new THREE.Vector2();
 var intersectPoint = new THREE.Vector3();
 var beams: THREE.Mesh[] = [];
 var cones: THREE.Mesh[] = [];
+var staticObjects: THREE.Mesh[] = [];
 var marker = Marker(scene);
 Grid(scene);
 AxesHelper(scene);
@@ -59,8 +60,8 @@ var direction = new THREE.Vector3();
 let keyCodes: { [key: string]: number[] } = {
     left: [37, 65], // left arrow, 'A'
     right: [39, 68], // right arrow, 'D'
-    forward: [38, 87], // up arrow, 'W'
-    backward: [40, 83] // down arrow, 'S'
+    up: [38, 87], // up arrow, 'W'
+    down: [40, 83] // down arrow, 'S'
 };
 
 let keys: { [key: string]: boolean } = {
@@ -116,24 +117,44 @@ function ClientDispatcher(message: any) {
         AddAllCharacters(content);
     }else if(type ==="PlayerId"){
         playerId = content.id;
+    }else if(type === "FetchStaticObjects"){
+        content.forEach((staticObject: any) => {
+            console.log(staticObject);
+            var objectGeom = new THREE.BoxGeometry(1, 1, 1);
+            var objectMat = new THREE.MeshNormalMaterial();
+            var object = new THREE.Mesh(objectGeom, objectMat);
+
+            object.rotation.x = staticObject.WorldMatrix._matrix.M11;
+            object.rotation.y = staticObject.WorldMatrix._matrix.M12;
+            object.rotation.z = staticObject.WorldMatrix._matrix.M13;
+
+            object.scale.x = staticObject.WorldMatrix._matrix.M21;
+            object.scale.y = staticObject.WorldMatrix._matrix.M22;
+            object.scale.z = staticObject.WorldMatrix._matrix.M23;
+
+            object.position.x = staticObject.WorldMatrix._matrix.M41;
+            object.position.y = staticObject.WorldMatrix._matrix.M42;
+            object.position.z = staticObject.WorldMatrix._matrix.M43;
+
+            object.userData.id = staticObject.Id;
+
+            scene.add(object);
+            staticObjects.push(object);
+        });
     }
 }
 
 connection.on("ClientDispatcherFunctionName", (message: any) => ClientDispatcher(message));
 
-export function createCone(scene: THREE.Scene, coneArray: THREE.Mesh[]) {
-    var coneGeom = new THREE.ConeGeometry(0.2, 1, 10);
+export function createCone() {
+    const coneGeom = new THREE.ConeGeometry(0.2, 1, 10);
     coneGeom.translate(0, .5, 0);
     coneGeom.rotateX(Math.PI / 2);
-    var coneMat = new THREE.MeshNormalMaterial();
-    var cone = new THREE.Mesh(coneGeom, coneMat);
+    const coneMat = new THREE.MeshNormalMaterial();
+    const cone = new THREE.Mesh(coneGeom, coneMat);
     cone.lookAt(new THREE.Vector3(0, 1, 0));
-    scene.add(cone);
-    coneArray.push(cone);
     return cone;
 }
-
-connection.on("RemoveAllCharacters", () => RemoveAllCharacters());
 
 function RemoveAllCharacters() {
     cones.forEach(cone => {
@@ -144,7 +165,7 @@ function RemoveAllCharacters() {
 
 function AddAllCharacters(characters: any[]) {
     characters.forEach(character => {
-        var cone = createCone(scene, cones);
+        const cone = createCone();
         cone.position.x = character.WorldMatrix._matrix.M41;
         cone.position.y = character.WorldMatrix._matrix.M42;
         cone.position.z = character.WorldMatrix._matrix.M43;
@@ -153,6 +174,7 @@ function AddAllCharacters(characters: any[]) {
         cone.rotation.y = character.WorldMatrix._matrix.M12;
         cone.rotation.z = character.WorldMatrix._matrix.M13;
         cone.userData.id = character.Id;
+
         scene.add(cone);
         cones.push(cone);
 

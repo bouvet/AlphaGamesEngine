@@ -36,6 +36,10 @@ export function onDocumentKeyDown(event: { which: any, key: string, keyCode: num
             keys[key] = true;
         }
     }
+
+    if(event.keyCode == 32){
+        communication.SendToServer({Type: "Shoot"});
+    }
 }
 
 // Listen for keyup events
@@ -44,6 +48,11 @@ export function onDocumentKeyUp(event: { which: any, key: string, keyCode: numbe
         if (isKeyCodeMappedToKey(event.keyCode, key)) {
             keys[key] = false;
         }
+    }
+}
+
+export function mouseDown(event: {button: number}){
+    if(event.button === 0){
     }
 }
 
@@ -65,6 +74,10 @@ export function sendKeyboardEvent() {
 }
 
 export function sendMouseEvent(MousePositionX: number, MousePositionY: number) {
-    communication.SendToServer({Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY: MousePositionY});
     onMouseMove({clientX: MousePositionX, clientY: MousePositionY});
+    communication.SendToServer({
+        Type: "RotateGameObject",
+        MousePositionX: intersectPoint.x,
+        MousePositionY: intersectPoint.y
+    });
 }

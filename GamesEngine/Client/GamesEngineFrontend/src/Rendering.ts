@@ -4,6 +4,7 @@ import {Grid} from "./Figures/Grid.ts";
 import {keys} from "./Events/InputHandler.ts";
 import {AxesHelper} from "./Helpers/AxesHelper.ts";
 import "./style.css";
+import {dynamicObjects} from "./SceneHandler.ts";
 
 export const camera = new THREE.PerspectiveCamera(
     60,
@@ -64,4 +65,10 @@ export function render() {
     updateDirection();
     requestAnimationFrame(render);
     renderer.render(scene, camera);
+
+    dynamicObjects.forEach((object) => {
+       if(object.userData.update){
+          object.userData.update(object);
+       }
+    });
 }

@@ -12,7 +12,7 @@ setInterval(() => {
     if(camera.position != cameraPosition){
         camera.position.lerp(cameraPosition, 0.25);
     }
-}, 100);
+}, 50);
 
 
 export function SetPlayerId(id: number){
@@ -51,7 +51,7 @@ export function RemoveDynamicObjects() {
     dynamicObjects = [];
 }
 
-let lastDynamicObjects: any[] = [];
+let lastPositions = new Map<number, THREE.Vector3>();
 
 export function AddDynamicObjects(objects: any[]) {
     objects.forEach(dynamicObject => {
@@ -62,9 +62,21 @@ export function AddDynamicObjects(objects: any[]) {
         }
 
         if(obj){
-
-
             SetMatrix(obj, dynamicObject);
+
+            if(lastPositions.get(dynamicObject.Id) !== undefined){
+                let lastPos = lastPositions.get(dynamicObject.Id);
+                if(lastPos != null){
+                    let newPos = new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z);
+                    obj.position.set(lastPos.x, lastPos.y, lastPos.z);
+
+                    obj.userData.update = (obj: any) => {
+                        obj.position.lerp(obj.userData.newPos, 0.1);
+                        lastPositions.set(obj.userData.id, new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z));
+                    };
+                    obj.userData.newPos = newPos;
+                }
+            }
 
             obj.userData.id = dynamicObject.Id;
 
@@ -75,9 +87,12 @@ export function AddDynamicObjects(objects: any[]) {
             scene.add(obj);
             dynamicObjects.push(obj);
         }
-    });
+    })
 
-    lastDynamicObjects = dynamicObjects;
+    lastPositions.clear();
+    dynamicObjects.forEach(obj => {
+        lastPositions.set(obj.userData.id, new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z));
+    });
 }
 
 function SetMatrix(obj: THREE.Mesh, gameObject: any){
@@ -85,7 +100,7 @@ function SetMatrix(obj: THREE.Mesh, gameObject: any){
     obj.position.y = gameObject.WorldMatrix._matrix.M42;
     obj.position.z = gameObject.WorldMatrix._matrix.M43;
 
-    obj.rotation.x = gameObject.WorldMatrix._matrix.M11;
-    obj.rotation.y = gameObject.WorldMatrix._matrix.M12;
-    obj.rotation.z = gameObject.WorldMatrix._matrix.M13;
+    obj.rotation.x = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M11;
+    obj.rotation.y = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M12;
+    obj.rotation.z = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M13;
 }

@@ -11,6 +11,7 @@ namespace GamesEngine.Math
         void SetRotation(IVector rotation);
         void SetScale(IVector scale);
         void SetPosition(IVector position);
+        IMatrix Copy();
     }
     public class Matrix : IMatrix
     {
@@ -51,6 +52,14 @@ namespace GamesEngine.Math
             tempMatrix.M42 = position.GetY();
             tempMatrix.M43 = position.GetZ();
             _matrix = tempMatrix;
+        }
+
+        public IMatrix Copy()
+        {
+            return new Matrix
+            {
+                _matrix = _matrix
+            };
         }
     }
 }

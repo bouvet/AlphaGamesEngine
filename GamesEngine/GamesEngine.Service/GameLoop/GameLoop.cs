@@ -33,7 +33,7 @@ public class GameLoop : IGameLoop
     public void Update()
     {
         ITime currentTime = new Time();
-        IInterval deltaTime = new Interval(currentTime, lastUpdate);
+        IInterval deltaTime = new Interval(lastUpdate, currentTime);
         Game.SceneGraph.DynamicGameObject.GetValues().ForEach(gameObject =>
         {
             gameObject.Update(deltaTime, currentTime);

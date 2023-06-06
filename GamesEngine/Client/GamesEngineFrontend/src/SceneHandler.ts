@@ -2,10 +2,18 @@ import * as THREE from "three";
 import {camera, scene} from "./Rendering.ts";
 import {DynamicTypeHandlers, StaticTypeHandlers} from "./ObjectTypeHandler.ts";
 
-let dynamicObjects: THREE.Mesh[] = [];
-let staticObjects: THREE.Mesh[] = [];
+export let dynamicObjects: THREE.Mesh[] = [];
+export let staticObjects: THREE.Mesh[] = [];
 
 export let playerId = -1;
+let cameraPosition = new THREE.Vector3();
+
+setInterval(() => {
+    if(camera.position != cameraPosition){
+        camera.position.lerp(cameraPosition, 0.25);
+    }
+}, 100);
+
 
 export function SetPlayerId(id: number){
     playerId = id;
@@ -43,6 +51,8 @@ export function RemoveDynamicObjects() {
     dynamicObjects = [];
 }
 
+let lastDynamicObjects: any[] = [];
+
 export function AddDynamicObjects(objects: any[]) {
     objects.forEach(dynamicObject => {
         let obj = null;
@@ -52,18 +62,22 @@ export function AddDynamicObjects(objects: any[]) {
         }
 
         if(obj){
+
+
             SetMatrix(obj, dynamicObject);
+
             obj.userData.id = dynamicObject.Id;
 
-
             if (dynamicObject.Id === playerId) {
-                camera.position.set(obj.position.x, obj.position.y, 5);
+                cameraPosition = new THREE.Vector3(obj.position.x, obj.position.y, 5);
             }
 
             scene.add(obj);
             dynamicObjects.push(obj);
         }
-    })
+    });
+
+    lastDynamicObjects = dynamicObjects;
 }
 
 function SetMatrix(obj: THREE.Mesh, gameObject: any){

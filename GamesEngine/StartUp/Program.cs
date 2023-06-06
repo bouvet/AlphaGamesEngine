@@ -63,6 +63,8 @@ namespace GamesEngine.Communication
 
             SignalRCommunicationStrategy.HubContext = ((IApplicationBuilder)app).ApplicationServices.GetService<IHubContext<SignalRHub>>();
 
+            GameHandler.Start();
+
             app.Run();
         }
     }

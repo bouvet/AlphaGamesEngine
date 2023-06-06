@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace GamesEngine.Communication.Queries.Handlers;
 
-public class FetchStaticObjectsHandler : IQueryHandler<FetchStaticDynamicObjectsQuery, IQueryCallback<string>>
+public class FetchStaticObjectsHandler : IQueryHandler<FetchStaticObjectsQuery, IQueryCallback<string>>
 {
-    public void Handle(FetchStaticDynamicObjectsQuery query, IQueryCallback<string> callBack)
+    public void Handle(FetchStaticObjectsQuery query, IQueryCallback<string> callBack)
     {
         List<IStaticGameObject> objects = GameHandler.GetGame(query.ConnectionId).SceneGraph.StaticGameObject.GetValues();
         string jsonString = JsonConvert.SerializeObject(objects, Formatting.Indented, new JsonSerializerSettings

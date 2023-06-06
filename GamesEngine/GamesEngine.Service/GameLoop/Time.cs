@@ -15,7 +15,7 @@ namespace GamesEngine.Service.GameLoop
         private readonly long time;
         public Time()
         {
-            time = DateTime.Now.Ticks;
+            time = DateTime.Now.Millisecond;
         }
 
         public long GetTime()

@@ -5,14 +5,14 @@ namespace GamesEngine.Service.Game.Object
 {
     public abstract class DynamicGameObject : GameObject, IDynamicGameObject
     {
-        public Vector Motion { get; set; }
+        public IVector Motion { get; set; }
         public abstract void Update(IInterval deltaTime, ITime time);
         public abstract void UpdateMovement(IInterval deltaTime, ITime time);
     }
 
     public interface IDynamicGameObject : IGameObject
     {
-        public Vector Motion { get; set; }
+        public IVector Motion { get; set; }
         public void Update(IInterval deltaTime, ITime time);
         public void UpdateMovement(IInterval deltaTime, ITime time);
 

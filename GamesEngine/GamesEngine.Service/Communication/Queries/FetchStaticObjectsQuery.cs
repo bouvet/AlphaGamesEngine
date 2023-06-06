@@ -2,8 +2,8 @@ using GamesEngine.Patterns.Query;
 
 namespace GamesEngine.Communication.Queries;
 
-public class FetchStaticDynamicObjectsQuery : IQuery
+public class FetchStaticObjectsQuery : IQuery
 {
-    public string Type { get; } = "FetchStaticDynamicObjects";
+    public string Type { get; } = "FetchStaticObjects";
     public string? ConnectionId { get; set; }
 }

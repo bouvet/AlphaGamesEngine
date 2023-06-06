@@ -11,6 +11,7 @@ export let DynamicTypeHandlers: Handler = {};
 export function AddTypeHandlers(){
 
     //Dynamic Objects
+    // @ts-ignore
     DynamicTypeHandlers["player"] = (character: any) => {
         return createCone();
     }

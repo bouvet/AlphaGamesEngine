@@ -1,5 +1,5 @@
 import {camera, direction, intersectPoint, marker, mouse, plane, raycaster} from "./../Rendering.ts";
-import {connection} from "../SignalR/Functions.ts";
+import {communication} from "../main.ts";
 
 export function startInputHandler() {
     setInterval(() => {
@@ -60,11 +60,11 @@ export function onMouseMove(event: { clientX: number; clientY: number }) {
 }
 
 export function sendKeyboardEvent() {
-    connection.send("SendMessage", JSON.stringify({Type: "MovePlayer", x: direction.x, y: direction.y, z: direction.z}));
+    communication.SendToServer({Type: "MovePlayer", x: direction.x, y: direction.y, z: direction.z});
     onMouseMove({clientX: mouseX, clientY: mouseY});
 }
 
 export function sendMouseEvent(MousePositionX: number, MousePositionY: number) {
-    connection.send("SendMessage", JSON.stringify({Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY: MousePositionY}));
+    communication.SendToServer({Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY: MousePositionY});
     onMouseMove({clientX: MousePositionX, clientY: MousePositionY});
 }

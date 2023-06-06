@@ -19,6 +19,8 @@ namespace GamesEngine.Service.Game.Object
     }
     public class PlayerGameObject : DynamicGameObject, IPlayerGameObject
     {
+        public string Type => "Player";
+
         [JsonIgnore]
         public IClient Client { get; }
 

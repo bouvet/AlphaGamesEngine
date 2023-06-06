@@ -1,28 +1,24 @@
-import './style.css';
-import {
-    onDocumentKeyDown,
-    onDocumentKeyUp,
-    render,
-    sendKeyboardEvent,
-    sendMouseEvent,
-    shootBeam
-} from './Events/Functions';
+
 import {startSignalR} from './SignalR/Functions';
+import {onDocumentKeyDown, onDocumentKeyUp, sendMouseEvent, startInputHandler} from "./Events/InputHandler.ts";
+import {AddDispatchHandlers} from "./DispatchHandlers.ts";
+import {render} from "./Rendering.ts";
+import {AddTypeHandlers} from "./ObjectTypeHandler.ts";
 
 
 window.addEventListener("mousemove", (event) => {
     sendMouseEvent(event.clientX, event.clientY);
 });
-document.addEventListener("keydown", (event) => {
-    //sendKeyboardEvent(event.key)
-});
 document.addEventListener("keydown", onDocumentKeyDown, false);
 document.addEventListener("keyup", onDocumentKeyUp, false);
 document.addEventListener('mousedown', function (event) {
     if (event.button === 0) {
-        shootBeam();
+        //shootBeam();
     }
 });
 
 render();
 startSignalR();
+AddDispatchHandlers();
+AddTypeHandlers();
+startInputHandler();

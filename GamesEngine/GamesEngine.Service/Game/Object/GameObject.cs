@@ -6,6 +6,7 @@ namespace GamesEngine.Service.Game.Object
 {
     public interface IGameObject
     {
+        string Type => GetType().Name;
         int Id { get; set; }
         IMatrix WorldMatrix { get; set; }
         IMatrix LocalMatrix { get; set; }

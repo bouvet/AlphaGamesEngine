@@ -5,6 +5,7 @@ namespace GamesEngine.Service.Game.Object.StaticGameObjects;
 
 public class BoxGameObject : IStaticGameObject
 {
+    public string Type => "Wall";
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();

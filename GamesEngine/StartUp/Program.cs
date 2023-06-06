@@ -1,4 +1,4 @@
-﻿using GamesEngine.Service.Communication;
+using GamesEngine.Service.Communication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Communication;
+using GamesEngine.Patterns;
+using GamesEngine.Service;
 using Microsoft.AspNetCore.SignalR;
 
 
@@ -17,7 +19,11 @@ namespace GamesEngine.Communication
     {
         public static void Main(string[] args)
         {
-            
+
+            GameHandler.CommunicationDispatcher = new CommunicationDispatcher();
+            GameHandler.CommunicationStrategy = new SignalRCommunicationStrategy(((id, message) => GameHandler.Communication.OnMessage(id, message)));
+            GameHandler.Communication = new Service.Communication.Communication(GameHandler.CommunicationStrategy, GameHandler.CommunicationDispatcher);
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();

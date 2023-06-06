@@ -18,6 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Backlog.md = Backlog.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartUp", "StartUp\StartUp.csproj", "{5C2198D3-5B69-4C77-8CDE-7473E6FC327D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6859694A-D342-4742-B9E5-E65EDD49464D} = {6859694A-D342-4742-B9E5-E65EDD49464D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +49,10 @@ Global
 		{6859694A-D342-4742-B9E5-E65EDD49464D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6859694A-D342-4742-B9E5-E65EDD49464D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6859694A-D342-4742-B9E5-E65EDD49464D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C2198D3-5B69-4C77-8CDE-7473E6FC327D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2198D3-5B69-4C77-8CDE-7473E6FC327D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2198D3-5B69-4C77-8CDE-7473E6FC327D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2198D3-5B69-4C77-8CDE-7473E6FC327D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

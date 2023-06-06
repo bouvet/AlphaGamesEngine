@@ -63,8 +63,7 @@ public class CommunicationDispatcher : ICommunicationDispatcher
             BindingFlags.NonPublic | BindingFlags.Instance);
 
         foreach (var type in DispatcherTypes.CommandHandlers())
-            if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs =>
-                    genericArgs[0] == command.GetType() && !type.IsAbstract))
+            if (type.GetInterfaces().Select(iface => iface.GetGenericArguments()).Any(genericArgs => genericArgs.Length > 0 && genericArgs[0] == command.GetType() && !type.IsAbstract))
             {
                 var commandType = command.GetType();
                 var instance = Activator.CreateInstance(type);

@@ -17,7 +17,7 @@ namespace GamesEngine.Service.Communication.Commands
     {
         public string Type { get; private set; } = "MovePlayer";
         public string? ConnectionId { get; set; }
-        public string KeyboardEvent { get; private set; }
+        public string KeyboardEvent { get; set; }
 
         public MovePlayerCommand()
         {

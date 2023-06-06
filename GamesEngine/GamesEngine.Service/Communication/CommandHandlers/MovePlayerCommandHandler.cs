@@ -14,6 +14,7 @@ using System.Collections;
 using System.Numerics;
 using GamesEngine.Math;
 using GamesEngine.Service.Client;
+using Vector = GamesEngine.Math.Vector;
 
 namespace GamesEngine.Service.Communication.CommandHandlers
 {
@@ -22,32 +23,34 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
+            if (command.KeyboardEvent == null) return;
+
             IClient client = GameHandler.GetClient(command.ConnectionId);
             IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
 
             if (gameObject != null)
             {
                 IVector updatePosition = new Math.Vector(0f, 0f, 0f);
+                IVector direction = null;
+                float speed = 0.5f;
 
                 switch (command.KeyboardEvent)
                 {
-                    case "ArrowRight":
-                    case "d":
-                        updatePosition = new Math.Vector(10.0f, 0.0f, 0.0f);
+                    case "right":
+                        direction = Direction.RIGHT;
                         break;
-                    case "ArrowLeft":
-                    case "a":
-                        updatePosition = new Math.Vector(-10.0f, 0.0f, 0.0f);
+                    case "left":
+                        direction = Direction.LEFT;
                         break;
-                    case "ArrowUp":
-                    case "w":
-                        updatePosition = new Math.Vector(0.0f, -10.0f, 0.0f);
+                    case "up":
+                        direction = Direction.UP;
                         break;
-                    case "ArrowDown":
-                    case "s":
-                        updatePosition = new Math.Vector(0.0f, 10.0f, 0.0f);
+                    case "down":
+                        direction = Direction.DOWN;
                         break;
                 }
+
+                updatePosition = direction.Multiply(new Vector(speed, speed, speed));
 
                 gameObject.WorldMatrix.SetPosition(gameObject.WorldMatrix.GetPosition().Add(updatePosition));
                 

@@ -3,14 +3,23 @@ import {onDocumentKeyDown, onDocumentKeyUp, sendMouseEvent, startInputHandler} f
 import {AddDispatchHandlers} from "./Communication/DispatchHandlers.ts";
 import {render} from "./Rendering.ts";
 import {AddTypeHandlers} from "./ObjectTypeHandler.ts";
-import {ICommunication, SignalRCommunication} from "./Communication/Communication.ts";
+import {Communication, ICommunication} from "./Communication/Communication.ts";
 import {Dispatcher} from "./Communication/Dispatcher.ts";
+import {ICommunicationStrategy, SignalRCommunicationStrategy} from "./Communication/CommunicationStrategy.ts";
 
+export const strategy: ICommunicationStrategy = new SignalRCommunicationStrategy();
 export const dispatcher = new Dispatcher();
 AddDispatchHandlers();
 
-export const communication: ICommunication = new SignalRCommunication(dispatcher);
-communication.init();
+export const communication: ICommunication = new Communication(dispatcher, strategy);
+await communication.Init();
+
+communication.SendToServer({Type: "FetchDynamicObjects"});
+communication.SendToServer({Type: "FetchStaticObjects"});
+
+setInterval(() => {
+    communication.SendToServer({Type: "FetchDynamicObjects"});
+}, 100);
 
 window.addEventListener("mousemove", (event) => {
     sendMouseEvent(event.clientX, event.clientY);

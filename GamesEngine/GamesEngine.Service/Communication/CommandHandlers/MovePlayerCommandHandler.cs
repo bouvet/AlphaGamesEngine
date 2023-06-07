@@ -23,51 +23,32 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
         public void Handle(MovePlayerCommand command, ICommandCallback<string> callback)
         {
-            Console.WriteLine($"MovePlayer requested, {command.KeyboardEvent}");
-            if (command.KeyboardEvent == null) return;
-
             IClient client = GameHandler.GetClient(command.ConnectionId);
-            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(client.PlayerGameObject.Id);
+            IPlayerGameObject gameObject = client.PlayerGameObject;
 
             if (gameObject != null)
             {
                 IVector updatePosition = new Math.Vector(0f, 0f, 0f);
-                IVector direction = null;
-                float speed = 10.0f;
+                IVector direction = new Vector(command.x, command.y, command.z);
+                float speed = 0.3f;
 
-                switch (command.KeyboardEvent)
-                {
-                    case "right":
-                    case "ArrowRight":
-                    case "d":
-                        direction = Direction.RIGHT;
-                        break;
-                    case "left":
-                    case "ArrowLeft":
-                    case "a":
-                        direction = Direction.LEFT;
-                        break;
-                    case "up":
-                    case "ArrowUp":
-                    case "w":
-                        direction = Direction.UP;
-                        break;
-                    case "down":
-                    case "ArrowDown":
-                    case "s":
-                        direction = Direction.DOWN;
-                        break;
-                }
+                updatePosition = direction.Multiply(new Vector(speed, speed, speed));
 
-                if (direction != null)
-                {
-                    updatePosition = direction.Multiply(new Vector(speed, speed, speed));
-                    Console.WriteLine($"Updated position vector: {updatePosition.GetX()}, {updatePosition.GetY()}");
-                }
+                gameObject.Motion.Add(updatePosition);
 
-                gameObject.WorldMatrix.SetPosition(gameObject.WorldMatrix.GetPosition().Add(updatePosition));
-                Console.WriteLine($"Game object position{gameObject.WorldMatrix.GetPosition().GetX() }");
-                
+                float maxSpeed = 10f;
+
+                float xMotion = updatePosition.GetX();
+                float yMotion = updatePosition.GetY();
+                float zMotion = updatePosition.GetZ();
+
+                xMotion = MathF.Max(MathF.Min(xMotion, maxSpeed), -maxSpeed);
+                yMotion = MathF.Max(MathF.Min(yMotion, maxSpeed), -maxSpeed);
+                zMotion = MathF.Max(MathF.Min(zMotion, maxSpeed), -maxSpeed);
+
+                gameObject.Motion = new Vector(xMotion, yMotion, zMotion);
+
+
                 if (updatePosition.GetX() > 0 || updatePosition.GetY() > 0 || updatePosition.GetZ() > 0)
                 {
                     callback.OnSuccess("success");

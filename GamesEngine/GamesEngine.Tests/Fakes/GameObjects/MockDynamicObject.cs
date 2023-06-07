@@ -17,7 +17,7 @@ public class MockDynamicObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public void Collision(IGameObject otherGameObject)
+    public bool Collision(IGameObject otherGameObject)
     {
         throw new NotImplementedException();
     }
@@ -27,7 +27,7 @@ public class MockDynamicObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public Vector Motion { get; set; }
+    public IVector Motion { get; set; }
 
     public void Update(IInterval deltaTime, ITime time)
     {

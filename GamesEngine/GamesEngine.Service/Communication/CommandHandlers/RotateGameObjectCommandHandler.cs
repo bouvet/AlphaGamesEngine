@@ -28,6 +28,9 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
             if (gameObject != null)
             {
+                var rot = CalculateRotation(gameObject.WorldMatrix.GetPosition(), command.MousePositionX, command.MousePositionY);
+                IVector rotationVector = new Math.Vector(1, rot, 0);
+                gameObject.WorldMatrix.SetRotation(rotationVector);
                 callback.OnSuccess("success");
             }
             else

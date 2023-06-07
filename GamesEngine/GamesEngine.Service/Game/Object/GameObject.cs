@@ -6,13 +6,14 @@ namespace GamesEngine.Service.Game.Object
 {
     public interface IGameObject
     {
+        string Type => GetType().Name;
         int Id { get; set; }
         IMatrix WorldMatrix { get; set; }
         IMatrix LocalMatrix { get; set; }
         IGameObject Parent { get; set; }
         List<IGameObject> Children { get; set; }
         public void Render();
-        public void Collision(IGameObject otherGameObject);
+        public bool Collision(IGameObject otherGameObject);
         public IBounds GetBounds();
     }
 
@@ -27,15 +28,16 @@ namespace GamesEngine.Service.Game.Object
         {
             throw new NotImplementedException();
         }
-        public virtual void Collision(IGameObject otherGameObject)
-        { 
-
+        public virtual bool Collision(IGameObject otherGameObject)
+        {
             var thisBounds = this.GetBounds();
             var otherBounds = otherGameObject.GetBounds();
             if (thisBounds.Intersects(otherBounds))
             {
-                throw new NotImplementedException();
+                return true;
             }
+
+            return false;
         }
         public virtual void Render()
         {

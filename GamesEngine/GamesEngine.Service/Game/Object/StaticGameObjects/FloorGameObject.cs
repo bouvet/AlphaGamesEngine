@@ -2,9 +2,9 @@ using GamesEngine.Math;
 
 namespace GamesEngine.Service.Game.Object.StaticGameObjects;
 
-public class WallGameObject : IStaticGameObject
+public class FloorGameObject : IStaticGameObject
 {
-    public virtual string Type => "Wall";
+    public string Type => "Floor";
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
@@ -21,6 +21,6 @@ public class WallGameObject : IStaticGameObject
 
     public IBounds GetBounds()
     {
-        return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(), WorldMatrix.GetScale().GetY(), WorldMatrix.GetScale().GetZ());
+        return null;
     }
 }

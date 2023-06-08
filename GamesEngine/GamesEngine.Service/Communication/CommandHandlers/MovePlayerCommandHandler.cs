@@ -28,13 +28,13 @@ namespace GamesEngine.Service.Communication.CommandHandlers
 
             if (gameObject != null)
             {
-                IVector updatePosition = new Math.Vector(0f, 0f, 0f);
-                IVector direction = new Vector(command.x, command.y, command.z);
                 float speed = 0.3f;
 
-                updatePosition = direction.Multiply(new Vector(speed, speed, speed));
+                IVector updatePosition = new Vector(0f, 0f, 0f);
+                IVector direction = new Vector(command.x, command.y, command.z);
+                updatePosition = direction * speed;
 
-                gameObject.Motion.Add(updatePosition);
+                gameObject.Motion += updatePosition;
 
                 float maxSpeed = 10f;
 

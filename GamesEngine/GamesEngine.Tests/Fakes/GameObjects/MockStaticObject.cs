@@ -1,15 +1,22 @@
 using GamesEngine.Math;
+using GamesEngine.Service.Game.Object;
 
-namespace GamesEngine.Service.Game.Object.StaticGameObjects;
+namespace GamesEngine.Tests.Fakes.GameObjects;
 
-public class WallGameObject : IStaticGameObject
+public class MockStaticObject : IStaticGameObject
 {
-    public virtual string Type => "Wall";
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
     public IGameObject Parent { get; set; }
     public List<IGameObject> Children { get; set; }
+    public bool Colliding { get; set; }
+
+    public MockStaticObject(Vector position)
+    {
+        WorldMatrix.SetPosition(position);
+    }
+
     public void Render()
     {
         throw new NotImplementedException();
@@ -17,10 +24,11 @@ public class WallGameObject : IStaticGameObject
 
     public void Collision(IGameObject otherGameObject)
     {
+        Colliding = true;
     }
 
     public IBounds GetBounds()
     {
-        return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(), WorldMatrix.GetScale().GetY(), WorldMatrix.GetScale().GetZ());
+        return new Bounds(WorldMatrix, 1, 1, 1);
     }
 }

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Math;
 using GamesEngine.Service.Client;
-using GamesEngine.Service.Game.Bounds;
 using Newtonsoft.Json;
 
 namespace GamesEngine.Service.Game.Object
@@ -35,11 +34,6 @@ namespace GamesEngine.Service.Game.Object
             Client = client;
         }
 
-        public override bool Collision(IGameObject gameObject)
-        {
-            return GetBounds().Intersects(gameObject.GetBounds());
-        }
-
         public override void Render()
         {
             throw new NotImplementedException();
@@ -49,38 +43,48 @@ namespace GamesEngine.Service.Game.Object
         {
         }
 
-
-        //TODO Get IBounds given a specific position
         public IBounds GetBounds()
         {
-            return new Bounds.Bounds(WorldMatrix, 1,1,1);
+            return MakeBounds(WorldMatrix);
+        }
+
+        private IBounds MakeBounds(IMatrix matrix)
+        {
+            IMatrix boundsMatrix = matrix.Copy();
+            IVector direction = Vector.GetDirectionVector(boundsMatrix);
+            //boundsMatrix.SetPosition(boundsMatrix.GetPosition() + (direction * new Vector(boundsMatrix.GetScale().GetX() / 2, 0, 0))); //Shift the bounding box to the center along the X axis
+            return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(),WorldMatrix.GetScale().GetY(),WorldMatrix.GetScale().GetZ());
         }
 
         public override void UpdateMovement(IInterval deltaTime, ITime time)
         {
             float multiplier = deltaTime.GetInterval() / 100f;
+            IVector moved = Motion * multiplier;
             IVector curPos = WorldMatrix.GetPosition();
-            IVector moved = Motion.Copy().Multiply(new Vector(multiplier, multiplier, multiplier));
-            curPos.Add(moved);
 
             var matrix = new Matrix();
             matrix.SetPosition(curPos);
-            Bounds.Bounds bounds = new Bounds.Bounds(matrix, 1, 1, 1);
+            matrix.SetRotation(WorldMatrix.GetRotation());
+            IBounds bounds = MakeBounds(matrix);
 
-            foreach (var staticOb in GameHandler.GetGame(Client.ConnectionId).SceneGraph.StaticGameObject.GetValues())
+
+            IGameObject collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds);
+
+            if (collision != null)
             {
-                if (bounds.Intersects(staticOb.GetBounds()))
-                {
-                    //TODO Instead of stopping movement, cap movement to the limit of the bounding box
-                    //WorldMatrix.SetPosition(curPos);
-                    return;
-                }
+               // return;
             }
 
-            var newMotion = Motion.Copy();
-            newMotion.Subtract(moved);
+            var newMotion = Motion - moved;
             Motion = newMotion;
-            WorldMatrix.SetPosition(curPos);
+            WorldMatrix.SetPosition(curPos + moved);
+        }
+
+        public void Collision(IGameObject otherGameObject)
+        {
+            Console.WriteLine("Collision with " + otherGameObject.Type + " " + otherGameObject.Id);
+            Console.WriteLine("Player position: " + WorldMatrix.GetPosition());
+            Console.WriteLine("Other position: " + otherGameObject.WorldMatrix.GetPosition());
         }
     }
 }

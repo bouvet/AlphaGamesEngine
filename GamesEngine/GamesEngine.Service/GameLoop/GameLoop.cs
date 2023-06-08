@@ -38,7 +38,7 @@ public class GameLoop : IGameLoop
         {
             gameObject.Update(deltaTime, currentTime);
 
-            if (gameObject.Motion.GetAbsolute() > 0)
+            if (gameObject.Motion != null && gameObject.Motion.GetAbsolute() > 0)
             {
                 gameObject.UpdateMovement(deltaTime, currentTime);
             }

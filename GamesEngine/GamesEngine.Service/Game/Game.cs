@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Service.Game.Graph;
 using GamesEngine.Communication.Queries;
+using GamesEngine.Math;
 using GamesEngine.Service.Communication;
 using GamesEngine.Service.Game.Object;
 
@@ -90,6 +91,8 @@ namespace GamesEngine.Service.Game
             Clients.Add(client);
 
             PlayerGameObject playerGameObject = new PlayerGameObject(client);
+            playerGameObject.WorldMatrix.SetPosition(new Vector(0, 0.25f, 0));
+            playerGameObject.WorldMatrix.SetScale(new Vector(0.5f, 0.5f, 1f));
             AddGameObject(playerGameObject);
 
             client.PlayerGameObject = playerGameObject;

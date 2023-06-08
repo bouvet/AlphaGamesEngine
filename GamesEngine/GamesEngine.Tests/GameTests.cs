@@ -4,7 +4,7 @@ using GamesEngine.Service.Game;
 using GamesEngine.Service.Game.Object;
 using GamesEngine.Tests.Fakes.GameObjects;
 
-namespace GamesEngine.Tests.Fakes;
+namespace GamesEngine.Tests;
 
 [TestFixture]
 public class GameTests

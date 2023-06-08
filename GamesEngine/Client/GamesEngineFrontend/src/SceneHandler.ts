@@ -70,7 +70,7 @@ export function AddDynamicObjects(objects: any[]) {
                     let newPos = new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z);
                     obj.position.set(lastPos.x, lastPos.y, lastPos.z);
 
-                    obj.userData.update = (obj: any) => {
+                    obj.userData.update = (obj: THREE.Mesh) => {
                         obj.position.lerp(obj.userData.newPos, 0.1);
                         lastPositions.set(obj.userData.id, new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z));
                     };
@@ -103,4 +103,8 @@ function SetMatrix(obj: THREE.Mesh, gameObject: any){
     obj.rotation.x = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M11;
     obj.rotation.y = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M12;
     obj.rotation.z = (Math.PI / 180) * gameObject.WorldMatrix._matrix.M13;
+
+    obj.scale.x = gameObject.WorldMatrix._matrix.M21;
+    obj.scale.y = gameObject.WorldMatrix._matrix.M22;
+    obj.scale.z = gameObject.WorldMatrix._matrix.M23;
 }

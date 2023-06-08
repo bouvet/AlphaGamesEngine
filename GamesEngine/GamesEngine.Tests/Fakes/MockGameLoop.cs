@@ -7,6 +7,8 @@ public class MockGameLoop : IGameLoop
 {
     private IGame Game { get; }
     private ITime Time { get; }
+    private long time = 0;
+
     public MockGameLoop(IGame game, ITime time)
     {
         Game = game;
@@ -20,8 +22,9 @@ public class MockGameLoop : IGameLoop
 
     public void Update()
     {
-        ITime curTime = new MockTime(0);
-        IInterval deltaTime = new Interval(curTime, Time);
+        ITime curTime = new MockTime(time);
+        ITime newTime = new MockTime(time + Time.GetTime());
+        IInterval deltaTime = new Interval(curTime, newTime);
         Game.SceneGraph.DynamicGameObject.GetValues().ForEach(gameObject =>
         {
             gameObject.Update(deltaTime, curTime);
@@ -31,6 +34,7 @@ public class MockGameLoop : IGameLoop
                 gameObject.UpdateMovement(deltaTime, curTime);
             }
         });
+        time += Time.GetTime();
     }
 
     public void Render()

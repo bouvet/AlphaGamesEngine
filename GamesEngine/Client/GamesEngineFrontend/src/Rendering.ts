@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import {Marker} from "./Figures/Marker.ts";
-import {Grid} from "./Figures/Grid.ts";
 import {keys} from "./Events/InputHandler.ts";
-import {AxesHelper} from "./Helpers/AxesHelper.ts";
 import "./style.css";
 import {dynamicObjects} from "./SceneHandler.ts";
 
@@ -29,11 +27,8 @@ export const mouse = new THREE.Vector2();
 export const intersectPoint = new THREE.Vector3();
 export const marker = Marker(scene);
 
-Grid(scene);
-AxesHelper(scene);
-
 const light = new THREE.HemisphereLight('white', "gray", 1);
-light.position.set(0, 100, 0);
+light.position.set(0, 0, 5);
 scene.add(light);
 
 // Handle window resize

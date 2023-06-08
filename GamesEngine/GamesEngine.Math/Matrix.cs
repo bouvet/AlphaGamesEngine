@@ -17,6 +17,12 @@ namespace GamesEngine.Math
     {
         [JsonProperty]
         Matrix4x4 _matrix = new Matrix4x4();
+
+        public Matrix()
+        {
+            SetScale(new Vector(1,1,1));
+        }
+
         public IVector GetRotation()
         {
             return new Vector(_matrix.M11, _matrix.M12, _matrix.M13);
@@ -56,10 +62,11 @@ namespace GamesEngine.Math
 
         public IMatrix Copy()
         {
-            return new Matrix
-            {
-                _matrix = _matrix
-            };
+            Matrix matrix = new Matrix();
+            matrix.SetPosition(GetPosition());
+            matrix.SetRotation(GetRotation());
+            matrix.SetScale(GetScale());
+            return matrix;
         }
     }
 }

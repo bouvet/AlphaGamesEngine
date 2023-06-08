@@ -1,5 +1,4 @@
 using GamesEngine.Math;
-using GamesEngine.Service.Game.Bounds;
 using GamesEngine.Service.Game.Object;
 using GamesEngine.Service.GameLoop;
 
@@ -17,7 +16,7 @@ public class MockDynamicObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public bool Collision(IGameObject otherGameObject)
+    public void Collision(IGameObject otherGameObject)
     {
         throw new NotImplementedException();
     }

@@ -92,7 +92,7 @@ namespace GamesEngine.Service.Game
 
             PlayerGameObject playerGameObject = new PlayerGameObject(client);
             playerGameObject.WorldMatrix.SetPosition(new Vector(0, 0.25f, 0));
-            playerGameObject.WorldMatrix.SetScale(new Vector(0.5f, 0.5f, 1f));
+            playerGameObject.WorldMatrix.SetScale(new Vector(1f, 1f, 1f));
             AddGameObject(playerGameObject);
 
             client.PlayerGameObject = playerGameObject;

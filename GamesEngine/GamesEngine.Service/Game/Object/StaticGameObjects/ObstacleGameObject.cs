@@ -21,6 +21,7 @@ public class ObstacleGameObject : IDynamicGameObject
 
     public void Collision(IGameObject otherGameObject)
     {
+        if(otherGameObject is PlayerGameObject)
         Colliding = true;
     }
 
@@ -29,20 +30,10 @@ public class ObstacleGameObject : IDynamicGameObject
         return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(), WorldMatrix.GetScale().GetY(), WorldMatrix.GetScale().GetZ());
     }
 
-    public long DeltaActiveTime { get; set; }
     public IVector Motion { get; set; }
     public void Update(IInterval deltaTime, ITime time)
     {
-        if (Colliding)
-        {
-            DeltaActiveTime += deltaTime.GetInterval();
-
-            if (DeltaActiveTime > 1000)
-            {
-                Colliding = false;
-                DeltaActiveTime = 0;
-            }
-        }
+        Colliding = false;
     }
 
     public void UpdateMovement(IInterval deltaTime, ITime time)

@@ -188,21 +188,88 @@ namespace GamesEngine.Math
             Height = height;
             Depth = depth;
 
-            Vector3 vecPos = new Vector3(Position.GetX(), Position.GetY(), Position.GetZ());  // Box's first corner position
-            Quaternion rotation = Quaternion.CreateFromYawPitchRoll(0, (float)System.Math.PI/4, 0);  // Box's rotation
-            Vector3 boxSize = new Vector3(Width, Height, Depth);  // Size of the box (width, height, depth)
+            Vector3 rotation = new Vector3(
+                DegreesToRadians(Rotation.GetX()),
+                DegreesToRadians(Rotation.GetY()),
+                DegreesToRadians(Rotation.GetZ())
+            );
 
-            // Calculate the vector from the given corner to the opposite corner
-            Vector3 oppositeCornerVector = boxSize;
+            Vector3 dimensions = new Vector3(width, height, depth);
 
-            // Rotate this vector by the box's rotation
-            Vector3 rotatedVector = Vector3.Transform(oppositeCornerVector, rotation);
+            Vector3[] corners = {
+                new (0, 0, 0),
+                new (dimensions.X, 0, 0),
+                new (0, dimensions.Y, 0),
+                new (0, 0, dimensions.Z),
+                new (dimensions.X, dimensions.Y, 0),
+                new (dimensions.X, 0, dimensions.Z),
+                new (0, dimensions.Y, dimensions.Z),
+                new (dimensions.X, dimensions.Y, dimensions.Z)
+            };
 
-            // Add this rotated vector to the given corner's position to get the position of the opposite corner
-            Vector3 oppositeCornerPosition = Vector3.Add(vecPos, rotatedVector);
+            Vector3 start = new Vector3(Position.GetX(), Position.GetY(), Position.GetZ());
+            Matrix4x4 matrix = MakeRotationFromEuler(rotation);
+            Vector3 endRelative = Vector3.Transform(dimensions, matrix);
+            Vector3 end = Vector3.Add(start, endRelative);
+            Vector3[] worldCorners = Array.ConvertAll(corners, corner => Vector3.Add(Vector3.Transform(corner, matrix), start));
+            Vector3 min = worldCorners[0];
+            Vector3 max = worldCorners[0];
 
-            box = new AxisAlignedBox3d(new Vector3d(vecPos.X, vecPos.Y, vecPos.Z), new Vector3d(oppositeCornerPosition.X, oppositeCornerPosition.Y, oppositeCornerPosition.Z));
+            foreach (Vector3 corner in worldCorners)
+            {
+                min = Vector3.Min(min, corner);
+                max = Vector3.Max(max, corner);
+            }
+
+            start = min;
+            end = max;
+
+            box = new AxisAlignedBox3d(new Vector3d(start.X, start.Y, start.Z), new Vector3d(end.X, end.Y, end.Z));
         }
+
+        public static float DegreesToRadians(float degrees)
+        {
+            return degrees * (System.MathF.PI / 180);
+        }
+
+
+        public static Matrix4x4 MakeRotationFromEuler(Vector3 euler)
+        {
+            float cosPitch = (float)System.Math.Cos(euler.X);
+            float sinPitch = (float)System.Math.Sin(euler.X);
+            float cosYaw = (float)System.Math.Cos(euler.Y);
+            float sinYaw = (float)System.Math.Sin(euler.Y);
+            float cosRoll = (float)System.Math.Cos(euler.Z);
+            float sinRoll = (float)System.Math.Sin(euler.Z);
+
+            Vector3 xaxis = new Vector3(
+                cosYaw * cosRoll,
+                sinPitch * sinYaw * cosRoll + cosPitch * sinRoll,
+                -cosPitch * sinYaw * cosRoll + sinPitch * sinRoll
+            );
+
+            Vector3 yaxis = new Vector3(
+                -cosYaw * sinRoll,
+                -sinPitch * sinYaw * sinRoll + cosPitch * cosRoll,
+                cosPitch * sinYaw * sinRoll + sinPitch * cosRoll
+            );
+
+            Vector3 zaxis = new Vector3(
+                sinYaw,
+                -sinPitch * cosYaw,
+                cosPitch * cosYaw
+            );
+
+            Matrix4x4 rotation = new Matrix4x4(
+                xaxis.X, yaxis.X, zaxis.X, 0,
+                xaxis.Y, yaxis.Y, zaxis.Y, 0,
+                xaxis.Z, yaxis.Z, zaxis.Z, 0,
+                0, 0, 0, 1
+            );
+
+            return rotation;
+        }
+
 
         public IVector GetIntersection(IBounds bounds)
         {

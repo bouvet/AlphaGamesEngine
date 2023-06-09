@@ -52,7 +52,7 @@ public class GameHandler
 
                     if (rand.NextDouble() < 0.1)
                     {
-                        float scale = 0.5f + (float)rand.NextDouble()/2;
+                        float scale = 0.5f + (float)rand.NextDouble();
                         ObstacleGameObject wallGameObject = new ObstacleGameObject();
                         wallGameObject.WorldMatrix.SetPosition(new Vector(x - (size/ 2), y - (size / 2), 0));
                         wallGameObject.WorldMatrix.SetRotation(new Vector(0, 0, (float)rand.NextDouble() * 360));

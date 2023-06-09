@@ -1,4 +1,5 @@
 ﻿using GamesEngine.Service.Game;
+using GamesEngine.Service.Game.Object;
 
 namespace GamesEngine.Service.GameLoop;
 
@@ -42,6 +43,8 @@ public class GameLoop : IGameLoop
             {
                 gameObject.UpdateMovement(deltaTime, currentTime);
             }
+
+            GameObject.CollisionCheck(Game, gameObject);
         });
         lastUpdate = new Time();
     }

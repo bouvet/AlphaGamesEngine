@@ -35,7 +35,10 @@ export function AddTypeHandlers(){
         const objectMat = new THREE.MeshPhongMaterial({color: staticObject.Colliding ? 0xff0000 : 0xffffff});
 
         objectGeom.translate(0.5, 0.5, 0.5); // pivot point is shifted
-        return new THREE.Mesh(objectGeom, objectMat);
+        const mesh = new THREE.Mesh(objectGeom, objectMat);
+        //mesh.receiveShadow = true;
+        //mesh.castShadow = true;
+        return mesh;
     }
 
 

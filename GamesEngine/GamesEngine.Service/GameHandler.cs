@@ -31,18 +31,18 @@ public class GameHandler
         timer = new Timer(Update, null, 0, 50);
 
         var size = 14;
-        for (var x = 0; x < size; x++)
-        {
-            for (var y = 0; y < size; y++)
-            {
-                if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
-                {
-                    BoxGameObject wallGameObject = new BoxGameObject();
-                    wallGameObject.WorldMatrix.SetPosition(new Vector(x - (size/ 2), y - (size / 2), 0));
-                    Game.AddGameObject(wallGameObject);
-                }
-            }
-        }
+        //for (var x = 0; x < size; x++)
+        //{
+        //    for (var y = 0; y < size; y++)
+        //    {
+        //        if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
+        //        {
+        //            BoxGameObject wallGameObject = new BoxGameObject();
+        //            wallGameObject.WorldMatrix.SetPosition(new Vector(x - (size/ 2), y - (size / 2), 0));
+        //            Game.AddGameObject(wallGameObject);
+        //        }
+        //    }
+        //}
     }
 
     private static void Update(Object o)

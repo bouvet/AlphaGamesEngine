@@ -5,11 +5,13 @@
 //     RemoveStaticObjects,
 //     SetPlayerId
 // } from "../SceneHandler.ts";
-import {RemoveAllCharacters, RenderCharacters, dispatcher} from "../main.ts";
+import {RemoveAllCharacters, RenderCharacters, dispatcher, SetPlayerId} from "../main.ts";
+
+
 
 export function AddDispatchHandlers(){
     dispatcher.AddHandler("PlayerId", (content) => {
-        // SetPlayerId(content.id);
+        SetPlayerId(content.id);
     });
 
     dispatcher.AddHandler("FetchDynamicObjects", (content) => {

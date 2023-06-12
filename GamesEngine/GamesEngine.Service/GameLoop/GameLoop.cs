@@ -44,7 +44,8 @@ public class GameLoop : IGameLoop
                 gameObject.UpdateMovement(deltaTime, currentTime);
             }
 
-            GameObject.CollisionCheck(Game, gameObject);
+            if(gameObject is PlayerGameObject)
+                GameObject.CollisionCheck(Game, gameObject);
         });
         lastUpdate = new Time();
     }

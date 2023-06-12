@@ -6,9 +6,14 @@ namespace GamesEngine.Math
     public interface IVector
     {
         float GetAbsolute();
+
         float GetX();
         float GetY();
         float GetZ();
+
+        void SetX(float x);
+        void SetY(float y);
+        void SetZ(float z);
 
         IVector Add(IVector vector);
         IVector Subtract(IVector vector);
@@ -18,6 +23,8 @@ namespace GamesEngine.Math
 
         IVector Divide(IVector vector);
         IVector DivideWithScalar(float scalar);
+
+        IVector Normalize();
 
         double Distance(IVector vector);
 
@@ -58,6 +65,12 @@ namespace GamesEngine.Math
             return rotatedVector;
         }
 
+        public IVector Normalize()
+        {
+            _vector = Vector3.Normalize(_vector);
+            return this;
+        }
+
         public double Distance(IVector vector)
         {
             return System.Math.Sqrt(System.Math.Pow(GetX() - vector.GetX(), 2) + System.Math.Pow(GetY() - vector.GetY(), 2) + System.Math.Pow(GetZ() - vector.GetZ(), 2));
@@ -84,6 +97,21 @@ namespace GamesEngine.Math
         public float GetZ()
         {
             return _vector.Z;
+        }
+
+        public void SetX(float x)
+        {
+            _vector.X = x;
+        }
+
+        public void SetY(float y)
+        {
+            _vector.Y = y;
+        }
+
+        public void SetZ(float z)
+        {
+            _vector.Z = z;
         }
 
         public IVector Add(IVector vector)

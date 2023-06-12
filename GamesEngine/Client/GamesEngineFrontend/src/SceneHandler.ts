@@ -7,6 +7,8 @@ export let dynamicObjects: THREE.Mesh[] = [];
 export let staticObjects: THREE.Mesh[] = [];
 
 export let SHOW_BOUNDS = true;
+export let SHADOWS = false;
+export let LIGHT = true;
 
 export let playerId = -1;
 let cameraPosition = new THREE.Vector3();
@@ -41,7 +43,9 @@ export function AddStaticObjects(objects: any[]){
             SetMatrix(obj, staticObject);
             obj.userData.id = staticObject.Id;
 
-           // obj.receiveShadow = true;
+            if(SHADOWS){
+                obj.receiveShadow = true;
+            }
 
             scene.add(obj);
             staticObjects.push(obj);
@@ -87,6 +91,8 @@ export function AddDynamicObjects(objects: any[]) {
 
             if (dynamicObject.Id === playerId) {
                 cameraPosition = new THREE.Vector3(obj.position.x, obj.position.y - 5, 5);
+
+                if(LIGHT)
                 pointLight.position.set(obj.position.x, obj.position.y, obj.position.z + 1);
             }
 
@@ -100,16 +106,17 @@ export function AddDynamicObjects(objects: any[]) {
                 );
 
                 let dimensions = new THREE.Vector3(obj.scale.x, obj.scale.y, obj.scale.z);
+                let pivot = new THREE.Vector3(dimensions.x / 2, obj.rotation.y != 0.0 ? 0 : dimensions.y / 2, obj.rotation.x == 0.0 ? 0 : dimensions.z / 2);
 
                 let corners = [
-                    new THREE.Vector3(0, 0, 0),
-                    new THREE.Vector3(dimensions.x, 0, 0),
-                    new THREE.Vector3(0, dimensions.y, 0),
-                    new THREE.Vector3(0, 0, dimensions.z),
-                    new THREE.Vector3(dimensions.x, dimensions.y, 0),
-                    new THREE.Vector3(dimensions.x, 0, dimensions.z),
-                    new THREE.Vector3(0, dimensions.y, dimensions.z),
-                    new THREE.Vector3(dimensions.x, dimensions.y, dimensions.z)
+                    new THREE.Vector3(0, 0, 0).sub(pivot),
+                    new THREE.Vector3(dimensions.x, 0, 0).sub(pivot),
+                    new THREE.Vector3(0, dimensions.y, 0).sub(pivot),
+                    new THREE.Vector3(0, 0, dimensions.z).sub(pivot),
+                    new THREE.Vector3(dimensions.x, dimensions.y, 0).sub(pivot),
+                    new THREE.Vector3(dimensions.x, 0, dimensions.z).sub(pivot),
+                    new THREE.Vector3(0, dimensions.y, dimensions.z).sub(pivot),
+                    new THREE.Vector3(dimensions.x, dimensions.y, dimensions.z).sub(pivot)
                 ];
 
                 let start = new THREE.Vector3(obj.position.x, obj.position.y, obj.position.z);
@@ -131,11 +138,28 @@ export function AddDynamicObjects(objects: any[]) {
 
                 dimensions = end.clone().sub(start.clone());
 
+                let startPoint = new THREE.SphereGeometry(0.1, 32, 32);
+                let startPointMesh = new THREE.Mesh(startPoint, new MeshBasicMaterial({color: 0x00ff00}));
+                startPointMesh.position.set(start.x, start.y, start.z);
+                scene.add(startPointMesh);
+                dynamicObjects.push(startPointMesh);
+
+                let endPoint = new THREE.SphereGeometry(0.1, 32, 32);
+                let endPointMesh = new THREE.Mesh(endPoint, new MeshBasicMaterial({color: 0xff0000}));
+                endPointMesh.position.set(end.x, end.y, end.z);
+                scene.add(endPointMesh);
+                dynamicObjects.push(endPointMesh);
+
                 let geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
                 let boundingBox = new THREE.Mesh(geometry, new MeshBasicMaterial({color: 0x00ff00, wireframe: true}));
                 boundingBox.position.addVectors(min, max).multiplyScalar(0.5);
                 scene.add(boundingBox);
                 dynamicObjects.push(boundingBox);
+            }
+
+            if(SHADOWS){
+                obj.castShadow = true;
+                obj.receiveShadow = true;
             }
 
             scene.add(obj);

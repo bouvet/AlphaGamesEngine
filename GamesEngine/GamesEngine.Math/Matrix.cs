@@ -21,6 +21,8 @@ namespace GamesEngine.Math
         public Matrix()
         {
             SetScale(new Vector(1,1,1));
+            SetPosition(new Vector(0,0,0));
+            SetRotation(new Vector(0,0,0));
         }
 
         public IVector GetRotation()

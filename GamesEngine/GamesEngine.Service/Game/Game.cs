@@ -91,8 +91,8 @@ namespace GamesEngine.Service.Game
             Clients.Add(client);
 
             PlayerGameObject playerGameObject = new PlayerGameObject(client);
-            playerGameObject.WorldMatrix.SetPosition(new Vector(0, 0.25f, 0));
-            playerGameObject.WorldMatrix.SetScale(new Vector(1f, 1f, 1f));
+            playerGameObject.WorldMatrix.SetPosition(new Vector(0, 0, 0));
+            playerGameObject.WorldMatrix.SetScale(new Vector(0.75f, 0.75f, 1.5f));
             AddGameObject(playerGameObject);
 
             client.PlayerGameObject = playerGameObject;

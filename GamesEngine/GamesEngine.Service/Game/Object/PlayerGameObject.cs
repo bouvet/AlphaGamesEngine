@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using GamesEngine.Math;
 using GamesEngine.Service.Client;
 using Newtonsoft.Json;
+using Vector = GamesEngine.Math.Vector;
 
 namespace GamesEngine.Service.Game.Object
 {
@@ -63,17 +65,23 @@ namespace GamesEngine.Service.Game.Object
             IVector curPos = WorldMatrix.GetPosition();
 
             var matrix = new Matrix();
-            matrix.SetPosition(curPos);
+            matrix.SetPosition(curPos + moved);
             matrix.SetRotation(WorldMatrix.GetRotation());
             IBounds bounds = MakeBounds(matrix);
 
+            IGameObject collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds, false);
 
-            IGameObject collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds);
 
             if (collision != null)
             {
-               // return;
+                IVector collisionDir = collision.WorldMatrix.GetPosition() - WorldMatrix.GetPosition();
+                collisionDir = collisionDir.Normalize();
+
+                // Reduce the motion of cubeB in the direction of the collision
+                float collisionSpeed = IVector.Dot(collisionDir, moved);
+                moved -= collisionDir * collisionSpeed;
             }
+
 
             var newMotion = Motion - moved;
             Motion = newMotion;
@@ -82,9 +90,6 @@ namespace GamesEngine.Service.Game.Object
 
         public void Collision(IGameObject otherGameObject)
         {
-            Console.WriteLine("Collision with " + otherGameObject.Type + " " + otherGameObject.Id);
-            Console.WriteLine("Player position: " + WorldMatrix.GetPosition());
-            Console.WriteLine("Other position: " + otherGameObject.WorldMatrix.GetPosition());
         }
     }
 }

@@ -195,6 +195,7 @@ namespace GamesEngine.Math
             );
 
             Vector3 dimensions = new Vector3(width, height, depth);
+            Vector3 pivot = new Vector3(dimensions.X / 2, dimensions.Y/2, dimensions.Z / 2);
 
             Vector3[] corners = {
                 new (0, 0, 0),
@@ -206,6 +207,8 @@ namespace GamesEngine.Math
                 new (0, dimensions.Y, dimensions.Z),
                 new (dimensions.X, dimensions.Y, dimensions.Z)
             };
+
+            corners = Array.ConvertAll(corners, corner => Vector3.Subtract(corner, pivot));
 
             Vector3 start = new Vector3(Position.GetX(), Position.GetY(), Position.GetZ());
             Matrix4x4 matrix = MakeRotationFromEuler(rotation);

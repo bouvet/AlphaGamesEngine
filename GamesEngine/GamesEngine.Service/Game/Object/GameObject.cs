@@ -45,7 +45,7 @@ namespace GamesEngine.Service.Game.Object
             return CollisionCheck(game, gameObject, bounds);
         }
 
-        public static IGameObject CollisionCheck(IGame game, IGameObject gameObject, IBounds bounds)
+        public static IGameObject CollisionCheck(IGame game, IGameObject gameObject, IBounds bounds, bool alertObjects = true)
         {
             List<IGameObject> gameObjects = new List<IGameObject>();
             gameObjects.AddRange(game.SceneGraph.StaticGameObject.GetValues());
@@ -60,8 +60,11 @@ namespace GamesEngine.Service.Game.Object
                 IBounds staticBounds = staticOb.GetBounds();
                 if (bounds.Intersects(staticBounds))
                 {
-                    gameObject.Collision(staticOb);
-                    staticOb.Collision(gameObject);
+                    if (alertObjects)
+                    {
+                        gameObject.Collision(staticOb);
+                        staticOb.Collision(gameObject);
+                    }
 
                     return staticOb;
                 }

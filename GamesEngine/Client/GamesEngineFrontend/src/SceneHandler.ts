@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import {camera, scene} from "./Rendering.ts";
-import {DynamicTypeHandlers, StaticTypeHandlers} from "./ObjectTypeHandler.ts";
+import { camera, scene } from "./Rendering.ts";
+import { DynamicTypeHandlers, StaticTypeHandlers } from "./ObjectTypeHandler.ts";
 
 export let dynamicObjects: THREE.Mesh[] = [];
 export let staticObjects: THREE.Mesh[] = [];
@@ -9,32 +9,32 @@ export let playerId = -1;
 let cameraPosition = new THREE.Vector3();
 
 setInterval(() => {
-    if(camera.position != cameraPosition){
+    if (camera.position != cameraPosition) {
         camera.position.lerp(cameraPosition, 0.25);
     }
 }, 100);
 
 
-export function SetPlayerId(id: number){
+export function SetPlayerId(id: number) {
     playerId = id;
 }
 
-export function RemoveStaticObjects(){
+export function RemoveStaticObjects() {
     staticObjects.forEach(obj => {
         scene.remove(obj);
     });
     staticObjects = [];
 }
 
-export function AddStaticObjects(objects: any[]){
+export function AddStaticObjects(objects: any[]) {
     objects.forEach((staticObject: any) => {
         let obj = null;
 
-        if(StaticTypeHandlers[staticObject.Type.toLowerCase()] !== undefined) {
+        if (StaticTypeHandlers[staticObject.Type.toLowerCase()] !== undefined) {
             obj = StaticTypeHandlers[staticObject.Type.toLowerCase()](staticObject);
         }
 
-        if(obj){
+        if (obj) {
             SetMatrix(obj, staticObject);
             obj.userData.id = staticObject.Id;
 
@@ -57,11 +57,11 @@ export function AddDynamicObjects(objects: any[]) {
     objects.forEach(dynamicObject => {
         let obj = null;
 
-        if(DynamicTypeHandlers[dynamicObject.Type.toLowerCase()] !== undefined) {
+        if (DynamicTypeHandlers[dynamicObject.Type.toLowerCase()] !== undefined) {
             obj = DynamicTypeHandlers[dynamicObject.Type.toLowerCase()](dynamicObject);
         }
 
-        if(obj){
+        if (obj) {
 
 
             SetMatrix(obj, dynamicObject);
@@ -80,7 +80,7 @@ export function AddDynamicObjects(objects: any[]) {
     lastDynamicObjects = dynamicObjects;
 }
 
-function SetMatrix(obj: THREE.Mesh, gameObject: any){
+function SetMatrix(obj: THREE.Mesh, gameObject: any) {
     obj.position.x = gameObject.WorldMatrix._matrix.M41;
     obj.position.y = gameObject.WorldMatrix._matrix.M42;
     obj.position.z = gameObject.WorldMatrix._matrix.M43;

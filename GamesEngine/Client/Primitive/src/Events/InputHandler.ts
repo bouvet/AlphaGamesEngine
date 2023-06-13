@@ -1,4 +1,4 @@
-import {communication} from "../../main";
+import { communication } from "../../main.ts";
 
 export function startInputHandler() {
     setInterval(() => {
@@ -46,31 +46,31 @@ export function onDocumentKeyUp(event: { which: any, key: string, keyCode: numbe
     }
 }
 
-let mouseX : number = 0, mouseY : number = 0;
+// let mouseX : number = 0, mouseY : number = 0;
 
-let direction = {x: 0, y: 0, z: 0};
+let direction = { x: 0, y: 0 };
 
-export function onMouseMove(event: { clientX: number; clientY: number }) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    // raycaster.setFromCamera(mouse, camera);
-    // raycaster.ray.intersectPlane(plane, intersectPoint);
-    // marker.position.copy(intersectPoint);
-}
+// export function onMouseMove(event: { clientX: number; clientY: number }) {
+//     mouseX = event.clientX;
+//     mouseY = event.clientY;
+//     // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+//     // raycaster.setFromCamera(mouse, camera);
+//     // raycaster.ray.intersectPlane(plane, intersectPoint);
+//     // marker.position.copy(intersectPoint);
+// }
 
 // Update the direction vector based on the keys that are pressed
 export function updateDirection() {
-    direction = {x: 0, y: 0, z: 0};
+    direction = { x: 0, y: 0 };
     if (keys.left) direction.x -= 1;
     if (keys.right) direction.x += 1;
-    if (keys.up) direction.y += 1;
-    if (keys.down) direction.y -= 1;
+    if (keys.up) direction.y -= 1;
+    if (keys.down) direction.y += 1;
 
     // Normalize the direction vector
-    if (vectorLength([direction.x, direction.y, direction.z]) > 0) {
-        vectorNormalize([direction.x, direction.y, direction.z]);
+    if (vectorLength([direction.x, direction.y]) > 0) {
+        vectorNormalize([direction.x, direction.y]);
     }
 }
 
@@ -88,11 +88,11 @@ function vectorNormalize(vector: number[]): number[] {
 }
 
 export function sendKeyboardEvent() {
-    communication.SendToServer({Type: "MovePlayer", x: direction.x, y: direction.y, z: direction.z});
+    communication.SendToServer({ Type: "MovePlayer", x: direction.x, y: direction.y });
     // onMouseMove({clientX: mouseX, clientY: mouseY});
 }
 
-export function sendMouseEvent(MousePositionX: number, MousePositionY: number) {
-    communication.SendToServer({Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY: MousePositionY});
-    onMouseMove({clientX: MousePositionX, clientY: MousePositionY});
-}
+// export function sendMouseEvent(MousePositionX: number, MousePositionY: number) {
+//     communication.SendToServer({Type: "RotateGameObject", MousePositionX: MousePositionX, MousePositionY: MousePositionY});
+//     onMouseMove({clientX: MousePositionX, clientY: MousePositionY});
+// }

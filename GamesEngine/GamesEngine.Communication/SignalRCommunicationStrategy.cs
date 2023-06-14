@@ -36,7 +36,7 @@ namespace GamesEngine.Communication
     {
         private static readonly string CLIENT_DISPATCHER_FUNCTION_NAME = "ClientDispatcherFunctionName";
 
-        public static IHubContext<SignalRHub> HubContext { get; set; }
+        public static IHubContext<SignalRHub>? HubContext { get; set; }
         public MessageCallback OnMessage { get; }
 
         public SignalRCommunicationStrategy(MessageCallback onMessage)
@@ -66,23 +66,13 @@ namespace GamesEngine.Communication
 
         private static readonly Dictionary<string, Type> messageTypeMap = new Dictionary<string, Type>();
 
-        public void HandleMessage( string user, string JsonData)
+        public void HandleMessage(string user, string JsonData)
         {
             IMessage data;
             Dictionary<string, object> json = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonData);
-            var type = json.GetValueOrDefault("Type", null);
+            var type = json.GetValueOrDefault("Type", null).ToString();
 
-            string sType = null;
-
-            if (type is string s)
-            {
-                sType = s;
-            }else if (type is JsonElement element)
-            {
-                sType = element.GetString();
-            }
-
-            var messageType = messageTypeMap.GetValueOrDefault(sType);
+            var messageType = messageTypeMap.GetValueOrDefault(type);
             if (messageType != null)
             {
                 data = (IMessage)JsonSerializer.Deserialize(JsonData, messageType);
@@ -90,7 +80,7 @@ namespace GamesEngine.Communication
             }
             else
             {
-                Console.WriteLine("Unknown message type: " + sType);
+                Console.WriteLine("Unknown message type: " + type);
             }
         }
 

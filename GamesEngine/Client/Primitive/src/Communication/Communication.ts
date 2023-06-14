@@ -1,26 +1,24 @@
-import {Dispatcher} from "./Dispatcher";
-import {ICommunicationStrategy} from "./CommunicationStrategy";
+import { Dispatcher } from "./Dispatcher";
+import { ICommunicationStrategy } from "./CommunicationStrategy";
 
-export abstract class ICommunication
-{
+export abstract class ICommunication {
     dispatcher: Dispatcher;
     strategy: ICommunicationStrategy;
 
     abstract Init(): void;
     abstract SendToServer(message: object): void;
 
-    constructor(dispatcher: Dispatcher, strategy: ICommunicationStrategy){
+    constructor(dispatcher: Dispatcher, strategy: ICommunicationStrategy) {
         this.dispatcher = dispatcher;
         this.strategy = strategy;
     }
 
     OnMessage(message: any) {
-     this.dispatcher.OnMessage(message);
+        this.dispatcher.OnMessage(message);
     }
 }
 
-export class Communication extends ICommunication
-{
+export class Communication extends ICommunication {
     SendToServer(message: object) {
         this.strategy.SendToServer(message);
     }

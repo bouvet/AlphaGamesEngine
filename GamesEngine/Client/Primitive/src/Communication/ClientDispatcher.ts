@@ -1,4 +1,4 @@
-export class Dispatcher {
+export class ClientDispatcher {
     DispatcherHandlers: Handler = {};
 
     OnMessage(message: any) {

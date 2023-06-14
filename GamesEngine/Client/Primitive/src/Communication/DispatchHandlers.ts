@@ -5,19 +5,19 @@ import {
     RemoveStaticObjects,
     SetPlayerId
 } from "../SceneHandler.ts";
-import {dispatcher} from "../../main.ts";
+import { clientDispatcher } from "../../main.ts";
 
-export function AddDispatchHandlers(){
-    dispatcher.AddHandler("PlayerId", (content) => {
+export function AddDispatchHandlers() {
+    clientDispatcher.AddHandler("PlayerId", (content) => {
         SetPlayerId(content.id);
     });
 
-    dispatcher.AddHandler("FetchDynamicObjects", (content) => {
+    clientDispatcher.AddHandler("FetchDynamicObjects", (content) => {
         RemoveDynamicObjects();
         AddDynamicObjects(content);
     });
 
-    dispatcher.AddHandler("FetchStaticObjects", (content) => {
+    clientDispatcher.AddHandler("FetchStaticObjects", (content) => {
         RemoveStaticObjects();
         AddStaticObjects(content);
     });

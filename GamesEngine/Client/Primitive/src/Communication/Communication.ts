@@ -1,20 +1,20 @@
-import { Dispatcher } from "./Dispatcher";
+import { ClientDispatcher } from "./ClientDispatcher";
 import { ICommunicationStrategy } from "./CommunicationStrategy";
 
 export abstract class ICommunication {
-    dispatcher: Dispatcher;
+    clientDispatcher: ClientDispatcher;
     strategy: ICommunicationStrategy;
 
     abstract Init(): void;
     abstract SendToServer(message: object): void;
 
-    constructor(dispatcher: Dispatcher, strategy: ICommunicationStrategy) {
-        this.dispatcher = dispatcher;
+    constructor(dispatcher: ClientDispatcher, strategy: ICommunicationStrategy) {
+        this.clientDispatcher = dispatcher;
         this.strategy = strategy;
     }
 
     OnMessage(message: any) {
-        this.dispatcher.OnMessage(message);
+        this.clientDispatcher.OnMessage(message);
     }
 }
 

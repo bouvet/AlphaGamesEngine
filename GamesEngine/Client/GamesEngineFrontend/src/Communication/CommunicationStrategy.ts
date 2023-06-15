@@ -13,14 +13,14 @@ export class SignalRCommunicationStrategy extends ICommunicationStrategy{
     }).build();
 
     SendToServer(message: object): void {
-        this.connection.send("SendMessage", JSON.stringify(message));
+        this.connection.send("FromClient", JSON.stringify(message));
     }
 
     async Start(callback: any): Promise<void> {
         try{
             await this.connection.start();
             console.log("SignalR connected");
-            this.connection.on("ClientDispatcherFunctionName", (message: any) => callback(message));
+            this.connection.on("FromServer", (message: any) => callback(message));
         }catch (e) {
             console.log(e);
         }

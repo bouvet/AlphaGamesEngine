@@ -14,7 +14,7 @@ namespace GamesEngine.Communication
         public static event Action<string> OnConnect = delegate { };
         public static event Action<string> OnDisconnect = delegate { };
 
-        public async Task SendMessage(string message)
+        public async Task FromClient(string message)
         {
             OnMessageReceived?.Invoke(Context.ConnectionId, message);
         }
@@ -34,7 +34,7 @@ namespace GamesEngine.Communication
 
     public class SignalRCommunicationStrategy : ICommunicationStrategy
     {
-        private static readonly string CLIENT_DISPATCHER_FUNCTION_NAME = "ClientDispatcherFunctionName";
+        private static readonly string CLIENT_DISPATCHER_FUNCTION_NAME = "FromServer";
 
         public static IHubContext<SignalRHub>? HubContext { get; set; }
         public MessageCallback OnMessage { get; }

@@ -62,11 +62,13 @@ let direction = { x: 0, y: 0 };
 
 // Update the direction vector based on the keys that are pressed
 export function updateDirection() {
-    direction = { x: 0, y: 0 };
+    // direction = { x: 0, y: 0 };
     if (keys.left) direction.x -= 1;
     if (keys.right) direction.x += 1;
     if (keys.up) direction.y -= 1;
     if (keys.down) direction.y += 1;
+    console.log("x: " + direction.x)
+    console.log("y: " + direction.y)
 
     // Normalize the direction vector
     if (vectorLength([direction.x, direction.y]) > 0) {

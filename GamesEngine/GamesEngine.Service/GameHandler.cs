@@ -5,30 +5,32 @@ using GamesEngine.Service.Client;
 using GamesEngine.Service.Communication;
 using GamesEngine.Service.Game;
 using GamesEngine.Service.Game.Object.StaticGameObjects;
+using GamesEngine.Users;
 
 namespace GamesEngine.Service;
 
-public class GameHandler
+public static class GameHandler
 {
-    public static ICommunicationDispatcher CommunicationDispatcher { get; set; }
-    public static ICommunicationStrategy CommunicationStrategy { get; set; }
-    public static ICommunication Communication { get; set; }
+    public static ICommunicationDispatcher? CommunicationDispatcher { get; set; }
+    public static ICommunicationStrategy? CommunicationStrategy { get; set; }
+    public static ICommunication? Communication { get; set; }
     public static IGame Game { get; set; } = new Game.Game();
+
+    public static IUserHandler UserHandler { get; set; } = new UserHandler();
 
     public static IGame GetGame(string id)
     {
         return Game;
     }
 
-    public static IClient GetClient(string id)
+    public static IClient? GetClient(string id)
     {
-        return Game.Clients.Find(e => e.ConnectionId == id);
+        return GetGame(id).Clients.Find(e => e.ConnectionId != null && e.ConnectionId == id);
     }
 
-    private static Timer timer;
     public static void Start()
     {
-        timer = new Timer(Update, null, 0, 50);
+        new Timer(Update, null, 0, 50);
 
         var size = 14;
         for (var x = 0; x < size; x++)

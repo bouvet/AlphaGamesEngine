@@ -9,6 +9,7 @@ using GamesEngine.Service.Game.Graph;
 using GamesEngine.Communication.Queries;
 using GamesEngine.Service.Communication;
 using GamesEngine.Service.Game.Object;
+using GamesEngine.Users;
 
 namespace GamesEngine.Service.Game
 {
@@ -28,7 +29,7 @@ namespace GamesEngine.Service.Game
 
     public class Game : IGame
     {
-        public List<IClient> Clients { get; set; } = new List<IClient>();
+        public List<IClient> Clients { get; set; } = new();
         public IGameLoop GameLoop { get; set; }
         public ISceneGraph SceneGraph { get; set; } = new SceneGraph();
 
@@ -87,12 +88,20 @@ namespace GamesEngine.Service.Game
         {
             IClient client = new Client.Client();
             client.ConnectionId = connectionId;
+
+            //Replace with actual user id logic
+            client.UserId = Clients.Count;
+
             Clients.Add(client);
 
             PlayerGameObject playerGameObject = new PlayerGameObject(client);
             AddGameObject(playerGameObject);
 
             client.PlayerGameObject = playerGameObject;
+
+            IUser user = GameHandler.UserHandler.GetUser(client.UserId);
+
+            Console.WriteLine($"\"{user.Name}\" Connected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
 
             return client;
         }
@@ -101,6 +110,10 @@ namespace GamesEngine.Service.Game
         {
             Clients.Remove(client);
             SceneGraph.DynamicGameObject.Remove(client.PlayerGameObject.Id);
+
+            IUser user = GameHandler.UserHandler.GetUser(client.UserId);
+
+            Console.WriteLine($"\"{user.Name}\" Disconnected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
         }
     }
 }

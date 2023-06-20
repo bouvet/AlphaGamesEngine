@@ -4,7 +4,7 @@ namespace GamesEngine.Users;
 
 public interface IUserHandler
 {
-    public IUser GetUser(int id);
+    public IUser? GetUser(int id);
 }
 
 public class UserHandler : IUserHandler
@@ -23,8 +23,8 @@ public class UserHandler : IUserHandler
         }
     }
 
-    public IUser GetUser(int id)
+    public IUser? GetUser(int id)
     {
-        return Users.GetValueOrDefault(id % Users.Count, null);
+        return Users.GetValueOrDefault(id % System.Math.Max(Users.Count, 1), null);
     }
 }

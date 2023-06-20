@@ -9,7 +9,7 @@ public class ObstacleGameObject : IDynamicGameObject
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
-    public IGameObject Parent { get; set; }
+    public IGameObject? Parent { get; set; }
     public List<IGameObject> Children { get; set; }
 
     public bool Colliding { get; set; }
@@ -19,7 +19,7 @@ public class ObstacleGameObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public void Collision(IGameObject otherGameObject)
+    public void Collision(IGameObject? otherGameObject)
     {
         if(otherGameObject is PlayerGameObject)
         Colliding = true;

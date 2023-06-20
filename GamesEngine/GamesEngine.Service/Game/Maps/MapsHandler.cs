@@ -19,13 +19,11 @@ public class MapsHandler : IMapsHandler
 
     public MapsHandler()
     {
-        using var r = new StreamReader("/GameData/GameMaps.json");
-        var json = r.ReadToEnd();
-        var maps = JsonConvert.DeserializeObject<List<GameMap>>(json);
-
-        foreach (var map in maps)
+        var files = Directory.GetFiles("./GameData/Maps", "*.json");
+        foreach (var file in files)
         {
-            AddMap(map);
+            var map = JsonConvert.DeserializeObject<GameMap>(File.ReadAllText(file));
+            if (map != null) AddMap(map);
         }
     }
 

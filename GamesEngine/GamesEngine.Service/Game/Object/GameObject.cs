@@ -9,10 +9,10 @@ namespace GamesEngine.Service.Game.Object
         int Id { get; set; }
         IMatrix WorldMatrix { get; set; }
         IMatrix LocalMatrix { get; set; }
-        IGameObject Parent { get; set; }
+        IGameObject? Parent { get; set; }
         List<IGameObject> Children { get; set; }
         public void Render();
-        public void Collision(IGameObject otherGameObject);
+        public void Collision(IGameObject? otherGameObject);
         public IBounds GetBounds();
     }
 
@@ -21,9 +21,9 @@ namespace GamesEngine.Service.Game.Object
         public int Id { get; set; }
         public IMatrix WorldMatrix { get; set; }
         public IMatrix LocalMatrix { get; set; }
-        public IGameObject Parent { get; set; }
+        public IGameObject? Parent { get; set; }
         public List<IGameObject> Children { get; set; }
-        public void Collision(IGameObject otherGameObject) { }
+        public void Collision(IGameObject? otherGameObject) { }
 
         public IBounds GetBounds()
         {
@@ -34,7 +34,7 @@ namespace GamesEngine.Service.Game.Object
             throw new NotImplementedException();
         }
 
-        public static IGameObject CollisionCheck(IGame game, IGameObject gameObject)
+        public static IGameObject? CollisionCheck(IGame game, IGameObject? gameObject)
         {
             IBounds bounds = gameObject.GetBounds();
             if (bounds == null)
@@ -45,9 +45,9 @@ namespace GamesEngine.Service.Game.Object
             return CollisionCheck(game, gameObject, bounds);
         }
 
-        public static IGameObject CollisionCheck(IGame game, IGameObject gameObject, IBounds bounds, bool alertObjects = true)
+        public static IGameObject? CollisionCheck(IGame game, IGameObject? gameObject, IBounds bounds, bool alertObjects = true)
         {
-            List<IGameObject> gameObjects = new List<IGameObject>();
+            List<IGameObject?> gameObjects = new List<IGameObject?>();
             gameObjects.AddRange(game.SceneGraph.StaticGameObject.GetValues());
             gameObjects.AddRange(game.SceneGraph.DynamicGameObject.GetValues());
 

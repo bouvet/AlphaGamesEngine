@@ -14,8 +14,8 @@ public static class GameHandler
     public static ICommunicationStrategy CommunicationStrategy { get; set; }
     public static ICommunication Communication { get; set; }
 
-    public static IUserHandler UserHandler { get; set; } = new UserHandler();
-    public static IMapsHandler MapsHandler { get; set; } = new MapsHandler();
+    public static IUserHandler UserHandler { get; set; }
+    public static IMapsHandler MapsHandler { get; set; }
 
     private static ConcurrentDictionary<string, int> PlayerGameId = new();
     private static ConcurrentDictionary<int, IGame> Games = new();
@@ -55,7 +55,10 @@ public static class GameHandler
 
             if (!Games.ContainsKey(id))
             {
-                AddGame(id, new Game.Game(MapsHandler.GetMaps().ToList()[new Random().Next() * MapsHandler.GetMaps().Count]));
+                //Picks a random Map
+                var games = MapsHandler.GetMaps().ToList();
+                var selectedGame = games[new Random().Next(games.Count)];
+                AddGame(id, new Game.Game(selectedGame));
             }
         }
 
@@ -84,6 +87,9 @@ public static class GameHandler
 
     public static void Start()
     {
+        UserHandler = new UserHandler();
+        MapsHandler = new MapsHandler();
+
         new Timer(Update, null, 0, 50);
     }
 
@@ -91,7 +97,10 @@ public static class GameHandler
     {
         foreach (var game in Games.Values)
         {
-            game.GameLoop.Update();
+            if (game.GameLoop != null)
+            {
+                game.GameLoop.Update();
+            }
         }
     }
 }

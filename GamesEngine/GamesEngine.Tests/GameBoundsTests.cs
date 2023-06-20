@@ -22,7 +22,7 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject);
 
         //Act
-        IGameObject gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
 
         //Assert
         gameObject.Should().NotBeNull();
@@ -40,7 +40,7 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject);
 
         //Act
-        IGameObject gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
 
         //Assert
         gameObject.Should().NotBeNull();
@@ -58,7 +58,7 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject);
 
         //Act
-        IGameObject gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
 
         //Assert
         gameObject.Should().BeNull();
@@ -77,7 +77,7 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject2);
 
         //Act
-        IGameObject gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
 
         //Assert
         gameObject.Should().NotBeNull();
@@ -98,7 +98,7 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject2);
 
         //Act
-        IGameObject gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? gameObject = GameObject.CollisionCheck(mockGame, mockMovingObject);
 
         //Assert
         gameObject.Should().NotBeNull();
@@ -121,13 +121,13 @@ public class GameBoundsTests
         mockGame.AddGameObject(mockStaticObject);
         mockGame.AddGameObject(mockStaticObject2);
 
-        IGameObject firstCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? firstCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
         firstCollide.Should().BeNull();
 
         mockGame.GameLoop.Update();
         mockMovingObject.WorldMatrix.GetPosition().GetX().Should().Be(1);
 
-        IGameObject secondCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? secondCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
         secondCollide.Should().NotBeNull();
         secondCollide.Id.Should().Be(mockStaticObject.Id);
 
@@ -135,7 +135,7 @@ public class GameBoundsTests
         mockGame.GameLoop.Update();
         mockMovingObject.WorldMatrix.GetPosition().GetX().Should().Be(3);
 
-        IGameObject thirdCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
+        IGameObject? thirdCollide = GameObject.CollisionCheck(mockGame, mockMovingObject);
         thirdCollide.Should().NotBeNull();
         thirdCollide.Id.Should().Be(mockStaticObject2.Id);
     }

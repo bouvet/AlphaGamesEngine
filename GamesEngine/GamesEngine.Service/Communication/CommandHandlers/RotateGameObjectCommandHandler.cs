@@ -11,7 +11,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
     {
         public void Handle(RotateGameObjectCommand command, ICommandCallback<string> callback)
         {
-            IGameObject gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(GameHandler.GetClient(command.ConnectionId).PlayerGameObject.Id);
+            IGameObject? gameObject = GameHandler.GetGame(command.ConnectionId).FindGameObject(GameHandler.GetClient(command.ConnectionId).PlayerGameObject.Id);
 
             if (gameObject != null)
             {

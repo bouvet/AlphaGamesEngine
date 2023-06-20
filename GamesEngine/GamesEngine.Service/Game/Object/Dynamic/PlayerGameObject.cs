@@ -28,7 +28,7 @@ namespace GamesEngine.Service.Game.Object
         public IVector Motion { get; set; } = new Vector(0,0,0);
         public IMatrix WorldMatrix { get; set; } = new Matrix();
         public IMatrix LocalMatrix { get; set; } = new Matrix();
-        public IGameObject Parent { get; set; }
+        public IGameObject? Parent { get; set; }
         public List<IGameObject> Children { get; set; }
 
         public PlayerGameObject(IClient client)
@@ -58,37 +58,39 @@ namespace GamesEngine.Service.Game.Object
             return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(),WorldMatrix.GetScale().GetY(),WorldMatrix.GetScale().GetZ());
         }
 
+        private static readonly bool COLLISION = false;
         public override void UpdateMovement(IInterval deltaTime, ITime time)
         {
             float multiplier = deltaTime.GetInterval() / 100f;
             IVector moved = Motion * multiplier;
             IVector curPos = WorldMatrix.GetPosition();
 
-            var matrix = new Matrix();
-            matrix.SetPosition(curPos + moved);
-            matrix.SetRotation(WorldMatrix.GetRotation());
-            IBounds bounds = MakeBounds(matrix);
-
-            IGameObject collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds, false);
-
-
-            if (collision != null)
+            if (COLLISION)
             {
-                IVector collisionDir = collision.WorldMatrix.GetPosition() - WorldMatrix.GetPosition();
-                collisionDir = collisionDir.Normalize();
+                var matrix = new Matrix();
+                matrix.SetPosition(curPos + moved);
+                matrix.SetRotation(WorldMatrix.GetRotation());
+                IBounds bounds = MakeBounds(matrix);
 
-                // Reduce the motion of cubeB in the direction of the collision
-                float collisionSpeed = IVector.Dot(collisionDir, moved);
-                moved -= collisionDir * collisionSpeed;
+                IGameObject? collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds, false);
+
+                if (collision != null)
+                {
+                    IVector collisionDir = collision.WorldMatrix.GetPosition() - WorldMatrix.GetPosition();
+                    collisionDir = collisionDir.Normalize();
+
+                    // Reduce the motion of cubeB in the direction of the collision
+                    float collisionSpeed = IVector.Dot(collisionDir, moved);
+                    moved -= collisionDir * collisionSpeed;
+                }
             }
-
 
             var newMotion = Motion - moved;
             Motion = newMotion;
             WorldMatrix.SetPosition(curPos + moved);
         }
 
-        public void Collision(IGameObject otherGameObject)
+        public void Collision(IGameObject? otherGameObject)
         {
         }
     }

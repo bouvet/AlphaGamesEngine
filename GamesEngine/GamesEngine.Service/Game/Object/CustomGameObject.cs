@@ -7,19 +7,20 @@ namespace GamesEngine.Service.Game.Object;
 public interface ICustomGameObject : IGameObject
 {
     public IMapMaterial MapMaterial { get; set; }
-
 }
 
 public class CustomStaticGameObject : ICustomGameObject, IStaticGameObject
 {
+    public string Type => MapMaterial.Type ?? "Custom";
+
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
-    public IGameObject Parent { get; set; }
+    public IGameObject? Parent { get; set; }
     public List<IGameObject> Children { get; set; }
     public void Render() { }
 
-    public void Collision(IGameObject otherGameObject) { }
+    public void Collision(IGameObject? otherGameObject) { }
 
     public IBounds GetBounds()
     {
@@ -36,6 +37,7 @@ public class CustomStaticGameObject : ICustomGameObject, IStaticGameObject
 
 public class CustomDynamicGameObject : ICustomGameObject, IDynamicGameObject
 {
+    public string Type => MapMaterial.Type ?? "Custom";
     public IMapMaterial MapMaterial { get; set; }
 
     public CustomDynamicGameObject(IMapMaterial mapMaterial)
@@ -46,11 +48,11 @@ public class CustomDynamicGameObject : ICustomGameObject, IDynamicGameObject
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
-    public IGameObject Parent { get; set; }
+    public IGameObject? Parent { get; set; }
     public List<IGameObject> Children { get; set; }
     public void Render() { }
 
-    public void Collision(IGameObject otherGameObject) { }
+    public void Collision(IGameObject? otherGameObject) { }
 
     public IBounds GetBounds()
     {

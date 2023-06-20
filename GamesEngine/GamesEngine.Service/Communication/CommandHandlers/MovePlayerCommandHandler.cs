@@ -49,7 +49,7 @@ namespace GamesEngine.Service.Communication.CommandHandlers
                 gameObject.Motion = new Vector(xMotion, yMotion, zMotion);
 
 
-                if (updatePosition.GetX() > 0 || updatePosition.GetY() > 0 || updatePosition.GetZ() > 0)
+                if (updatePosition.GetX() != 0 || updatePosition.GetY() != 0 || updatePosition.GetZ() != 0)
                 {
                     callback.OnSuccess("success");
                 }

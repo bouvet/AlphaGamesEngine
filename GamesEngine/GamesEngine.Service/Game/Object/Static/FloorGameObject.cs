@@ -8,14 +8,14 @@ public class FloorGameObject : IStaticGameObject
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();
-    public IGameObject Parent { get; set; }
+    public IGameObject? Parent { get; set; }
     public List<IGameObject> Children { get; set; }
     public void Render()
     {
         throw new NotImplementedException();
     }
 
-    public void Collision(IGameObject otherGameObject)
+    public void Collision(IGameObject? otherGameObject)
     {
     }
 

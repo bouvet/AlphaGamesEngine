@@ -23,9 +23,9 @@ namespace GamesEngine.Service.Game
         public IGameLoop GameLoop { get; set; }
         public ISceneGraph SceneGraph { get; set; }
 
-        public void AddGameObject(IGameObject gameObject);
+        public void AddGameObject(IGameObject? gameObject);
         public void RemoveGameObject(int id);
-        public IGameObject FindGameObject(int id);
+        public IGameObject? FindGameObject(int id);
 
         public IClient OnConnect(string connectionId);
         public void OnDisconnect(IClient client);
@@ -44,6 +44,8 @@ namespace GamesEngine.Service.Game
 
         public Game(IGameMap gameMap)
         {
+            GameLoop = new GameLoop.GameLoop(this);
+
             // Create a game world
             for (var x = 0; x < gameMap.Width; x++)
             {
@@ -51,7 +53,7 @@ namespace GamesEngine.Service.Game
                 {
                     if(x == 0 || x == gameMap.Width - 1 || y == 0 || y == gameMap.Height - 1)
                     {
-                        WallGameObject wallGameObject = new WallGameObject();
+                        WallGameObject? wallGameObject = new WallGameObject();
                         float height = (x + y) % 2 == 0 ? 1 : 1.5f;
 
                         wallGameObject.WorldMatrix.SetPosition(new Vector(x - (gameMap.Width/ 2f), y - (gameMap.Height / 2f), 0));
@@ -59,7 +61,7 @@ namespace GamesEngine.Service.Game
                         AddGameObject(wallGameObject);
                     }
 
-                    FloorGameObject floorGameObject = new FloorGameObject();
+                    FloorGameObject? floorGameObject = new FloorGameObject();
                     floorGameObject.WorldMatrix.SetPosition(new Vector(x - (gameMap.Width / 2f), y - (gameMap.Height / 2f), -1));
                     AddGameObject(floorGameObject);
                 }
@@ -68,16 +70,19 @@ namespace GamesEngine.Service.Game
 
             foreach (var mapObject in gameMap.Objects)
             {
-                IGameObject gameObject = GameHandler.MapsHandler.MapMaterialHandler.GetGameObject(mapObject);
+                IGameObject? gameObject = GameHandler.MapsHandler.MapMaterialHandler.GetGameObject(mapObject);
 
                 if (gameObject != null)
                 {
+                    gameObject.WorldMatrix.SetPosition(mapObject.Position);
+                    if(mapObject.Rotation != null) gameObject.WorldMatrix.SetRotation(mapObject.Rotation);
+                    if(mapObject.Scale != null) gameObject.WorldMatrix.SetScale(mapObject.Scale);
                     AddGameObject(gameObject);
                 }
             }
         }
 
-        public IGameObject FindGameObject(int id)
+        public IGameObject? FindGameObject(int id)
         {
             if (SceneGraph.DynamicGameObject.ContainsKey(id))
             {
@@ -93,7 +98,7 @@ namespace GamesEngine.Service.Game
 
         public void RemoveGameObject(int id)
         {
-            IGameObject gameObject = FindGameObject(id);
+            IGameObject? gameObject = FindGameObject(id);
 
             if (gameObject is IDynamicGameObject)
             {
@@ -105,7 +110,7 @@ namespace GamesEngine.Service.Game
             }
         }
 
-        public void AddGameObject(IGameObject gameObject)
+        public void AddGameObject(IGameObject? gameObject)
         {
             var highestDynamicID = SceneGraph.DynamicGameObject.GetKeys().Count > 0 ? SceneGraph.DynamicGameObject.GetKeys().Max() : 0;
             var highestStaticID = SceneGraph.StaticGameObject.GetKeys().Count > 0 ? SceneGraph.StaticGameObject.GetKeys().Max() : 0;
@@ -133,16 +138,15 @@ namespace GamesEngine.Service.Game
 
             Clients.Add(client);
 
-            PlayerGameObject playerGameObject = new PlayerGameObject(client);
+            PlayerGameObject? playerGameObject = new PlayerGameObject(client);
             playerGameObject.WorldMatrix.SetPosition(new Vector(0, 0, 0));
             playerGameObject.WorldMatrix.SetScale(new Vector(0.75f, 0.75f, 1.5f));
             AddGameObject(playerGameObject);
 
             client.PlayerGameObject = playerGameObject;
 
-            IUser user = GameHandler.UserHandler.GetUser(client.UserId);
-
-            Console.WriteLine($"\"{user.Name}\" Connected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
+            var user = GameHandler.UserHandler.GetUser(client.UserId);
+            if(user != null) Console.WriteLine($"\"{user.Name}\" Connected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
 
             return client;
         }
@@ -152,9 +156,9 @@ namespace GamesEngine.Service.Game
             Clients.Remove(client);
             SceneGraph.DynamicGameObject.Remove(client.PlayerGameObject.Id);
 
-            Users.IUser user = GameHandler.UserHandler.GetUser(client.UserId);
+            var user = GameHandler.UserHandler.GetUser(client.UserId);
 
-            Console.WriteLine($"\"{user.Name}\" Disconnected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
+            if(user != null) Console.WriteLine($"\"{user.Name}\" Disconnected with ID: {client.UserId} and ConnectionID: {client.ConnectionId}");
         }
     }
 }

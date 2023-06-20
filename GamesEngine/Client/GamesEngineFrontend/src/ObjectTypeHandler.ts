@@ -31,6 +31,14 @@ export function AddTypeHandlers(){
     }
 
 
+    StaticTypeHandlers["orb"] = (staticObject: any) => {
+        const objectGeom = new THREE.SphereGeometry(0.5, 10, 10);
+        const objectMat = new THREE.MeshPhongMaterial({color: `rgb(${staticObject.MapMaterial.Color.R}, ${staticObject.MapMaterial.Color.G}, ${staticObject.MapMaterial.Color.B}, ${staticObject.MapMaterial.Color.A})`});
+
+        objectGeom.translate(0,0, 0.5); // pivot point is shifted
+        return new THREE.Mesh(objectGeom, objectMat);
+    }
+
     //Static Objects
     // @ts-ignore
     StaticTypeHandlers["wall"] = (staticObject: any) => {

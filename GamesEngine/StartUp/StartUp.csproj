@@ -11,8 +11,4 @@
     <ProjectReference Include="..\GamesEngine.Service\GamesEngine.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="GameData\Materials\" />
-  </ItemGroup>
-
 </Project>

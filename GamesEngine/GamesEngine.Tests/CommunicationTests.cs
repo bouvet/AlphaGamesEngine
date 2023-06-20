@@ -9,6 +9,7 @@ using GamesEngine.Patterns.Query;
 using GamesEngine.Service;
 using GamesEngine.Service.Communication;
 using GamesEngine.Service.Game;
+using GamesEngine.Service.Game.Maps;
 using GamesEngine.Service.Game.Object;
 using GamesEngine.Tests.Fakes;
 using GamesEngine.Tests.Fakes.GameObjects;
@@ -182,6 +183,9 @@ public class CommunicationTests
     public void ShouldBeAbleToGetObjects()
     {
         //Arrange
+        GameHandler.MapsHandler = new MockMapsHandler(new MockMapMaterialHandler(null), new List<IGameMap>());
+        GameHandler.UserHandler = new MockUserHandler(null);
+
         var connectionId = "TEST";
         IGame mockGame = new Game();
         GameHandler.AddGame(0, mockGame);

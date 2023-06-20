@@ -24,7 +24,7 @@ public class GameTests
     {
         // Arrange
         Game game = new Game();
-        MockDynamicObject gameObject = new MockDynamicObject();
+        MockDynamicObject? gameObject = new MockDynamicObject();
 
         // Act
         game.AddGameObject(gameObject);
@@ -39,7 +39,7 @@ public class GameTests
     {
         // Arrange
         Game game = new Game();
-        MockDynamicObject gameObject = new MockDynamicObject();
+        MockDynamicObject? gameObject = new MockDynamicObject();
 
         // Act
         game.AddGameObject(gameObject);
@@ -56,7 +56,7 @@ public class GameTests
     {
         // Arrange
         Game game = new Game();
-        MockDynamicObject gameObject = new MockDynamicObject();
+        MockDynamicObject? gameObject = new MockDynamicObject();
 
         // Act
         game.AddGameObject(gameObject);

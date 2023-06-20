@@ -3,8 +3,8 @@ import {camera, pointLight, scene} from "./Rendering.ts";
 import {DynamicTypeHandlers, StaticTypeHandlers} from "./ObjectTypeHandler.ts";
 import {MeshBasicMaterial} from "three";
 
-export let dynamicObjects: THREE.Mesh[] = [];
-export let staticObjects: THREE.Mesh[] = [];
+export let dynamicObjects: THREE.Object3D[] = [];
+export let staticObjects: THREE.Object3D[] = [];
 
 export let SHOW_BOUNDS = true;
 export let SHADOWS = false;
@@ -137,19 +137,7 @@ export function AddDynamicObjects(objects: any[]) {
                 end = max;
 
                 dimensions = end.clone().sub(start.clone());
-
-                let startPoint = new THREE.SphereGeometry(0.1, 32, 32);
-                let startPointMesh = new THREE.Mesh(startPoint, new MeshBasicMaterial({color: 0x00ff00}));
-                startPointMesh.position.set(start.x, start.y, start.z);
-                scene.add(startPointMesh);
-                dynamicObjects.push(startPointMesh);
-
-                let endPoint = new THREE.SphereGeometry(0.1, 32, 32);
-                let endPointMesh = new THREE.Mesh(endPoint, new MeshBasicMaterial({color: 0xff0000}));
-                endPointMesh.position.set(end.x, end.y, end.z);
-                scene.add(endPointMesh);
-                dynamicObjects.push(endPointMesh);
-
+                
                 let geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
                 let boundingBox = new THREE.Mesh(geometry, new MeshBasicMaterial({color: 0x00ff00, wireframe: true}));
                 boundingBox.position.addVectors(min, max).multiplyScalar(0.5);
@@ -173,7 +161,7 @@ export function AddDynamicObjects(objects: any[]) {
     });
 }
 
-function SetMatrix(obj: THREE.Mesh, gameObject: any){
+function SetMatrix(obj: THREE.Object3D, gameObject: any){
     obj.position.x = gameObject.WorldMatrix._matrix.M41;
     obj.position.y = gameObject.WorldMatrix._matrix.M42;
     obj.position.z = gameObject.WorldMatrix._matrix.M43;

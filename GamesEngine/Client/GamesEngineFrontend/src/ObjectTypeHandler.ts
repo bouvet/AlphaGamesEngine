@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 type Handler = {
-    [key:string]: (param: any) => THREE.Mesh;
+    [key:string]: (param: any) => THREE.Object3D;
 }
 
 export let StaticTypeHandlers: Handler = {};

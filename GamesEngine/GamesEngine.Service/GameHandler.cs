@@ -1,26 +1,80 @@
-using GamesEngine.Communication;
-using GamesEngine.Math;
+using System.Collections.Concurrent;
 using GamesEngine.Patterns;
 using GamesEngine.Service.Client;
 using GamesEngine.Service.Communication;
 using GamesEngine.Service.Game;
-using GamesEngine.Service.Game.Object.StaticGameObjects;
+using GamesEngine.Service.Game.Maps;
 using GamesEngine.Users;
 
 namespace GamesEngine.Service;
 
 public static class GameHandler
 {
-    public static ICommunicationDispatcher? CommunicationDispatcher { get; set; }
-    public static ICommunicationStrategy? CommunicationStrategy { get; set; }
-    public static ICommunication? Communication { get; set; }
-    public static IGame Game { get; set; } = new Game.Game();
+    public static ICommunicationDispatcher CommunicationDispatcher { get; set; }
+    public static ICommunicationStrategy CommunicationStrategy { get; set; }
+    public static ICommunication Communication { get; set; }
 
     public static IUserHandler UserHandler { get; set; } = new UserHandler();
+    public static IMapsHandler MapsHandler { get; set; } = new MapsHandler();
+
+    private static ConcurrentDictionary<string, int> PlayerGameId = new();
+    private static ConcurrentDictionary<int, IGame> Games = new();
+
+    public static void AddGame(int id, IGame game)
+    {
+        Games.TryAdd(id, game);
+    }
+
+    public static void AddPlayerId(string id, int gameId)
+    {
+        PlayerGameId.TryAdd(id, gameId);
+    }
+
+    public static void RemovePlayerId(string id)
+    {
+        PlayerGameId.TryRemove(id, out _);
+    }
 
     public static IGame GetGame(string id)
     {
-        return Game;
+        var gameId = PlayerGameId[id];
+        return Games[gameId];
+    }
+
+    public static void OnPlayerConnect(string connectionId, int? targetGameId)
+    {
+        if (targetGameId == null)
+        {
+            targetGameId = Games.Keys.FirstOrDefault();
+        }
+
+        if (targetGameId != null)
+        {
+            var id = (int)targetGameId;
+            AddPlayerId(connectionId, id);
+
+            if (!Games.ContainsKey(id))
+            {
+                AddGame(id, new Game.Game(MapsHandler.GetMaps().ToList()[new Random().Next() * MapsHandler.GetMaps().Count]));
+            }
+        }
+
+        var game = GetGame(connectionId);
+        game.OnConnect(connectionId);
+    }
+
+    public static void OnPlayerDisconnect(string connectionId)
+    {
+        var game = GetGame(connectionId);
+        var client = GetClient(connectionId);
+        game.OnDisconnect(client);
+
+        if(game.Clients.Count == 0)
+        {
+            Games.TryRemove(PlayerGameId[connectionId], out _);
+        }
+
+        RemovePlayerId(connectionId);
     }
 
     public static IClient? GetClient(string id)
@@ -31,47 +85,13 @@ public static class GameHandler
     public static void Start()
     {
         new Timer(Update, null, 0, 50);
-
-
-        // Create a game world
-        var size = 20;
-        for (var x = 0; x < size; x++)
-        {
-            for (var y = 0; y < size; y++)
-            {
-                if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
-                {
-                    WallGameObject wallGameObject = new WallGameObject();
-                    float height = (x + y) % 2 == 0 ? 1 : 1.5f;
-
-                    wallGameObject.WorldMatrix.SetPosition(new Vector(x - (size/ 2), y - (size / 2), 0));
-                    wallGameObject.WorldMatrix.SetScale(new Vector(1, 1, height));
-                    Game.AddGameObject(wallGameObject);
-                }
-                else
-                {
-                    var rand = new Random();
-
-                    if (rand.NextDouble() < 0.1)
-                    {
-                        float scale = 0.5f + (float)rand.NextDouble();
-                        ObstacleGameObject wallGameObject = new ObstacleGameObject();
-                        wallGameObject.WorldMatrix.SetPosition(new Vector(x - (size/ 2), y - (size / 2), 0));
-                        wallGameObject.WorldMatrix.SetRotation(new Vector(0, 0, (float)rand.NextDouble() * 360));
-                        wallGameObject.WorldMatrix.SetScale(new Vector(scale, scale, scale));
-                        Game.AddGameObject(wallGameObject);
-                    }
-                }
-
-                FloorGameObject floorGameObject = new FloorGameObject();
-                floorGameObject.WorldMatrix.SetPosition(new Vector(x - (size / 2), y - (size / 2), -1));
-                Game.AddGameObject(floorGameObject);
-            }
-        }
     }
 
-    private static void Update(Object o)
+    private static void Update(object o)
     {
-        Game.GameLoop.Update();
+        foreach (var game in Games.Values)
+        {
+            game.GameLoop.Update();
+        }
     }
 }

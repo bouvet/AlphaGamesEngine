@@ -5,7 +5,7 @@ namespace GamesEngine.Service.Game.Object.StaticGameObjects;
 
 public class ObstacleGameObject : IDynamicGameObject
 {
-    public string Type => "obstacle";
+    public string Type => "Obstacle";
     public int Id { get; set; }
     public IMatrix WorldMatrix { get; set; } = new Matrix();
     public IMatrix LocalMatrix { get; set; } = new Matrix();

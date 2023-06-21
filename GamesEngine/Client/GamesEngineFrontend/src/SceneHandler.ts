@@ -2,6 +2,8 @@ import * as THREE from "three";
 import {camera, pointLight, scene} from "./Rendering.ts";
 import {DynamicTypeHandlers, StaticTypeHandlers} from "./ObjectTypeHandler.ts";
 import {MeshBasicMaterial} from "three";
+import {plainToInstance} from "class-transformer";
+import {GameObject} from "./Objects/GameObject.ts";
 
 export let dynamicObjects: THREE.Object3D[] = [];
 export let staticObjects: THREE.Object3D[] = [];
@@ -32,7 +34,8 @@ export function RemoveStaticObjects(){
 }
 
 export function AddStaticObjects(objects: any[]){
-    objects.forEach((staticObject: any) => {
+    let gameObjects = plainToInstance(GameObject, objects);
+    gameObjects.forEach((staticObject: any) => {
         let obj = null;
 
         if(StaticTypeHandlers[staticObject.Type.toLowerCase()] !== undefined) {
@@ -134,13 +137,13 @@ function RenderBounds(obj : any, staticObj: boolean) {
 }
 
 export function AddDynamicObjects(objects: any[]) {
-    objects.forEach(dynamicObject => {
+    let gameObjects = plainToInstance(GameObject, objects);
+    gameObjects.forEach(dynamicObject => {
         let obj = null;
 
         if(DynamicTypeHandlers[dynamicObject.Type.toLowerCase()] !== undefined) {
             obj = DynamicTypeHandlers[dynamicObject.Type.toLowerCase()](dynamicObject);
         }
-
         if(obj) {
             SetMatrix(obj, dynamicObject);
 
@@ -188,16 +191,18 @@ export function AddDynamicObjects(objects: any[]) {
     });
 }
 
-function SetMatrix(obj: THREE.Object3D, gameObject: any){
-    obj.position.x = gameObject.WorldMatrix.M41;
-    obj.position.y = gameObject.WorldMatrix.M42;
-    obj.position.z = gameObject.WorldMatrix.M43;
+function SetMatrix(obj: THREE.Object3D, gameObject: GameObject){
+    console.log(gameObject.WorldMatrix.GetPosition())
 
-    obj.rotation.x = THREE.MathUtils.degToRad(gameObject.WorldMatrix.M11);
-    obj.rotation.y = THREE.MathUtils.degToRad(gameObject.WorldMatrix.M12);
-    obj.rotation.z = THREE.MathUtils.degToRad(gameObject.WorldMatrix.M13);
+    obj.position.x = gameObject.WorldMatrix.GetPosition().GetX();
+    obj.position.y = gameObject.WorldMatrix.GetPosition().GetY();
+    obj.position.z = gameObject.WorldMatrix.GetPosition().GetZ();
 
-    obj.scale.x = gameObject.WorldMatrix.M21;
-    obj.scale.y = gameObject.WorldMatrix.M22;
-    obj.scale.z = gameObject.WorldMatrix.M23;
+    obj.rotation.x = THREE.MathUtils.degToRad(gameObject.WorldMatrix.GetRotation().GetX());
+    obj.rotation.y = THREE.MathUtils.degToRad(gameObject.WorldMatrix.GetRotation().GetY());
+    obj.rotation.z = THREE.MathUtils.degToRad(gameObject.WorldMatrix.GetRotation().GetZ());
+
+    obj.scale.x = gameObject.WorldMatrix.GetScale().GetX();
+    obj.scale.y = gameObject.WorldMatrix.GetScale().GetY();
+    obj.scale.z = gameObject.WorldMatrix.GetScale().GetZ();
 }

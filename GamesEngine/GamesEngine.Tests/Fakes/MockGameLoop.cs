@@ -1,4 +1,5 @@
 using GamesEngine.Service.Game;
+using GamesEngine.Service.Game.Object;
 using GamesEngine.Service.GameLoop;
 
 namespace GamesEngine.Tests.Fakes;
@@ -14,6 +15,10 @@ public class MockGameLoop : IGameLoop
         Game = game;
         Time = time;
     }
+
+    public event Action<ITime, IInterval>? UpdateTick;
+    public event Action<IGameObject>? GameObjectPreUpdate;
+    public event Action<IGameObject>? GameObjectPostUpdate;
 
     public void ProcessInput()
     {

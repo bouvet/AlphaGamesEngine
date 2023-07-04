@@ -29,7 +29,7 @@ public abstract class CustomGameObject : ICustomGameObject, IGameObject
         // throw new NotImplementedException();
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         if (MapMaterial.Bounds != null)
         {

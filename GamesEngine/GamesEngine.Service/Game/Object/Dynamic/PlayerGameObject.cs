@@ -45,12 +45,12 @@ namespace GamesEngine.Service.Game.Object
         {
         }
 
-        public IBounds GetBounds()
+        public IBounds? GetBounds()
         {
             return MakeBounds(WorldMatrix);
         }
 
-        private IBounds MakeBounds(IMatrix matrix)
+        private IBounds? MakeBounds(IMatrix matrix)
         {
             IMatrix boundsMatrix = matrix.Copy();
             IVector direction = Vector.GetDirectionVector(boundsMatrix);
@@ -70,7 +70,7 @@ namespace GamesEngine.Service.Game.Object
                 var matrix = new Matrix();
                 matrix.SetPosition(curPos + moved);
                 matrix.SetRotation(WorldMatrix.GetRotation());
-                IBounds bounds = MakeBounds(matrix);
+                IBounds? bounds = MakeBounds(matrix);
 
                 IGameObject? collision = CollisionCheck(GameHandler.GetGame(Client.ConnectionId), this, bounds, false);
 

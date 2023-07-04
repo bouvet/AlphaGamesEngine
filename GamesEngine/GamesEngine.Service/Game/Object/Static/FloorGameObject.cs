@@ -19,7 +19,7 @@ public class FloorGameObject : IStaticGameObject
     {
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         return null;
     }

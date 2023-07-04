@@ -27,7 +27,7 @@ public class MockStaticObject : IStaticGameObject
         Colliding = true;
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         return new Bounds(WorldMatrix, 1, 1, 1);
     }

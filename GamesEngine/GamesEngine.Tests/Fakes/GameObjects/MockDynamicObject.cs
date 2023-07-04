@@ -21,7 +21,7 @@ public class MockDynamicObject : IDynamicGameObject
         throw new NotImplementedException();
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         throw new NotImplementedException();
     }

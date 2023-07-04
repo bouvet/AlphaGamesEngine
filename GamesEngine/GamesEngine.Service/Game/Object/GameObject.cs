@@ -13,7 +13,7 @@ namespace GamesEngine.Service.Game.Object
         List<IGameObject> Children { get; set; }
         public void Render();
         public void Collision(IGameObject? otherGameObject);
-        public IBounds GetBounds();
+        public IBounds? GetBounds();
     }
 
     public class GameObject : IGameObject
@@ -25,7 +25,7 @@ namespace GamesEngine.Service.Game.Object
         public List<IGameObject> Children { get; set; }
         public void Collision(IGameObject? otherGameObject) { }
 
-        public IBounds GetBounds()
+        public IBounds? GetBounds()
         {
             return null;
         }
@@ -36,7 +36,7 @@ namespace GamesEngine.Service.Game.Object
 
         public static IGameObject? CollisionCheck(IGame game, IGameObject? gameObject)
         {
-            IBounds bounds = gameObject.GetBounds();
+            IBounds? bounds = gameObject?.GetBounds();
             if (bounds == null)
             {
                 return null;
@@ -45,7 +45,7 @@ namespace GamesEngine.Service.Game.Object
             return CollisionCheck(game, gameObject, bounds);
         }
 
-        public static IGameObject? CollisionCheck(IGame game, IGameObject? gameObject, IBounds bounds, bool alertObjects = true)
+        public static IGameObject? CollisionCheck(IGame game, IGameObject? gameObject, IBounds? bounds, bool alertObjects = true)
         {
             List<IGameObject?> gameObjects = new List<IGameObject?>();
             gameObjects.AddRange(game.SceneGraph.StaticGameObject.GetValues());
@@ -57,7 +57,7 @@ namespace GamesEngine.Service.Game.Object
                          .Where(e => e.GetBounds() != null)
                          .Where(e => e.WorldMatrix.GetPosition().Distance(gameObject.WorldMatrix.GetPosition()) < 10))
             {
-                IBounds staticBounds = staticOb.GetBounds();
+                IBounds? staticBounds = staticOb.GetBounds();
                 if (bounds.Intersects(staticBounds))
                 {
                     if (alertObjects)

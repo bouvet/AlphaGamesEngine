@@ -19,7 +19,7 @@ public class WallGameObject : IStaticGameObject
     {
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(), WorldMatrix.GetScale().GetY(), WorldMatrix.GetScale().GetZ());
     }

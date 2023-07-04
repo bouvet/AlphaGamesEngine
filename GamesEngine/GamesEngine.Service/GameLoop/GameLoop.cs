@@ -5,6 +5,10 @@ namespace GamesEngine.Service.GameLoop;
 
 public interface IGameLoop
 {
+    public event Action<ITime, IInterval> UpdateTick;
+    public event Action<IGameObject> GameObjectPreUpdate;
+    public event Action<IGameObject> GameObjectPostUpdate;
+
     public void ProcessInput();
     public void Update();
     public void Render();
@@ -21,6 +25,10 @@ public class GameLoop : IGameLoop
 
     private IGame Game { get; }
 
+    public event Action<ITime, IInterval>? UpdateTick = delegate {  };
+    public event Action<IGameObject>? GameObjectPreUpdate = delegate {  };
+    public event Action<IGameObject>? GameObjectPostUpdate = delegate {  };
+
     public void ProcessInput()
     {
         throw new NotImplementedException();
@@ -35,8 +43,11 @@ public class GameLoop : IGameLoop
     {
         ITime currentTime = new Time();
         IInterval deltaTime = new Interval(lastUpdate, currentTime);
+        UpdateTick.Invoke(currentTime, deltaTime);
+
         Game.SceneGraph.DynamicGameObject.GetValues().ForEach(gameObject =>
         {
+            GameObjectPreUpdate.Invoke(gameObject);
             gameObject.Update(deltaTime, currentTime);
 
             if (gameObject.Motion != null && gameObject.Motion.GetAbsolute() > 0)
@@ -46,6 +57,8 @@ public class GameLoop : IGameLoop
 
             if(gameObject is PlayerGameObject)
                 GameObject.CollisionCheck(Game, gameObject);
+
+            GameObjectPostUpdate.Invoke(gameObject);
         });
         lastUpdate = new Time();
     }

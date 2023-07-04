@@ -12,7 +12,7 @@ namespace GamesEngine.Math
         public float Width { get; }
         public float Height { get; }
         public float Depth { get; }
-        public bool Intersects(IBounds bounds);
+        public bool Intersects(IBounds? bounds);
         public IVector GetIntersection(IBounds bounds);
         public bool Contains(IBounds bounds);
         public bool Contains(float x, float y, float z);
@@ -134,7 +134,7 @@ namespace GamesEngine.Math
             return true; // Lines do intersect
         }
 
-        public bool Intersects(IBounds bounds)
+        public bool Intersects(IBounds? bounds)
         {
             if (bounds is OrientedBounds bs)
             {
@@ -279,7 +279,7 @@ namespace GamesEngine.Math
             return null;
         }
 
-        public bool Intersects(IBounds bounds)
+        public bool Intersects(IBounds? bounds)
         {
             if (bounds is Bounds bs)
             {

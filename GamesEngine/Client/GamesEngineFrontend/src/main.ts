@@ -27,7 +27,7 @@ setInterval(() => {
     communication.SendToServer({Type: "FetchDynamicObjects"});
 }, 200);
 
-window.addEventListener("mousemove", (event) => {
+window.addEventListener("mousemove", (event: MouseEvent) => {
     sendMouseEvent(event.clientX, event.clientY);
 });
 document.addEventListener("keydown", onDocumentKeyDown, false);

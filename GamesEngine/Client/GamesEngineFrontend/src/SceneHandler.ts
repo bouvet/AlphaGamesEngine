@@ -3,7 +3,9 @@ import {camera, pointLight, scene} from "./Rendering.ts";
 import {DynamicTypeHandlers, StaticTypeHandlers} from "./ObjectTypeHandler.ts";
 import {MeshBasicMaterial} from "three";
 import {plainToInstance} from "class-transformer";
-import {GameObject} from "./Objects/GameObject.ts";
+import {GameObject} from "./Objects/GameObjects/GameObject.ts";
+import {StaticGameObject} from "./Objects/GameObjects/StaticGameObject.ts";
+import {DynamicGameObject} from "./Objects/GameObjects/DynamicGameObject.ts";
 
 export let dynamicObjects: THREE.Object3D[] = [];
 export let staticObjects: THREE.Object3D[] = [];
@@ -39,7 +41,7 @@ export function AddStaticObjects(objects: any[]){
         let obj = null;
 
         if(StaticTypeHandlers[staticObject.Type.toLowerCase()] !== undefined) {
-            obj = StaticTypeHandlers[staticObject.Type.toLowerCase()](staticObject);
+            obj = StaticTypeHandlers[staticObject.Type.toLowerCase()](plainToInstance(StaticGameObject, staticObject));
         }
 
         if(obj){
@@ -142,8 +144,9 @@ export function AddDynamicObjects(objects: any[]) {
         let obj = null;
 
         if(DynamicTypeHandlers[dynamicObject.Type.toLowerCase()] !== undefined) {
-            obj = DynamicTypeHandlers[dynamicObject.Type.toLowerCase()](dynamicObject);
+            obj = DynamicTypeHandlers[dynamicObject.Type.toLowerCase()](plainToInstance(DynamicGameObject, dynamicObject));
         }
+
         if(obj) {
             SetMatrix(obj, dynamicObject);
 

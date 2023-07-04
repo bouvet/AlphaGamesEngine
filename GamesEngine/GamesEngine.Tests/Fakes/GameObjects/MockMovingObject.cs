@@ -23,7 +23,7 @@ public class MockMovingObject : IDynamicGameObject
 
     public void Collision(IGameObject? otherGameObject) { }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         return new Bounds(WorldMatrix, 1, 1, 1);
     }

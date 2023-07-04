@@ -25,7 +25,7 @@ public class ObstacleGameObject : IDynamicGameObject
         Colliding = true;
     }
 
-    public IBounds GetBounds()
+    public IBounds? GetBounds()
     {
         return new Bounds(WorldMatrix, WorldMatrix.GetScale().GetX(), WorldMatrix.GetScale().GetY(), WorldMatrix.GetScale().GetZ());
     }

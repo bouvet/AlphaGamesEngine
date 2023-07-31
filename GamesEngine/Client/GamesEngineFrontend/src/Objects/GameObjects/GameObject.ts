@@ -1,5 +1,5 @@
 import {Transform} from "class-transformer";
-import {Matrix} from "./Math/Matrix.ts";
+import {Matrix} from "../Math/Matrix.ts";
 
 export interface IGameObject {
     WorldMatrix: Matrix;

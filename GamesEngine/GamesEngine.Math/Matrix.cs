@@ -11,7 +11,17 @@ namespace GamesEngine.Math
         void SetRotation(IVector rotation);
         void SetScale(IVector scale);
         void SetPosition(IVector position);
+
+        public IMatrix Copy()
+        {
+            Matrix matrix = new Matrix();
+            matrix.SetPosition(GetPosition());
+            matrix.SetRotation(GetRotation());
+            matrix.SetScale(GetScale());
+            return matrix;
+        }
     }
+
     public class Matrix : IMatrix
     {
         Matrix4x4 _matrix = new();
@@ -171,5 +181,6 @@ namespace GamesEngine.Math
             tempMatrix.M43 = position.GetZ();
             _matrix = tempMatrix;
         }
+
     }
 }
